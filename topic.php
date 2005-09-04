@@ -27,7 +27,7 @@ function display_topic($topic, $topic_page = FALSE)
         "date" => $date,
         "title" => $title,
         "text" => $text,
-        "url_showcomments" => INDEX_URL . "?tid=$tid",
+        "url_showcomments" => INDEX_URL . "?tid=$tid#comments",
         "url_addcomment" => INDEX_URL . "?reply=$tid#commentform",
         "num_comments" => ($topic_page ? NULL : $num_replies)
     ));
