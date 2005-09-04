@@ -49,6 +49,9 @@ function display_post($post, $highlight = FALSE)
     if(!empty($link))
         $name = "<a href=\"$link\" target=\"_blank\">$name</a>";
 
+    if($highlight)
+        $special_anchor = "previewcomment";
+
     return skinvoodoo("post", "", array(
         "tid" => $tid,
         "pid" => $pid,
@@ -58,7 +61,8 @@ function display_post($post, $highlight = FALSE)
         "date" => date(DATE_FORMAT, $timestamp),
         "url_post" => INDEX_URL . "?tid=$tid&amp;pid=$pid#pid$pid",
         "url_reply" => INDEX_URL . "?reply=$tid&amp;ref=$pid#commentform",
-        "text" => textprocess($text)
+        "text" => textprocess($text),
+        "special_anchor" => $special_anchor,
     ));
 
 } // end of display_post()

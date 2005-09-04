@@ -41,7 +41,7 @@ function show_reply_form($tid, $preview_data = "", $text = "")
     }
 
     return $out . skinvoodoo("replyform", "", array(
-        "form_url" => INDEX_URL . "?do_reply=$tid",
+        "form_url" => INDEX_URL . "?do_reply=$tid#previewcomment",
         "name" => $_SESSION['postername'],
         "tripcode" => $_SESSION['tripcode'],
         "tripcode_help_link" => INDEX_URL . "?tid=1#tripcodes", //oo
