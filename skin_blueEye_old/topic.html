@@ -1,0 +1,26 @@
+<div class="topicheader">
+    Posted <!-- #arg_date# --><br />
+    <span class="topictitle"><!-- #arg_title# --></span>
+</div>
+
+<div class="topicbody">
+    <!-- #arg_text# -->
+</div>
+
+<div class="topicfooter">
+    &#x00BB; <!-- #cwb_if# #arg_num_comments# ? #cwb_tag# #arg_url_showcomments# #arg_num_comments# <a href="$1">($2 comments)</a> : -->
+    <!-- #cwb_tag# #arg_url_addcomment# <a href="$1">(make a comment)</a> -->
+</div>
+<br />
+<!-- :cwb_start: topicfooter_addcomment --><br /><br />
+<div class="topicfooter">
+    &#x00BB; <!-- #cwb_tag# #arg_url_addcomment# <a href="$1">(make a comment)</a> -->
+</div><!-- :cwb_end: topicfooter_addcomment -->
+<!-- :cwb_start: start_comments -->
+<i><u>Comments:</u></i><br />
+<br />
+<!-- :cwb_end: start_comments -->
+<!-- :cwb_start: last_comments -->
+<i><u>Last <!-- #arg_num# --> comments:</u></i><br />
+<br />
+<!-- :cwb_end: last_comments -->

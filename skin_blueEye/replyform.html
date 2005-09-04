@@ -1,0 +1,41 @@
+<a name="commentform"></a>
+<form action="${form_url}" method="post">
+<table>
+    <tr>
+    <td>Name:</td>
+    <td><input type="text" name="name" value="${name}" /> (optional; defaults to "%{anonymous_name}" if left blank)</td>
+    </tr>
+
+    <tr>
+    <td>Tripcode:</td>
+    <td><input type="text" name="tripcode" value="${tripcode}" /> (optional) <a href="${tripcode_help_link}" target="_blank"><i>What's a tripcode?</i></a></td>
+    </tr>
+
+    <tr>
+    <td>Link:</td>
+    <td><input type="text" name="link" value="${link}" /> (optional)</td>
+    </tr>
+
+    <tr>
+    <td>Message:</td>
+    <td><textarea name="text" cols="80" rows="25">${text}</textarea></td><!-- 80x25... the perfect dimensions... ;) -->
+    </tr>
+
+    <tr>
+    <td style="text-align:right">&mdash;&#x00BB;</td>
+    <td><input type="submit" value="submit" /><input type="submit" name="preview" value="preview" /></td>
+    </tr>
+
+    <tr>
+    <td>notice:</td>
+    <td>
+        <small>
+        &mdash; Allowed HTML tags: ${allowed_tags}<br />
+        &mdash; You do not need to use &lt;br&gt; tags - hitting the enter key will suffice.<br />
+        &mdash; Text in the form of "@[number]:" will be converted to a link to the comment with that number (must be in the current post).<br />
+        &mdash; You cannot not edit or delete your comment once it has been posted, so please thoroughly review it before posting. Thanks!
+        </small>
+    </td>
+    </tr>
+</table>
+</form>

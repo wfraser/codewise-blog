@@ -1,0 +1,9 @@
+RewriteEngine on
+
+RewriteRule !^changelog\.php$ - [C]
+RewriteRule !^favicon\.ico$ - [C]
+RewriteRule !^stylesheet\.php$ - [C]
+RewriteRule !^cwb/ - [C]
+RewriteRule !^controlpanel(\.php)$ - [C]
+RewriteRule !^cwbmulti\.php$ /cwbmulti.php [L]
+
