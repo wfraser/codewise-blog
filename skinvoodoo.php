@@ -133,7 +133,7 @@ function voodoo($skin, $args = array(), $debug_info = "", $expand = TRUE)
             "querycount" => "querycount()",
             "runtime" => "'%{runtime}'", // needs to be done last
             "versionfooter" => "versionfooter()",
-            "copyright" => "'CodewiseBlog &copy; Bill Fraser.<br />All textual content is the property of its author.'",
+            "copyright" => "'CodewiseBlog &copy; <a href=\"http://www.codewise.org/~netmanw00t/\">Bill Fraser</a>.<br />All textual content is the property of its author.'",
         );
 
         if(isset($function_table[$name]))
