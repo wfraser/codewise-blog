@@ -34,9 +34,9 @@ function subscribeform()
     return skinvoodoo("subscribeform", "", array("url" => INDEX_URL . "?subscribe"));
 }
 
-function adminloginform()
+function loginform()
 {
-    return skinvoodoo("adminloginform", "", array("url" => INDEX_URL . "?controlpanel"));
+    return skinvoodoo("loginform", "", array("url" => INDEX_URL . "?login"));
 }
 
 ?>
