@@ -44,7 +44,23 @@ function shoutbox_process()
         $link = null;
     else
         $link = $_POST['link'];
-    $text = in_text_filter($_POST['text']);
+    $filter = in_text_filter($_POST['text']);
+    
+    if(is_array($filter))
+    {
+        $text = $filter[0];
+        $text_filter_msg = $filter[1];
+    } else {
+        $text = $filter;
+        $text_filter_msg = "";
+    }
+    
+    if($text_filter_msg)
+    {
+        return "<div style=\"border: 1px solid black; background: red; color: black;\">$text_filter_msg</div>"
+            . "<br />Your input:<div style=\"border: 1px solid black; background: #eee; color: black;\">" . htmlspecialchars($_POST['text']) . "</div>"
+            . "<a href=\"" . INDEX_URL . "\">Back...</a>";
+    }
 
     if($text == "")
         return "<div style=\"color:red\">Text cannot be empty.</div>Please <a href=\"" . INDEX_URL . "\">go back</a> and fix it.";
