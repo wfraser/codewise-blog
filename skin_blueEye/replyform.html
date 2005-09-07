@@ -18,7 +18,10 @@
 
     <tr>
     <td>Message:</td>
-    <td><textarea name="text" cols="80" rows="25">${text}</textarea></td><!-- 80x25... the perfect dimensions... ;) -->
+    <td>
+        <textarea name="text" cols="80" rows="25">${text}</textarea><!-- 80x25... the perfect dimensions. ;) -->
+        <!-- #cwb_if# ${text_filter_msg} --><br /><br /><div style="border: 1px solid black; background: red; color: black; padding: 5px;">${text_filter_msg}</div><br /><!-- #cwb_endif# -->
+    </td>
     </tr>
 
     <tr>
@@ -32,8 +35,9 @@
         <small>
         &mdash; Allowed HTML tags: ${allowed_tags}<br />
         &mdash; You do not need to use &lt;br&gt; tags - hitting the enter key will suffice.<br />
-        &mdash; Text in the form of "@[number]:" will be converted to a link to the comment with that number (must be in the current post).<br />
-        &mdash; You cannot not edit or delete your comment once it has been posted, so please thoroughly review it before posting. Thanks!
+        &mdash; Text in the form of "@[number]:" will be made into a link to the comment with that number (must be in the current post).<br />
+        &mdash; You cannot not edit or delete your comment once it has been posted, so please thoroughly review it before posting.<br />
+        <b>Thanks!</b>
         </small>
     </td>
     </tr>
