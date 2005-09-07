@@ -73,7 +73,7 @@ function voodoo($skin, $args = array(), $debug_info = "", $expand = TRUE)
     // if ( .* ( if .* end )* .* ) ( else ( .* ( if .* end )* .* ) )? end
 
     // This is the regular expression to END ALL REGULAR EXPRESSIONS!!
-    preg_match_all("/<\\!-- #cwb_if# (.+) -->(.*(<\\! #cwb_if# .* -->.*<\\!-- #cwb_endif# -->)*.*)(<\\!-- #cwb_else# -->(.*(<\\!-- #cwb_if# .* -->.*<\\!-- #cwb_endif -->)*.*))??<\\!-- #cwb_endif# -->/Us", $skin, $matches, PREG_SET_ORDER);
+    preg_match_all("/<\\!-- #cwb_if# (.+) -->\n??(.*(<\\! #cwb_if# .* -->.*<\\!-- #cwb_endif# -->)*.*)(<\\!-- #cwb_else# -->(.*(<\\!-- #cwb_if# .* -->.*<\\!-- #cwb_endif -->)*.*))??<\\!-- #cwb_endif# -->/Us", $skin, $matches, PREG_SET_ORDER);
 
     foreach($matches as $match)
     {
@@ -127,13 +127,14 @@ function voodoo($skin, $args = array(), $debug_info = "", $expand = TRUE)
             "postcalendar" => "postcalendar()",
             "welcomeback" => "welcomeback()",
             "subscribeform" => "subscribeform()",
-            "adminloginform" => "adminloginform()",
+            "loginform" => "loginform()",
             "shoutbox" => "shoutbox()",
             "statistics" => "statistics()",
             "querycount" => "querycount()",
             "runtime" => "'%{runtime}'", // needs to be done last
             "versionfooter" => "versionfooter()",
             "copyright" => "'CodewiseBlog &copy; <a href=\"http://www.codewise.org/~netmanw00t/\">Bill Fraser</a>.<br />All textual content is the property of its author.'",
+            "notify" => "\$GLOBALS['NOTIFY']",
         );
 
         if(isset($function_table[$name]))
