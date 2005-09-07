@@ -137,6 +137,7 @@ function voodoo($skin, $args = array(), $debug_info = "", $expand = TRUE)
             "notify" => "\$GLOBALS['NOTIFY']",
         );
 
+        $new = "";
         if(isset($function_table[$name]))
         {
             $new = $function_table[$name];
