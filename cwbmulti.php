@@ -52,7 +52,24 @@ define("DATE_FORMAT", "F jS, Y \\a\\t g:i A");
 define("ANONYMOUS_NAME", "Dr. Anonymous");
 
 // Slashdot, in their infinite wisdom, allow: <b> <i> <p> <br> <a> <ol> <ul> <li> <dl> <dt> <dd> <em> <strong> <tt> <blockquote> <div> <ecode>
-$ALLOWED_TAGS = array("b","i","p","br","a","ol","ul","li","em","strong","strike","font","tt","blockquote");
+$ALLOWED_TAGS = array
+(
+// tagname => array("attributefoo", "attributebar" ...)
+    "b" => array(),
+    "i" => array(),
+    "p" => array(),
+    "br" => array(),
+    "a" => array("href", "name"),
+    "ol" => array(),
+    "ul" => array(),
+    "li" => array(),
+    "em" => array(),
+    "strong" => array(),
+    "strike" => array(),
+    "font" => array("color", "size"),
+    "tt" => array(),
+    "blockquote" => array(),
+);
 
 define("EMAIL", TRUE);
 define("SQL_ADMIN_EMAIL", "bill.fraser@gmail.com");
@@ -182,7 +199,7 @@ if(!defined("NO_ACTION"))
     {
         $out = controlpanel();
         die(str_replace("%{runtime}", runtime(), $out));
-    }    
+    }
 
 
     $main = skinvoodoo("main");
@@ -205,6 +222,8 @@ if(!defined("NO_ACTION"))
         $body = process_subscribe_form();
     } elseif(isset($_GET['unsubscribe'])) {
         $body = do_unsubscribe();
+    } elseif(isset($_GET['shoutbox'])) {
+        $body = shoutbox_process();
     } else {
         $body = main_page($_GET['page']);
     }
@@ -213,5 +232,7 @@ if(!defined("NO_ACTION"))
 
     echo str_replace("%{runtime}", runtime(), $out);
 }
+
+// and we're out. :)
 
 ?>

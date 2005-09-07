@@ -1,6 +1,6 @@
 <?php
 
-function show_reply_form($tid, $preview_data = "", $text = "")
+function show_reply_form($tid, $preview_data = "", $text = "", $text_filter_msg = "")
 {
     global $db, $ALLOWED_TAGS;
 
@@ -40,6 +40,18 @@ function show_reply_form($tid, $preview_data = "", $text = "")
             $text = "";
     }
 
+    $tags = "";
+    foreach($ALLOWED_TAGS as $name => $attribs)
+    {
+        $tags .= "&lt;$name";
+        if(count($attribs))
+        {
+            foreach($attribs as $attrib)
+                $tags .= "&nbsp;$attrib=\"\"";
+        }
+        $tags .= "&gt; ";
+    }
+
     return $out . skinvoodoo("replyform", "", array(
         "form_url" => INDEX_URL . "?do_reply=$tid#previewcomment",
         "name" => $_SESSION['postername'],
@@ -47,7 +59,8 @@ function show_reply_form($tid, $preview_data = "", $text = "")
         "tripcode_help_link" => INDEX_URL . "?tid=1#tripcodes", //oo
         "link" => ($_SESSION['posterlink'] ? $_SESSION['posterlink'] : "http://"),
         "text" => htmlspecialchars($text),
-        "allowed_tags" => "&lt;" . implode("&gt;, &lt;", $ALLOWED_TAGS) . "&gt;",
+        "allowed_tags" => $tags,
+        "text_filter_msg" => $text_filter_msg === "" ? "" : $text_filter_msg,
     ));
 
 } // end of show_reply_form()
@@ -59,8 +72,17 @@ function process_reply_form($tid)
     $name = strip_tags($_POST['name']);
     $tripcode = $_POST['tripcode'];
     $link = htmlentities(strip_tags($_POST['link']));
-    $text = in_text_filter($_POST['text']);
+    $text_filter = in_text_filter($_POST['text']);
     $timestamp = time();
+
+    if(is_array($text_filter))
+    {
+        $text = $text_filter[0];
+        $text_filter_msg = $text_filter[1];
+    } else {
+        $text = $text_filter;
+        $text_filter_msg = "";
+    }
 
     if($link == "http://")
         $link = null;
@@ -87,9 +109,9 @@ function process_reply_form($tid)
     if(empty($text))
         return skinvoodoo("error", "error", array("message" => "Your comment cannot be empty.<br />Please go back and fix this."));
 
-    if($_POST['preview'] == "preview")
+    if($_POST['preview'] == "preview" || $text_filter_msg)
     {
-        return show_reply_form($data['tid'], $data, $_POST['text']);
+            return show_reply_form($data['tid'], $data, $_POST['text'], $text_filter_msg);
     }
 
     $db->insert("replies", $data);

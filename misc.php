@@ -76,31 +76,47 @@ function textprocess($text)
     return $text;
 } // end of textprocess
 
-function in_text_filter($text)
+function in_text_filter($text, $text_filter_msg = "")
 {
     global $ALLOWED_TAGS;
 
     $new_text = $text;
-
     $num_starts = array();
     $num_ends = array();
 
     // remove illegal opening tags and, if possible, illegal open-close tag pairs as well
-    preg_match_all("/(<([A-Za-z][A-Za-z0-9-_:]*)[^>]*>)/s", $new_text, $matches, PREG_SET_ORDER /*| PREG_OFFSET_CAPTURE*/);
+    preg_match_all("/(<([A-Za-z][A-Za-z0-9-_:]*)([^>]*)>)/s", $new_text, $matches, PREG_SET_ORDER /*| PREG_OFFSET_CAPTURE*/);
     foreach($matches as $match)
     {
         $full_tag = $match[1];
+        $tag_attribs = $match[3];
         $tag_name = $match[2];
 
-        if(!in_array(strtolower($tag_name), $ALLOWED_TAGS))
+        // get all the attributes and remove all but the allowed ones
+        preg_match_all("/([A-Za-z][A-Za-z0-9-_:]*)=(['\"])(.*)\\2/Us", $tag_attribs, $attrib_matches, PREG_SET_ORDER);
+
+        foreach($attrib_matches as $attrib_match)
+        {
+            $full_attrib = $attrib_match[0];
+            $attrib_name = $attrib_match[1];
+            $attrib_cont = $attrib_match[3];
+
+            if(!in_array(strtolower($attrib_name), $ALLOWED_TAGS[strtolower($tag_name)]))
+            {
+                $new_text = str_replace($full_tag, str_replace($full_attrib, "", $full_tag), $new_text);
+                $text_filter_msg .= "Removed illegal <code>&lt;$tag_name&gt;</code> attribute <code>$attrib_name</code><br />";
+            }
+        }
+
+        if(!in_array(strtolower($tag_name), array_keys($ALLOWED_TAGS)))
         {
             $new_text = str_replace($full_tag, "", $new_text);
-            echo "<font color=\"red\">killed illegal &lt;$tag_name&gt;</font><br />";
+            $text_filter_msg .= "Removed illegal <code>&lt;$tag_name&gt;</code><br />";
             if(substr($full_tag, strlen($full_tag) - 2) != "/>")
             {
                 $temp = preg_replace("/<\/" . $tag_name . "[^>]*>/i", "", $new_text, 1);
                 if($temp != $new_text)
-                    echo "<font color=\"red\">killed accompanying illegal closing &lt;$tag_name&gt;</font><br />";
+                    $text_filter_msg .= "Removed accompanying illegal closing <code>&lt;$tag_name&gt;</code><br />";
                 $new_text = $temp;
             }
         } else {
@@ -115,10 +131,10 @@ function in_text_filter($text)
         $full_tag = $match[0];
         $tag_name = $match[1];
 
-        if(!in_array(strtolower($tag_name), $ALLOWED_TAGS))
+        if(!in_array(strtolower($tag_name), array_keys($ALLOWED_TAGS)))
         {
             $new_text = str_replace($full_tag, "", $new_text);
-            echo "<font color=\"red\">killed illegal closing &lt;$tag_name&gt;</font><br />";
+            $text_filter_msg .= "Removed illegal closing <code>&lt;$tag_name&gt;</code><br />";
             continue;
         }
 
@@ -131,7 +147,7 @@ function in_text_filter($text)
         {
             $new_text = str_replace($full_tag, "", $new_text);
             $num_ends[strtolower($tag_name)]--;
-            echo "<font color=\"red\">killed extra closing &lt;$tag_name&gt;</font><br />";
+            $text_filter_msg .= "Removed extra closing <code>&lt;$tag_name&gt;</code><br />";
         }
     }
 
@@ -145,16 +161,21 @@ function in_text_filter($text)
         if($num_starts[strtolower($tag_name)] > $num_ends[strtolower($tag_name)])
         {
             $new_text = str_replace($full_tag, "", $new_text);
-            echo "<font color=\"red\">killed extra opening &lt;$tag_name&gt;</font><br />";
+            $text_filter_msg .= "Removed extra opening <code>&lt;$tag_name&gt;</code><br />";
         }
         // another idea: simply append a closing tag
         //    $new_text .= "</$tag_name>";
     }
 
     if($new_text == $text)
-        return($text);
-    else
-        return(in_text_filter($new_text));
+    {
+        if($text_filter_msg === "")
+            return($text);
+        else
+            return(array($text, $text_filter_msg));
+    } else {
+        return(in_text_filter($new_text, $text_filter_msg));
+    }
 } // end of in_text_filter
 
 function tripcode($input)
