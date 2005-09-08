@@ -69,6 +69,8 @@ $ALLOWED_TAGS = array
     "font" => array("color", "size"),
     "tt" => array(),
     "blockquote" => array(),
+    "sub" => array(),
+    "sup" => array(),
 );
 
 define("EMAIL", TRUE);
@@ -195,14 +197,14 @@ if(!defined("NO_ACTION"))
         die($main);
     }
 
-    if(isset($_GET['controlpanel']))
+    foreach(array_keys($_GET) as $key)
     {
-        $out = controlpanel();
-        die(str_replace("%{runtime}", runtime(), $out));
+        if(preg_match("/^controlpanel:?/", $key))
+        {
+            $out = controlpanel();
+            die(str_replace("%{runtime}", runtime(), $out));
+        }
     }
-
-
-    $main = skinvoodoo("main");
 
     if(!is_numeric($_GET['page']))
         $_GET['page'] = 1;
@@ -224,9 +226,16 @@ if(!defined("NO_ACTION"))
         $body = do_unsubscribe();
     } elseif(isset($_GET['shoutbox'])) {
         $body = shoutbox_process();
+    } elseif(isset($_GET['login'])) {
+        $body = cplogin();
+    } elseif(isset($_GET['notloggedin'])) {
+        $NOTIFY = "You are not logged in to the control panel.";
+        $body = main_page(1);
     } else {
         $body = main_page($_GET['page']);
     }
+
+    $main = skinvoodoo("main");
 
     $out = str_replace("<!-- #CWB_BODY# -->", $body, $main);
 
