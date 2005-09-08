@@ -73,7 +73,7 @@ function voodoo($skin, $args = array(), $debug_info = "", $expand = TRUE)
     // if ( .* ( if .* end )* .* ) ( else ( .* ( if .* end )* .* ) )? end
 
     // This is the regular expression to END ALL REGULAR EXPRESSIONS!!
-    preg_match_all("/<\\!-- #cwb_if# (.+) -->\n??(.*(<\\! #cwb_if# .* -->.*<\\!-- #cwb_endif# -->)*.*)(<\\!-- #cwb_else# -->(.*(<\\!-- #cwb_if# .* -->.*<\\!-- #cwb_endif -->)*.*))??<\\!-- #cwb_endif# -->/Us", $skin, $matches, PREG_SET_ORDER);
+    preg_match_all("/<\\!-- #cwb_if# (.+) -->\n??(.*(<\\! #cwb_if# .* -->.*<\\!-- #cwb_endif# -->)*.*)(<\\!-- #cwb_else# -->\n??(.*(<\\!-- #cwb_if# .* -->.*<\\!-- #cwb_endif -->)*.*))??<\\!-- #cwb_endif# -->\n??/Us", $skin, $matches, PREG_SET_ORDER);
 
     foreach($matches as $match)
     {
