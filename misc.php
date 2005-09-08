@@ -56,19 +56,15 @@ function delete_session()
     unset($_SESSION['posterlink']);
     unset($_SESSION['tripcode']);
     unset($_SESSION['beenhere']);
-    unset($_SESSION['admin']);
+    unset($_SESSION['controlpanel']);
 
-    return <<<EOF
-<div class="notify">
-    Your information has been fogotten.<br />
-    <a href="<?php echo INDEX_URL; ?>">Back to the front page.</a>
-</div>
-EOF;
+    $GLOBALS['NOTIFY'] = "Your information has been cleared.<br />";
+    return main_page(1);
 }
 
 function textprocess($text)
 {
-    $text = nl2br($text) . "\n";
+    $text = str_replace("\n", "<br />", str_replace("\r", "", $text));
 
     $text = preg_replace("/(f)uck/i", "\\1%&#", $text);
     $text = preg_replace("/(s)hit/i", "\\1%&#", $text);
@@ -93,13 +89,16 @@ function in_text_filter($text, $text_filter_msg = "")
         $tag_name = $match[2];
 
         // get all the attributes and remove all but the allowed ones
-        preg_match_all("/([A-Za-z][A-Za-z0-9-_:]*)=(['\"])(.*)\\2/Us", $tag_attribs, $attrib_matches, PREG_SET_ORDER);
+        preg_match_all("/([A-Za-z][A-Za-z0-9-_:]*)=((['\"])(.*)\\2|\S+?)/Us", $tag_attribs, $attrib_matches, PREG_SET_ORDER);
 
         foreach($attrib_matches as $attrib_match)
         {
             $full_attrib = $attrib_match[0];
             $attrib_name = $attrib_match[1];
-            $attrib_cont = $attrib_match[3];
+            if(preg_match("/^['\"]$/", $attrib_match[2]))
+                $attrib_cont = $attrib_match[3];
+            else
+                $attrib_cont = $attrib_match[2];
 
             if(!in_array(strtolower($attrib_name), $ALLOWED_TAGS[strtolower($tag_name)]))
             {
