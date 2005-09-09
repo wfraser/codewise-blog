@@ -79,7 +79,7 @@ function show_month($month, $year, $page)
 
     for($i = 1; $i <= ceil($db->num_rows[$q] / TOPICS_PER_PAGE); $i++)
     {
-        if($i == $page && !isset($_GET['all_one_page']))
+        if($i == $page && !isset($_GET['all_one_page']))
             $out .= skinvoodoo("pagelink", "currpage", array("pageno" => $i));
         else
             $out .= skinvoodoo("pagelink", "pagelink", array("url" => INDEX_URL . "?month=$month&amp;year=$year&amp;page=$i", "pageno" => $i));
