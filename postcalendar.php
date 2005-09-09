@@ -83,10 +83,8 @@ function postcalendar()
 
             if($_GET['page'] > 1)
             {
-                echo "w00p w00p";
                 for($i=0; $i< TOPICS_PER_PAGE * ($_GET['page'] - 1); $i++)
                 {
-                    echo "$i";
                     array_shift($rows);
                 }
             }
