@@ -81,6 +81,16 @@ function postcalendar()
             $q = $db->issue_query("SELECT title,tid,extra FROM topics WHERE timestamp >= " . $db->prepare_value($time1) . " AND timestamp <= " . $db->prepare_value($time2) . " AND blogid = '" . BLOGID . "' ORDER BY timestamp DESC");
             $rows = $db->fetch_all($q);
 
+            if($_GET['page'] > 1)
+            {
+                echo "w00p w00p";
+                for($i=0; $i< TOPICS_PER_PAGE * ($_GET['page'] - 1); $i++)
+                {
+                    echo "$i";
+                    array_shift($rows);
+                }
+            }
+
             while(count($rows) > TOPICS_PER_PAGE)
                 array_pop($rows);
 
@@ -100,7 +110,7 @@ function postcalendar()
                 $currentmonth .= skinvoodoo("postcalendar", "topiclink", array("url" => INDEX_URL . "?tid=$tid", "title" => $title));
             }
 
-            if($db->num_rows[$q] > TOPICS_PER_PAGE)
+            if($db->num_rows[$q] - (($_GET['page'] - 1) * TOPICS_PER_PAGE) > TOPICS_PER_PAGE)
                 $currentmonth .= skinvoodoo("postcalendar", "nextpage", array("url" => INDEX_URL . "?year=$year&amp;month=$month&amp;page=2"));
 
             $out .= skinvoodoo("postcalendar", "latestmonth", array("contents" => $currentmonth));
