@@ -12,8 +12,11 @@
 /*
 ** Change History:
 **
-** 1.0.0 - July 25 to August xx, 2005
+** Dev - July 25 to September 12, 2005
 **   - developed alongside CodewiseBlog Single-User v1.2.4 to v1.2.9
+**
+** 1.0.0-ALPHA - September 12, 2005
+**   - basic alpha release
 */
 
 // start execution timer
@@ -22,7 +25,7 @@ $starttime = (string) $sec + $usec;
 unset($sec, $usec);
 
 // define version string
-define("CWBVERSION","1.0.0-alpha");
+define("CWBVERSION","1.0.0-ALPHA");
 
 // just for good measure
 chdir("/srv/www/site/blogs.codewise.org/");

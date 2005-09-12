@@ -102,9 +102,9 @@ foreach($data as $blogname => $blog)
                     <div style="background-color: yellow"><div style="border: 5px dashed red"><div style="background-color:white; padding:10px">
                         <b style="font-size: xx-large">CodewiseBlog Multi-User</b><br />
                         <br />
-                        <b>Under Development</b><br />
+                        <b>v1.0.0-ALPHA</b><br />
                         <br />
-                        "It's working sorta! Yayuhh!"<br />
+                        "It's ALIVVEEEE! Yayuhh!"<br />
                         &nbsp;&nbsp;&nbsp;&nbsp;-NMW
                     </div></div></div>
 
