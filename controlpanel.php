@@ -35,9 +35,19 @@ function controlpanel()
         return;
     }
 
-    if(isset($_GET['zomg!']))
+    if(isset($_GET['controlpanel:settings']))
     {
-        //oo
+        $current = "settings";
+        $body = "Settings Page";
+    } elseif(isset($_GET['controlpanel:write'])) {
+        $current = "write";
+        $body = "Write Page";
+    } elseif(isset($_GET['controlpanel:userinfo'])) {
+        $current = "userinfo";
+        $body = "Userinfo Page";
+    } elseif(isset($_GET['controlpanel:skin'])) {
+        $current = "skin";
+        $body = "Skin Editor Page";
     } else {
         $current = "home";
         $body = "Body goes here...";
