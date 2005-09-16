@@ -37,11 +37,52 @@ function controlpanel()
 
     if(isset($_GET['controlpanel:settings']))
     {
+
         $current = "settings";
         $body = "Settings Page";
+
     } elseif(isset($_GET['controlpanel:write'])) {
+
         $current = "write";
-        $body = "Write Page";
+
+        if(empty($_POST))
+        {
+            $body = skinvoodoo(
+                "controlpanel_write", "",
+                array(
+                    "posturl" => INDEX_URL . "?controlpanel:write",
+                    "quicktags" => INDEX_URL . "?quicktags.js",
+                    "text" => "",
+                    "title" => "Title",
+                )
+            );
+        } else {
+            if(isset($_POST['preview']))
+            {
+                $body = display_topic(
+                    array(
+                        "tid" => "\" style=\"display:none\"></a>Continue Editing: <a alt=\"",
+                        "title" => $_POST['title'],
+                        "timestamp" => time(),
+                        "text" => $_POST['text'],
+                    ),
+                    TRUE, TRUE
+                );
+
+                $body .= skinvoodoo(
+                    "controlpanel_write", "",
+                    array(
+                        "posturl" => INDEX_URL . "?controlpanel:write",
+                        "quicktags" => INDEX_URL . "?quicktags.js",
+                        "text" => $_POST['text'],
+                        "title" => $_POST['title'],
+                    )
+                );
+            } else {
+                print_r($_POST);
+            }
+        }
+
     } elseif(isset($_GET['controlpanel:userinfo'])) {
         $current = "userinfo";
         $body = "Userinfo Page";
