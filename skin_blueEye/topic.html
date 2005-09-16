@@ -1,17 +1,19 @@
+<!-- :cwb_start: topicheader -->
 <div class="topicheader">
     Posted ${date}<br />
     <span class="topictitle">${title}</span>
 </div>
-
+<!-- :cwb_end: topicheader -->
 <div class="topicbody">
     ${text}
 </div>
-
+<!-- :cwb_start: topicfooter -->
 <div class="topicfooter">
     &#x00BB; <!-- #cwb_if# isset(${num_comments}) --><a href="${url_showcomments}">(${num_comments} comments)</a><!-- #cwb_endif# -->
     <a href="${url_addcomment}">(make a comment)</a>
 </div>
 <br />
+<!-- :cwb_end: topicfooter -->
 <!-- :cwb_start: topicfooter_addcomment --><br /><br />
 <div class="topicfooter">
     &#x00BB; <a href="${url_addcomment}">(make a comment)</a>

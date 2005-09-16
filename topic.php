@@ -1,6 +1,6 @@
 <?php
 
-function display_topic($topic, $topic_page = FALSE)
+function display_topic($topic, $topic_page = FALSE, $bare_minimum = FALSE)
 {
     global $db;
 
@@ -23,7 +23,19 @@ function display_topic($topic, $topic_page = FALSE)
     $q = $db->issue_query("SELECT pid FROM replies WHERE tid = '$tid'");
     $num_replies = $db->num_rows[$q];
 
-    return skinvoodoo("topic", "", array(
+    $out = "";
+
+    if(!$bare_minimum)
+        $out .= skinvoodoo("topic", "topicheader", array(
+            "date" => $date,
+            "title" => $title,
+            "text" => $text,
+            "url_showcomments" => INDEX_URL . "?tid=$tid#comments",
+            "url_addcomment" => INDEX_URL . "?reply=$tid#commentform",
+            "num_comments" => ($topic_page ? NULL : $num_replies)
+        ));
+
+    $out .= skinvoodoo("topic", "", array(
         "date" => $date,
         "title" => $title,
         "text" => $text,
@@ -31,6 +43,18 @@ function display_topic($topic, $topic_page = FALSE)
         "url_addcomment" => INDEX_URL . "?reply=$tid#commentform",
         "num_comments" => ($topic_page ? NULL : $num_replies)
     ));
+
+    if(!$bare_minimum)
+        $out .= skinvoodoo("topic", "topicfooter", array(
+            "date" => $date,
+            "title" => $title,
+            "text" => $text,
+            "url_showcomments" => INDEX_URL . "?tid=$tid#comments",
+            "url_addcomment" => INDEX_URL . "?reply=$tid#commentform",
+            "num_comments" => ($topic_page ? NULL : $num_replies)
+        ));
+
+    return $out;
 
 } // end of display_topic()
 
