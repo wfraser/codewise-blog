@@ -82,7 +82,7 @@ function statistics()
         . "Average 1 blog post every " . number_format(($time_years * 365 + $time_days) / $num_topics, 2) . " days.<br />\n"
         . "Average " . number_format($num_posts / $num_topics, 2) . " comments per post.<br />\n"
         . "Comments under $num_distinct_replies distinct names.<br />\n"
-        . round($num_tripcodes / $num_posts * 100) . "% of comments use tripcodes.<br />\n"
+        . @round($num_tripcodes / $num_posts * 100) . "% of comments use tripcodes.<br />\n"
         . "$num_shouts shoutbox entries.<br />\n";
 }
 
