@@ -4,8 +4,15 @@ function statistics()
 {
     global $db;
 
+    //$q = $db->issue_query("SELECT timestamp FROM topics WHERE blogid = '" . BLOGID . "' ORDER BY timestamp ASC LIMIT 1");
+    $q = $db->issue_query("SELECT joindate FROM blogs WHERE blogid = '" . BLOGID . "'");
+    $joindate = $db->fetch_var($q);
+
     $q = $db->issue_query("SELECT timestamp FROM topics WHERE blogid = '" . BLOGID . "' ORDER BY timestamp ASC LIMIT 1");
-    $firstblog = $db->fetch_var($q);
+    if($db->num_rows[$q] == 0)
+        $firstblog = 0;
+    else
+        $firstblog = $db->fetch_var($q);
 
     $time_secs = time() - $firstblog;
     $time_minutes = floor($time_secs / 60);
@@ -59,7 +66,11 @@ function statistics()
     $pos_last_comma = strrpos($time_elapsed, ",");
     $time_elapsed = substr($time_elapsed, 0, $pos_last_comma) . " and" . substr($time_elapsed, $pos_last_comma + 1);
 
-    $time_elapsed = wordwrap("First post was $time_elapsed ago.", 40, "<br />");
+
+    if($firstblog == 0)
+        $time_elapsed = "";
+    else
+        $time_elapsed = wordwrap("First post was $time_elapsed ago.", 40, "<br />") . "<br />\n";
 
     $q = $db->issue_query("SELECT tid FROM topics WHERE blogid = '" . BLOGID . "'");
     $num_topics = $db->num_rows[$q];
@@ -76,11 +87,11 @@ function statistics()
     $q = $db->issue_query("SELECT timestamp FROM shoutbox WHERE blogid = '" . BLOGID . "'");
     $num_shouts = $db->num_rows[$q];
 
-    return "Blogging since " . date("F jS, Y", $firstblog) . ".<br />\n"
-        . "$time_elapsed<br />\n"
+    return "Blogging since " . date("F jS, Y", $joindate) . ".<br />\n"
+        . "$time_elapsed"
         . "$num_topics posts, $num_posts comments in total.<br />\n"
-        . "Average 1 blog post every " . number_format(($time_years * 365 + $time_days) / $num_topics, 2) . " days.<br />\n"
-        . "Average " . number_format($num_posts / $num_topics, 2) . " comments per post.<br />\n"
+        . "Average 1 blog post every " . @number_format(($time_years * 365 + $time_days) / $num_topics, 2) . " days.<br />\n"
+        . "Average " . @number_format($num_posts / $num_topics, 2) . " comments per post.<br />\n"
         . "Comments under $num_distinct_replies distinct names.<br />\n"
         . @round($num_tripcodes / $num_posts * 100) . "% of comments use tripcodes.<br />\n"
         . "$num_shouts shoutbox entries.<br />\n";
