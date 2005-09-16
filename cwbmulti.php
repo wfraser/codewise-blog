@@ -17,6 +17,9 @@
 **
 ** 1.0.0-ALPHA - September 12, 2005
 **   - basic alpha release
+**
+** 1.0.0-ALPHA-r1 - September 15, 2005
+**   - added write page for UCP
 */
 
 // start execution timer
@@ -25,7 +28,7 @@ $starttime = (string) $sec + $usec;
 unset($sec, $usec);
 
 // define version string
-define("CWBVERSION","1.0.0-ALPHA");
+define("CWBVERSION","1.0.0-ALPHA-r1");
 
 // just for good measure
 chdir("/srv/www/site/blogs.codewise.org/");
@@ -207,6 +210,12 @@ if(!defined("NO_ACTION"))
             $out = controlpanel();
             die(str_replace("%{runtime}", runtime(), $out));
         }
+    }
+
+    if(isset($_GET['quicktags_js']))
+    {
+        header("Content-type: text/javascript");
+        die(file_get_contents("cwb/quicktags.js"));
     }
 
     if(!is_numeric($_GET['page']))
