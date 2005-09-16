@@ -6,9 +6,6 @@ function shoutbox()
 
     $q = $db->issue_query("SELECT * FROM shoutbox WHERE blogid = '" . BLOGID . "' ORDER BY timestamp ASC LIMIT 10");
 
-    if($db->num_rows[$q] == 0)
-        return skinvoodoo("shoutbox", "nothing");
-
     $data = $db->fetch_all($q, L1SQL_ASSOC);
 
     $contents = "";
@@ -21,6 +18,9 @@ function shoutbox()
 
         $contents .= skinvoodoo("shoutbox", $sect, array("link" => $row['link'], "name" => $row['name'], "text" => $text, "date" => date(DATE_FORMAT, $row['timestamp'])));
     }
+
+    if($db->num_rows[$q] == 0)
+        $contents = skinvoodoo("shoutbox", "nothing");
 
     if(isset($_SESSION['postername']))
         $name = $_SESSION['postername'];
@@ -45,7 +45,7 @@ function shoutbox_process()
     else
         $link = $_POST['link'];
     $filter = in_text_filter($_POST['text']);
-    
+
     if(is_array($filter))
     {
         $text = $filter[0];
@@ -54,7 +54,7 @@ function shoutbox_process()
         $text = $filter;
         $text_filter_msg = "";
     }
-    
+
     if($text_filter_msg)
     {
         return "<div style=\"border: 1px solid black; background: red; color: black;\">$text_filter_msg</div>"
