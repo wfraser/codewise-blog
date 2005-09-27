@@ -28,56 +28,12 @@ $starttime = (string) $sec + $usec;
 unset($sec, $usec);
 
 // define version string
-define("CWBVERSION","1.0.0-ALPHA-r1");
+define("CWBVERSION","1.0.0-ALPHA-r2");
+define("CWBTYPE", "Multi-User");
 
-// just for good measure
-chdir("/srv/www/site/blogs.codewise.org/");
+require("settings.php");
 
-/*
-** Subdomain Mode
-**
-** if enabled, username will come from the hostname:
-**     http://username.yourdomain.com/
-** instead of the normal:
-**     http://www.yourdomain.com/username
-*/
-
-define("SUBDOMAIN_MODE", TRUE);
-define("BASE_DOMAIN", "blogs.codewise.org");
-define("INSTALLED_PATH", "/radix.cwb");
-define("DEFAULT_SUBDOMAIN", "");
-
-/*
-** Tweakable Vars
-*/
-
-define("TOPICS_PER_PAGE", 5);
-define("POSTS_PER_PAGE", 10);
-define("DATE_FORMAT", "F jS, Y \\a\\t g:i A");
-
-define("ANONYMOUS_NAME", "Dr. Anonymous");
-
-// Slashdot, in their infinite wisdom, allow: <b> <i> <p> <br> <a> <ol> <ul> <li> <dl> <dt> <dd> <em> <strong> <tt> <blockquote> <div> <ecode>
-$ALLOWED_TAGS = array
-(
-// tagname => array("attributefoo", "attributebar" ...)
-    "b" => array(),
-    "i" => array(),
-    "p" => array(),
-    "br" => array(),
-    "a" => array("href", "name"),
-    "ol" => array(),
-    "ul" => array(),
-    "li" => array(),
-    "em" => array(),
-    "strong" => array(),
-    "strike" => array(),
-    "font" => array("color", "size"),
-    "tt" => array(),
-    "blockquote" => array(),
-    "sub" => array(),
-    "sup" => array(),
-);
+chdir(FSPATH);
 
 define("EMAIL", TRUE);
 define("SQL_ADMIN_EMAIL", "bill.fraser@gmail.com");
@@ -152,10 +108,7 @@ if($who == "")
 {
     define("BLOGID", 1);
     define("BLOGNAME", "");
-    if(DEFAULT_SUBDOMAIN == "")
-        define("INDEX_URL", "http://" . BASE_DOMAIN . INSTALLED_PATH);
-    else
-        define("INDEX_URL", "http://" . DEFAULT_SUBDOMAIN . "." . BASE_DOMAIN . INSTALLED_PATH);
+        define("INDEX_URL", "http://" . DEFAULT_SUBDOMAIN . BASE_DOMAIN . INSTALLED_PATH);
 } elseif(!isset($blogdata[$who])) {
     die( "<html><head><title>CodewiseBlog :: Invalid User</title><link rel=\"stylesheet\" href=\"http://www.codewise.org/blueEye.css\" /></head>"
        . "<body><b>Invalid User \"$who\"</b><br /><br /><a href=\"http://" . DEFAULT_SUBDOMAIN . BASE_DOMAIN . INSTALLED_PATH . "\">...back to CodewiseBlog</a></body></html>" );
@@ -165,10 +118,8 @@ if($who == "")
     define("ADMIN_EMAIL", $blogdata[$who]['email']);
     if(SUBDOMAIN_MODE)
         define("INDEX_URL", "http://" . BLOGNAME . "." . BASE_DOMAIN . INSTALLED_PATH);
-    elseif(DEFAULT_SUBDOMAIN == "")
-        define("INDEX_URL", "http://" . BASE_DOMAIN . INSTALLED_PATH . BLOGNAME);
     else
-        define("INDEX_URL", "http://" . DEFAULT_SUBDOMAIN . "." . BASE_DOMAIN . INSTALLED_PATH . "/" . BLOGNAME);
+        define("INDEX_URL", "http://" . DEFAULT_SUBDOMAIN . BASE_DOMAIN . INSTALLED_PATH . "/" . BLOGNAME);
 }
 
 /*
@@ -182,6 +133,7 @@ if($BLOGINFO['birthday'])
     $BLOGINFO['age'] = date("Y", time() - $BLOGINFO['birthday']);
 
 $BLOGINFO['index_url'] = INDEX_URL;
+$BLOGINFO['ucp_url'] = INDEX_URL . "?controlpanel";
 
 $BLOGINFO['interests'] = nl2br($BLOGINFO['interests']);
 $BLOGINFO['links'] = nl2br($BLOGINFO['links']);
