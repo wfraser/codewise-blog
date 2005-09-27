@@ -135,6 +135,8 @@ function voodoo($skin, $args = array(), $debug_info = "", $expand = TRUE)
             "versionfooter" => "versionfooter()",
             "copyright" => "'CodewiseBlog &copy; <a href=\"http://www.codewise.org/~netmanw00t/\">Bill Fraser</a>.<br />All textual content is the property of its author.'",
             "notify" => "\$GLOBALS['NOTIFY']",
+            "cwb_version" => "CWBVERSION",
+            "cwb_type" => "CWBTYPE",
         );
 
         $new = "";
