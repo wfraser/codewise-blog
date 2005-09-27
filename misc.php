@@ -37,7 +37,7 @@ function versionfooter()
     $sig = trim($_SERVER['SERVER_SIGNATURE']);
     $sig = str_replace("<address>", "<br /><i>", str_replace("</address>", "</i><br />", $sig));
 
-    return skinvoodoo("main", "versionfooter", array("mtime" => iso8601_date(filemtime("cwbmulti.php")), "version" => CWBVERSION, "sig" => $sig, "hostname" => "delta-zero"));
+    return skinvoodoo("main", "versionfooter", array("mtime" => iso8601_date(filemtime("cwbmulti.php")), "sig" => $sig, "hostname" => "delta-zero"));
 }
 
 /*
@@ -66,8 +66,8 @@ function textprocess($text)
 {
     $text = str_replace("\n", "<br />", str_replace("\r", "", $text));
 
-    $text = preg_replace("/(f)uck/i", "\\1%&#", $text);
-    $text = preg_replace("/(s)hit/i", "\\1%&#", $text);
+    $text = preg_replace("/(f)uck/i", "\\1%&amp;#", $text);
+    $text = preg_replace("/(s)hit/i", "\\1%&amp;#", $text);
 
     return $text;
 } // end of textprocess
