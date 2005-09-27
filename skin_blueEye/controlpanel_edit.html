@@ -1,0 +1,31 @@
+<!-- :cwb_start: showselect -->
+<form action="${posturl}" method="post">
+<table>
+    <tr>
+        <td>Select topic to edit:</td>
+        <td>
+            <select name="tid" width="50">
+${options}
+            </select>
+        </td>
+    </tr>
+</table>
+<input type="submit" value="Edit" />
+</form>
+<!-- :cwb_end: showselect -->
+<!-- :cwb_start: editform -->
+<form action="${posturl}" method="post">
+<table>
+    <tr>
+        <td>Title:</td>
+        <td><input type="text" width="50" name="title" value="${title}" /></td>
+    </tr>
+    <tr>
+        <td>Timestamp:</td>
+        <td>${month_sel} ${date_sel} ${year_sel} at ${hour_sel}:${minute_sel} ${ampm_sel}</td>
+    </tr>
+</table>
+<input type="hidden" name="tid" value="${tid}" />
+<input type="submit" value="Save Changes" />
+<input type="submit" value="Preview" />
+<!-- :cwb_end: editform -->
