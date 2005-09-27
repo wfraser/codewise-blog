@@ -46,7 +46,11 @@ function hidebio()
                 <div style="text-align:center">
                 <span id="showbio"><a href="javascript:showbio()"><b>who?</b></a><br /></span>
                 <span id="hidebio" style="display:none"><a href="javascript:hidebio()"><b>ahh, I see...</b></a><br /></span>
+<!-- #cwb_if# %{photo} -->
                 <img src="%{photo}" alt="%{name}::photo" style="padding:.75em" />
+<!-- #cwb_else# -->
+                <b>%{realname}</b>
+<!-- #cwb_endif# -->
                 <table style="border:none; font-size:smaller; display:none;" id="bio">
 <!-- #cwb_if# %{realname} --><tr><td class="profleft">name:</td><td class="profright">%{realname}</td></tr><!-- #cwb_endif# -->
 <!-- #cwb_if# %{location} --><tr><td class="profleft" >location:</td><td class="profright">%{location}</td></tr><!-- #cwb_endif# -->
@@ -118,5 +122,5 @@ function hidebio()
 </table>
 </body>
 </html>
-<!-- :cwb_start: versionfooter -->Powered by: CodewiseBlog Multi-User <a href="changelog.php" style="color:#aaa;text-decoration:underline" title="${mtime}">v%{version}</a>
+<!-- :cwb_start: versionfooter -->Powered by: CodewiseBlog %{cwb_type} <a href="changelog.php" style="color:#aaa;text-decoration:underline" title="${mtime}">v%{cwb_version}</a>
 ${sig}(<a style="color:#aaa;text-decoration:underline" href="http://${hostname}.codewise.org/">${hostname}</a>)<!-- :cwb_end: versionfooter -->
