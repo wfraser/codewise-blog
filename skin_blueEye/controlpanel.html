@@ -66,6 +66,12 @@ function hidebio()
 <a href="${url_write}">Write Post</a><br />
 <!-- #cwb_endif# -->
 
+<!-- #cwb_if# ${current} == "edit" -->
+<b>Edit Post</b><br />
+<!-- #cwb_else# -->
+<a href="${url_edit}">Edit Post</a><br />
+<!-- #cwb_endif# -->
+
 <!-- #cwb_if# ${current} == "userinfo" -->
 <b>User Info</b><br />
 <!-- #cwb_else# -->
