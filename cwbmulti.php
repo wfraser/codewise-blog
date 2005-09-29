@@ -67,6 +67,7 @@ require("stats.php");
 require("reply.php");
 require("subscribe.php");
 require("controlpanel.php");
+require("file_put_contents.php"); // from the PHP_Compat project
 
 require("l1_mysql.php");
 $db = new L1_MySQL("localhost", "codewiseblog", "!#joltColaINaCan");
