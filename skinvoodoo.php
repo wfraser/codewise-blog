@@ -60,7 +60,7 @@ function skinvoodoo($skin_section, $subcall = "", $args = array())
     return voodoo($skin, $args, $skin_section);
 }
 
-function voodoo($skin, $args = array(), $debug_info = "", $expand = TRUE)
+function voodoo($skin, $args = array(), $skin_section = "", $expand = TRUE)
 {
     global $BLOGINFO;
 
@@ -82,7 +82,7 @@ function voodoo($skin, $args = array(), $debug_info = "", $expand = TRUE)
         $if = $match[2];
         $else = $match[5];
 
-        $result = eval("return " . voodoo($condition, $args, "$debug_info:iftag", FALSE) . ";");
+        $result = eval("return " . voodoo($condition, $args, $skin_section, FALSE) . ";");
 
         if($result)
         {
@@ -152,6 +152,26 @@ function voodoo($skin, $args = array(), $debug_info = "", $expand = TRUE)
             else
                 $new = "\$BLOGINFO['$name']";
         }
+        $skin = str_replace($old, $new, $skin);
+    }
+
+    /*
+    ** Local Calls
+    */
+
+    preg_match_all("/<\\!-- \\*cwb_call\\* ([a-zA-Z0-9-_]+?)(( [a-zA-Z0-9-_]+=\"[^\"]*?\")*?) -->/Us", $skin, $matches, PREG_SET_ORDER);
+    foreach($matches as $match)
+    {
+        $old = $match[0];
+        $call = $match[1];
+        $call_arg_list = $match[2];
+
+        preg_match_all("/ ([a-zA-Z0-9-_]+)=\"([^\"]*)\"/s", $call_arg_list, $arg_matches, PREG_SET_ORDER);
+        $call_args = array();
+        foreach($arg_matches as $match)
+            $call_args[$match[1]] = $match[2];
+
+        $new = skinvoodoo($skin_section, $call, $call_args);
         $skin = str_replace($old, $new, $skin);
     }
 
