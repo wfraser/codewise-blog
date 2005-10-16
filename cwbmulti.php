@@ -28,15 +28,12 @@ $starttime = (string) $sec + $usec;
 unset($sec, $usec);
 
 // define version string
-define("CWBVERSION","1.0.0-ALPHA-r2");
+define("CWBVERSION","1.0.0-ALPHA-r3");
 define("CWBTYPE", "Multi-User");
 
 require("settings.php");
 
 chdir(FSPATH);
-
-define("EMAIL", TRUE);
-define("SQL_ADMIN_EMAIL", "bill.fraser@gmail.com");
 
 /*
 ** Set up environment
@@ -70,12 +67,12 @@ require("controlpanel.php");
 require("file_put_contents.php"); // from the PHP_Compat project
 
 require("l1_mysql.php");
-$db = new L1_MySQL("localhost", "codewiseblog", "!#joltColaINaCan");
+$db = new L1_MySQL(SQL_HOST, SQL_USER, SQL_PASS);
 
 // custom error handler to mail the admin as well as print any errors
 $db->error_callback = $db->warning_callback = "mail_db_error";
 
-$db->database("codewiseblog");
+$db->database(SQL_DB);
 
 /*
 ** Support Apache2 mod_rewrite proxying
@@ -147,15 +144,7 @@ if(!defined("NO_ACTION"))
     ** Let's light this candle!
     */
 
-    // special front page
-    if(BLOGID == 1)
-    {
-        ob_start();
-        require("front_page.php");
-        $main = ob_get_clean();
-        die($main);
-    }
-
+    // control panel
     foreach(array_keys($_GET) as $key)
     {
         if(preg_match("/^controlpanel:?/", $key))
@@ -165,6 +154,16 @@ if(!defined("NO_ACTION"))
         }
     }
 
+    // special front page
+    if(BLOGID == 1 && !isset($_GET['login'])) // allow admin controlpanel login from front page
+    {
+        ob_start();
+        require("front_page.php");
+        $main = ob_get_clean();
+        die($main);
+    }
+
+    // QuickTags for controlpanel:write page
     if(isset($_GET['quicktags_js']))
     {
         header("Content-type: text/javascript");
