@@ -64,6 +64,12 @@ function delete_session()
 
 function textprocess($text)
 {
+    preg_match_all("/<\\?php.*\\?>/Us", $text, $matches);
+    foreach($matches[0] as $match)
+    {
+        $text = str_replace($match, highlight_string($match, TRUE), $text);
+    }
+
     $text = str_replace("\n", "<br />", str_replace("\r", "", $text));
 
     $text = preg_replace("/(f)uck/i", "\\1%&amp;#", $text);
