@@ -15,9 +15,9 @@ function cplogin()
     $q = $db->issue_query("SELECT password FROM blogs WHERE blogid = '" . BLOGID . "'");
     $hash = $db->fetch_var($q);
 
-    if($_SESSION['controlpanel'] || md5($_POST['password']) == $hash)
+    if($_SESSION['controlpanel'] == BLOGID || md5($_POST['password']) == $hash)
     {
-        $_SESSION['controlpanel'] = TRUE;
+        $_SESSION['controlpanel'] = BLOGID;
         return "You are now logged in.<br /><a href=\"" . INDEX_URL . "?controlpanel\">Continue to the Control Panel</a>";
     } else {
         $GLOBALS['NOTIFY'] = "Incorrect password.";
@@ -34,6 +34,9 @@ function controlpanel()
         header("Location: " . INDEX_URL . "?notloggedin");
         return;
     }
+
+    if(BLOGID == 1) // we are root
+        $GLOBALS['EXTRA'] = "You are logged in as Admin. Beware that changes you make are potentially dangerous!\n\n";
 
     if(isset($_GET['controlpanel:settings']))
     {
@@ -53,6 +56,7 @@ function controlpanel()
                     "posturl" => INDEX_URL . "?controlpanel:settings",
                     "fspath"  => FSPATH,
                     "sample_url" => SUBDOMAIN_MODE ? "http://username." . BASE_DOMAIN . INSTALLED_PATH : "http://" . DEFAULT_SUBDOMAIN . BASE_DOMAIN . INSTALLED_PATH . "/username",
+                    "main_url" => "http://" . (DEFAULT_SUBDOMAIN == "" ? "" : DEFAULT_SUBDOMAIN . "." ) . BASE_DOMAIN . INSTALLED_PATH,
                     "subdomain_mode" => SUBDOMAIN_MODE,
                     "base_domain" => BASE_DOMAIN,
                     "installed_path" => INSTALLED_PATH,
@@ -61,6 +65,12 @@ function controlpanel()
                     "posts_per_page" => POSTS_PER_PAGE,
                     "date_format" => DATE_FORMAT,
                     "anonymous_name" => ANONYMOUS_NAME,
+                    "email" => EMAIL,
+                    "sql_admin_email" => SQL_ADMIN_EMAIL,
+                    "sql_host" => SQL_HOST,
+                    "sql_user" => SQL_USER,
+                    "sql_pass" => SQL_PASS,
+                    "sql_db" => SQL_DB,
                     "allowed_tags" => $allowed_tags,
                 )
             );
@@ -68,10 +78,127 @@ function controlpanel()
 
             $file = file_get_contents("settings.php");
 
-            $file = str_replace("define('FSPATH', " . FSPATH . ");\n", "define('FSPATH', " . $_POST['fspath'] . ");\n", $file);
-            $file = str_replace("define('SUBDOMAIN_MODE', '" . SUBDOMAIN_MODE . "');\n", "define('SUBDOMAIN_MODE', '" . $_POST['subdomain_mode'] . "');\n", $file);
+            $applied = array();
 
-            //oo stuff
+            $filenew = preg_replace(
+                "/(?<=\\s)define\\(\\s*(['\"])((?-i)FSPATH)\\1,\\s*(['\"])((?-i)" . str_replace("/", "\\/", quotemeta(FSPATH)) . ")\\3\\s*\\);/is",
+                "define('FSPATH', '" . $_POST['fspath'] . "');",
+                $file);
+            if($file != $filenew)
+                $applied[] = "FSPATH";
+            $file = $filenew;
+
+            $filenew = preg_replace(
+                "/(?<=\\s)define\\(\\s*(['\"])((?-i)SUBDOMAIN_MODE)\\1,\\s*" . (SUBDOMAIN_MODE ? "TRUE" : "FALSE") . "\\s*\\);/is",
+                "define('SUBDOMAIN_MODE', " . $_POST['subdomain_mode'] . ");",
+                $file);
+            if($file != $filenew)
+                $applied[] = "SUBDOMAIN_MODE";
+            $file = $filenew;
+
+            $filenew = preg_replace(
+                "/(?<=\\s)define\\(\\s*(['\"])((?-i)BASE_DOMAIN)\\1,\\s*(['\"])((?-i)" . str_replace("/", "\\/", quotemeta(BASE_DOMAIN)) . ")\\3\\s*\\);/is",
+                "define('BASE_DOMAIN', '" . $_POST['base_domain'] . "');",
+                $file);
+            if($file != $filenew)
+                $applied[] = "BASE_DOMAIN";
+            $file = $filenew;
+
+            $filenew = preg_replace(
+                "/(?<=\\s)define\\(\\s*(['\"])((?-i)INSTALLED_PATH)\\1,\\s*(['\"])((?-i)" . str_replace("/", "\\/", quotemeta(INSTALLED_PATH)) . ")\\3\\s*\\);/is",
+                "define('INSTALLED_PATH', '" . $_POST['installed_path'] . "');",
+                $file);
+            if($file != $filenew)
+                $applied[] = "INSTALLED_PATH";
+            $file = $filenew;
+
+            $filenew = preg_replace(
+                "/(?<=\\s)define\\(\\s*(['\"])((?-i)DEFAULT_SUBDOMAIN)\\1,\\s*(['\"])((?-i)" . str_replace("/", "\\/", quotemeta(DEFAULT_SUBDOMAIN)) . ")\\3\\s*\\);/is",
+                "define('DEFAULT_SUBDOMAIN', '" . $_POST['default_subdomain'] . "');",
+                $file);
+            if($file != $filenew)
+                $applied[] = "DEFAULT_SUBDOMAIN";
+            $file = $filenew;
+
+            $filenew = preg_replace(
+                "/(?<=\\s)define\\(\\s*(['\"])((?-i)TOPICS_PER_PAGE)\\1,\\s*(['\"])((?-i)" . str_replace("/", "\\/", quotemeta(TOPICS_PER_PAGE)) . ")\\3\\s*\\);/is",
+                "define('TOPICS_PER_PAGE', '" . $_POST['topics_per_page'] . "');",
+                $file);
+            if($file != $filenew)
+                $applied[] = "TOPICS_PER_PAGE";
+            $file = $filenew;
+
+            $filenew = preg_replace(
+                "/(?<=\\s)define\\(\\s*(['\"])((?-i)POSTS_PER_PAGE)\\1,\\s*(['\"])((?-i)" . str_replace("/", "\\/", quotemeta(POSTS_PER_PAGE)) . ")\\3\\s*\\);/is",
+                "define('POSTS_PER_PAGE', '" . $_POST['posts_per_page'] . "');",
+                $file);
+            if($file != $filenew)
+                $applied[] = "POSTS_PER_PAGE";
+            $file = $filenew;
+
+            $filenew = preg_replace(
+                "/(?<=\\s)define\\(\\s*(['\"])((?-i)DATE_FORMAT)\\1,\\s*(['\"])((?-i)" . str_replace("/", "\\/", quotemeta(DATE_FORMAT)) . ")\\3\\s*\\);/is",
+                "define('DATE_FORMAT', '" . $_POST['date_format'] . "');",
+                $file);
+            if($file != $filenew)
+                $applied[] = "DATE_FORMAT";
+            $file = $filenew;
+
+            $filenew = preg_replace(
+                "/(?<=\\s)define\\(\\s*(['\"])((?-i)ANONYMOUS_NAME)\\1,\\s*(['\"])((?-i)" . str_replace("/", "\\/", quotemeta(ANONYMOUS_NAME)) . ")\\3\\s*\\);/is",
+                "define('ANONYMOUS_NAME', '" . $_POST['anonymous_name'] . "');",
+                $file);
+            if($file != $filenew)
+                $applied[] = "ANONYMOUS_NAME";
+            $file = $filenew;
+
+            $filenew = preg_replace(
+                "/(?<=\\s)define\\(\\s*(['\"])((?-i)EMAIL)\\1,\\s*" . (EMAIL ? "TRUE" : "FALSE") . "\\s*\\);/is",
+                "define('EMAIL', " . $_POST['email'] . ");",
+                $file);
+            if($file != $filenew)
+                $applied[] = "EMAIL";
+            $file = $filenew;
+
+            $filenew = preg_replace(
+                "/(?<=\\s)define\\(\\s*(['\"])((?-i)SQL_ADMIN_EMAIL)\\1,\\s*(['\"])((?-i)" . str_replace("/", "\\/", quotemeta(SQL_ADMIN_EMAIL)) . ")\\3\\s*\\);/is",
+                "define('SQL_ADMIN_EMAIL', '" . $_POST['sql_admin_email'] . "');",
+                $file);
+            if($file != $filenew)
+                $applied[] = "SQL_ADMIN_EMAIL";
+            $file = $filenew;
+
+            $filenew = preg_replace(
+                "/(?<=\\s)define\\(\\s*(['\"])((?-i)SQL_HOST)\\1,\\s*(['\"])((?-i)" . str_replace("/", "\\/", quotemeta(SQL_HOST)) . ")\\3\\s*\\);/is",
+                "define('SQL_HOST', '" . $_POST['sql_host'] . "');",
+                $file);
+            if($file != $filenew)
+                $applied[] = "SQL_HOST";
+            $file = $filenew;
+
+            $filenew = preg_replace(
+                "/(?<=\\s)define\\(\\s*(['\"])((?-i)SQL_USER)\\1,\\s*(['\"])((?-i)" . str_replace("/", "\\/", quotemeta(SQL_USER)) . ")\\3\\s*\\);/is",
+                "define('SQL_USER', '" . $_POST['sql_user'] . "');",
+                $file);
+            if($file != $filenew)
+                $applied[] = "SQL_USER";
+            $file = $filenew;
+
+            $filenew = preg_replace(
+                "/(?<=\\s)define\\(\\s*(['\"])((?-i)SQL_PASS)\\1,\\s*(['\"])((?-i)" . str_replace("/", "\\/", quotemeta(SQL_PASS)) . ")\\3\\s*\\);/is",
+                "define('SQL_PASS', '" . $_POST['sql_pass'] . "');",
+                $file);
+            if($file != $filenew)
+                $applied[] = "SQL_PASS";
+            $file = $filenew;
+
+            $filenew = preg_replace(
+                "/(?<=\\s)define\\(\\s*(['\"])((?-i)SQL_DB)\\1,\\s*(['\"])((?-i)" . str_replace("/", "\\/", quotemeta(SQL_DB)) . ")\\3\\s*\\);/is",
+                "define('SQL_DB', '" . $_POST['sql_db'] . "');",
+                $file);
+            if($file != $filenew)
+                $applied[] = "SQL_DB";
+            $file = $filenew;
 
             $new_php_array = "\$ALLOWED_TAGS = array\n(\n";
             $lines = explode("\n", $_POST['allowed_tags']);
@@ -94,9 +221,23 @@ function controlpanel()
             }
             $new_php_array .= ");";
 
-            $file = preg_replace("/\\\$ALLOWED_TAGS = array\n\\(.*\\);/s", $new_php_array, $file);
+            $filenew = preg_replace("/\\\$ALLOWED_TAGS = array\n\\(.*\\);/s", $new_php_array, $file);
+            if($file != $filenew)
+                $applied[] = "ALLOWED_TAGS";
+            $file = $filenew;
 
-            echo $file;
+            if(count($applied))
+            {
+                $message = "";
+                foreach($applied as $configvar)
+                    $message .= "changed value of $configvar<br />";
+            } else {
+                $message = "No config values changed.";
+            }
+
+            $body = skinvoodoo("error", "notify", array("message" => $message)) . "<a href=\"" . INDEX_URL . "?controlpanel:settings\">Back to Settings</a>";
+
+            file_put_contents("settings.php", $file);
         }
 
     } elseif(isset($_GET['controlpanel:write'])) {
@@ -215,7 +356,13 @@ function controlpanel()
         $body = "Userinfo Page";
     } elseif(isset($_GET['controlpanel:skin'])) {
         $current = "skin";
-        $body = "Skin Editor Page";
+
+        if($_POST)
+        {
+            $body = $_POST['section'];
+        } else {
+            //$body = skinvoodoo("controlpanel_skin", "sectionsel",
+        }
     } else {
         $current = "home";
         $body = "Body goes here...";
@@ -223,6 +370,7 @@ function controlpanel()
 
     $args = array
     (
+        "root"    => (BLOGID == 1 ? TRUE : FALSE),
         "current" => $current,
         "cpurl"        => INDEX_URL . "?controlpanel",
         "url_settings" => INDEX_URL . "?controlpanel:settings",

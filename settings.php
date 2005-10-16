@@ -1,32 +1,20 @@
 <?php
 
-define("FSPATH", "/srv/www/site/blogs.codewise.org/");
-
-/*
-** Subdomain Mode
-**
-** if enabled, username will come from the hostname:
-**     http://username.yourdomain.com/
-** instead of the normal:
-**     http://www.yourdomain.com/username
-*/
-
-define('SUBDOMAIN_MODE', TRUE);
-define('BASE_DOMAIN', 'blogs.codewise.org');
-define('INSTALLED_PATH', '/radix.cwb');
-define('DEFAULT_SUBDOMAIN', '');
-
-/*
-** Tweakable Vars
-*/
-
+define('FSPATH', '/var/www/htdocs/');
+define('SUBDOMAIN_MODE', FALSE);
+define('BASE_DOMAIN', 'example.com');
+define('INSTALLED_PATH', '/');
+define('DEFAULT_SUBDOMAIN', 'www');
 define('TOPICS_PER_PAGE', '5');
 define('POSTS_PER_PAGE', '10');
 define('DATE_FORMAT', 'F jS, Y \a\t g:i A');
-
-define('ANONYMOUS_NAME', 'Dr. Anonymous');
-
-// Slashdot, in their infinite wisdom, allow: <b> <i> <p> <br> <a> <ol> <ul> <li> <dl> <dt> <dd> <em> <strong> <tt> <blockquote> <div> <ecode>
+define('ANONYMOUS_NAME', 'Anonymous');
+define('EMAIL', TRUE);
+define('SQL_ADMIN_EMAIL', 'nobody@localhost');
+define('SQL_HOST', 'localhost');
+define('SQL_USER', 'sql_username');
+define('SQL_PASS', 'sql_password');
+define('SQL_DB', 'sql_database');
 
 $ALLOWED_TAGS = array
 (
