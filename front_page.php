@@ -88,7 +88,7 @@ foreach($data as $blogname => $blog)
                             <td class="sidebar">
                                 <b>Admin login:</b><br />
 
-                                <form action="<?php echo INDEX_URL; ?>?admin" method="post">
+                                <form action="<?php echo INDEX_URL; ?>?login" method="post">
                                 <small>password:</small> <input type="password" name="password" style="font-size:smaller" size="10" /><br />
                                 <input type="submit" value="enter" style="font-size:smaller" />
                                 </form>
