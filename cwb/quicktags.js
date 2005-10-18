@@ -193,8 +193,8 @@ edButtons.push(
         new edButton(
                 'ed_php'
                 , 'PHP'
-                , '<?php'
-                , '?>'
+                , '<php><?php '
+                , '?></php>'
         )
 );
 
