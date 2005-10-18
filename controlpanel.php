@@ -42,8 +42,10 @@ function controlpanel()
     {
         $current = "settings";
 
-        if(empty($_POST))
+        if(BLOGID !== 1)
         {
+            $body = skinvoodoo("error","error",array("message"=>"You do not have permission to access this area of the control panel."));
+        } elseif(empty($_POST)) {
             global $ALLOWED_TAGS;
 
             $allowed_tags = "";
@@ -237,7 +239,7 @@ function controlpanel()
 
             $body = skinvoodoo("error", "notify", array("message" => $message)) . "<a href=\"" . INDEX_URL . "?controlpanel:settings\">Back to Settings</a>";
 
-            file_put_contents("settings.php", $file);
+            file_put_contents("settings2.php", $file);
         }
 
     } elseif(isset($_GET['controlpanel:write'])) {
