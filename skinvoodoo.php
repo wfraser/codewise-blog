@@ -65,32 +65,43 @@ function voodoo($skin, $args = array(), $skin_section = "", $expand = TRUE)
     global $BLOGINFO;
 
     /*
-    ** Voodoo Tags
+    ** <!-- #cwb_(if|else|endif)# --> Tags
     */
 
-    // basically:
-    //
-    // if ( .* ( if .* end )* .* ) ( else ( .* ( if .* end )* .* ) )? end
+    $ifcapture = "<\\!-- #cwb_if# (?P<condition>(?:.(?!-->))+) -->";
+    $if = "<\\!-- #cwb_if# ((?:.(?!--))+) -->";
+    $else = "<\\!-- #cwb_else# -->";
+    $end = "<\\!-- #cwb_endif# -->";
+    $pattern = "/$ifcapture(?P<true>(?>.(?!$if))*?)($else(?P<false>(?>.(?!$if))*?))?$end/s";
 
-    // This is the regular expression to END ALL REGULAR EXPRESSIONS!!
-    preg_match_all("/<\\!-- #cwb_if# (.+) -->\n??(.*(<\\! #cwb_if# .* -->.*<\\!-- #cwb_endif# -->)*.*)(<\\!-- #cwb_else# -->\n??(.*(<\\!-- #cwb_if# .* -->.*<\\!-- #cwb_endif -->)*.*))??<\\!-- #cwb_endif# -->\n??/Us", $skin, $matches, PREG_SET_ORDER);
+    /*
+    ** Here, we work on the innermost set of tags first.
+    ** The regex only matches sets of tags that have no #cwb_if# tags inside.
+    ** We keep re-evaluating the regex until there are no tags left.
+    ** You don't want to know how long it took to work this out... :P
+    */
 
-    foreach($matches as $match)
-    {
-        $old = $match[0];
-        $condition = $match[1];
-        $if = $match[2];
-        $else = $match[5];
-
-        $result = eval("return " . voodoo($condition, $args, $skin_section, FALSE) . ";");
-
-        if($result)
+    preg_match_all($pattern, $skin, $matches, PREG_SET_ORDER);
+    do {
+        foreach($matches as $match)
         {
-            $skin = str_replace($old, voodoo($if, $args), $skin);
-        } else {
-            $skin = str_replace($old, voodoo($else, $args), $skin);
+            $old = $match[0];
+            $condition = $match["condition"];
+            $true = $match["true"];
+            $false = $match["false"];
+
+            $result = eval("return " . voodoo($condition, $args, $skin_section, FALSE) . ";");
+
+            if($result)
+            {
+                $skin = str_replace($old, voodoo($true, $args), $skin);
+            } else {
+                $skin = str_replace($old, voodoo($false, $args), $skin);
+            }
         }
-    }
+
+        preg_match_all($pattern, $skin, $matches, PREG_SET_ORDER);
+    } while(count($matches) > 0);
 
     /*
     ** Local Variables
