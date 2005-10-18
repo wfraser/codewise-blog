@@ -54,12 +54,15 @@ function hidebio()
 
 <hr style="width: 50%; border: 1px solid #ddd;" noshade="noshade" />
 
+<!-- #cwb_if# ${root} -->
 <!-- #cwb_if# ${current} == "settings" -->
 <b>Blog Settings</b><br />
 <!-- #cwb_else# -->
 <a href="${url_settings}">Blog Settings</a><br />
 <!-- #cwb_endif# -->
+<!-- #cwb_endif# -->
 
+<!-- #cwb_if# !${root} -->
 <!-- #cwb_if# ${current} == "write" -->
 <b>Write Post</b><br />
 <!-- #cwb_else# -->
@@ -83,6 +86,7 @@ function hidebio()
 <!-- #cwb_else# -->
 <a href="${url_skin}">Skin Editor</a><br />
 <!-- #cwb_endif# -->
+<!-- #cwb_endif# -->
 
 <hr style="width: 50%; border: 1px solid #ddd;" noshade="noshade" />
 
@@ -97,6 +101,12 @@ function hidebio()
     </td>
 
     <td class="blogbody">
+
+<!-- #cwb_if# ${root} -->
+        <div class="notify">
+            You are logged in as Admin. Beware that changes you make are potentially dangerous!
+        </div><br />
+<!-- #cwb_endif# -->
 
         <!-- #CWB_CP_BODY# -->
 
