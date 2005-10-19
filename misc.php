@@ -270,4 +270,16 @@ function mail_db_error($error)
     endif;
 } // end of mail_db_error()
 
+function ordinal($n)
+{
+    if(substr($n, -1, 1) == "1")
+        return "{$n}st";
+    elseif(substr($n, -1, 1) == "2")
+        return "{$n}nd";
+    elseif(substr($n, -1, 1) == "3")
+        return "{$n}rd";
+    else
+        return "{$n}th";
+}
+
 ?>
