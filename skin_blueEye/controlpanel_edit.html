@@ -22,10 +22,35 @@ ${options}
     </tr>
     <tr>
         <td>Timestamp:</td>
-        <td>${month_sel} ${date_sel} ${year_sel} at ${hour_sel}:${minute_sel} ${ampm_sel}</td>
+        <td>${month_sel} ${date_sel} ${year_sel} at ${hour_sel}:${minute_sel}:${second_sel} ${ampm_sel}</td>
+    </tr>
+</table>
+${preview}
+<script type="text/javascript" src="${quicktags}"></script>
+<table>
+    <tr>
+        <td>
+            <script type="text/javascript">edToolbar();</script>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <textarea name="text" id="canvas" rows="25" cols="130">${text}</textarea>
+            <script type="text/javascript">var edCanvas = document.getElementById('canvas');</script>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="submit" value="Save Changes" name="do_edit" />
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="submit" value="Preview" name="preview" />
+        </td>
     </tr>
 </table>
 <input type="hidden" name="tid" value="${tid}" />
-<input type="submit" value="Save Changes" />
-<input type="submit" value="Preview" />
 <!-- :cwb_end: editform -->
+<!-- :cwb_start: success_redirect -->
+Your post has been recorded.<br />
+You can view it <a href="${topic_url}">here</a><br />
+Alternatively, you can go <a href="%{ucp_link}">back to the Control Panel</a>
+<!-- :cwb_end: success_redirect -->

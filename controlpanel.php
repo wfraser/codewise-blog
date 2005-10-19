@@ -319,38 +319,170 @@ function controlpanel()
                     "options"  => $html,
                 )
             );
-        } elseif(!isset($_GET['do_edit'])) {
+        } elseif(!isset($_POST['do_edit'])) {
 
-            $q = $db->issue_query("SELECT title,timestamp,text,extra FROM topics WHERE tid = " . $db->prepare_value($_POST['tid']) . " AND blogid = '" . BLOGID . "'");
-            $topic = $db->fetch_row($q);
+            if(isset($_POST['preview']))
+            {
+                $month = $_POST['month'];
+                $date = $_POST['date'];
+                $year = $_POST['year'];
+                $hour = $_POST['hour'];
+                $minute = $_POST['minute'];
+                $second = $_POST['second'];
+                $ampm = $_POST['ampm'];
+
+                $topic = array(
+                    "title" => $_POST['title'],
+                    "text" => $_POST['text'],
+                );
+            } else {
+                $q = $db->issue_query("SELECT title,timestamp,text,extra FROM topics WHERE tid = " . $db->prepare_value($_POST['tid']) . " AND blogid = '" . BLOGID . "'");
+                $topic = $db->fetch_row($q);
+                $month = date("n", $topic['timestamp']);
+                $date = date("j", $topic['timestamp']);
+                $year = date("Y", $topic['timestamp']);
+                $hour = date("g", $topic['timestamp']);
+                $minute = date("i", $topic['timestamp']);
+                $second = date("s", $topic['timestamp']);
+                $ampm = date("a", $topic['timestamp']);
+            }
 
             $months = array("null", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
 
-            $month_sel = "<select name=\"month\">\n";
-            for($i = 0; $i <= 12; $i++)
+            $month_sel = "<select name=\"month\">";
+            for($i = 1; $i <= 12; $i++)
             {
-                if($i == date("n", $topic['timestamp']))
-                    $month_sel .= "<option value=\"$i\" selected=\"selected\">{$months[$i]}</option>\n";
+                if($i == $month)
+                    $month_sel .= "<option value=\"$i\" selected=\"selected\">{$months[$i]}</option>";
                 else
-                    $month_sel .= "<option value=\"$i\">{$months[$i]}</option>\n";
+                    $month_sel .= "<option value=\"$i\">{$months[$i]}</option>";
             }
-            $month_sel .= "</select>\n";
+            $month_sel .= "</select>";
 
-            $date_sel = "<select name=\"date\">\n";
-            //oo
+            $date_sel = "<select name=\"date\">";
+            for($i = 1; $i <= 31; $i++)
+            {
+                if($i == $date)
+                    $date_sel .= "<option value=\"$i\" selected=\"selected\">" . ordinal($i) . "</option>";
+                else
+                    $date_sel .= "<option value=\"$i\">" . ordinal($i) . "</option>";
+            }
+            $date_sel .= "</select>";
+
+            $year_sel = "<input type=\"text\" size=\"4\" value=\"" . $year . "\" name=\"year\" />";
+
+            $hour_sel = "<select name=\"hour\">";
+            for($i = 1; $i <= 12; $i++)
+            {
+                if($i == $hour)
+                    $hour_sel .= "<option value=\"$i\" selected=\"selected\">$i</option>";
+                else
+                    $hour_sel .= "<option value=\"$i\">$i</option>";
+            }
+            $hour_sel .= "</select>";
+
+            $minute_sel = "<select name=\"minute\">";
+            for($i = 0; $i <= 59; $i++)
+            {
+                if($i == $minute)
+                    $minute_sel .= "<option value=\"$i\" selected=\"selected\">" . str_pad($i, 2, "0", STR_PAD_LEFT) . "</option>";
+                else
+                    $minute_sel .= "<option value=\"$i\">" . str_pad($i, 2, "0", STR_PAD_LEFT) . "</option>";
+            }
+            $minute_sel .= "</select>";
+
+            $second_sel = "<select name=\"second\">";
+            for($i = 0; $i <= 59; $i++)
+            {
+                if($i == $second)
+                    $second_sel .= "<option value=\"$i\" selected=\"selected\">" . str_pad($i, 2, "0", STR_PAD_LEFT) . "</option>";
+                else
+                    $second_sel .= "<option value=\"$i\">" . str_pad($i, 2, "0", STR_PAD_LEFT) . "</option>";
+            }
+            $second_sel .= "</select>";
+
+            $ampm_sel = "<select name=\"ampm\">";
+            if($ampm == "am")
+            {
+                $ampm_sel .= "<option value=\"am\" selected=\"selected\">AM</option>";
+                $ampm_sel .= "<option value=\"pm\">PM</option>";
+            } else {
+                $ampm_sel .= "<option value=\"am\">AM</option>";
+                $ampm_sel .= "<option value=\"pm\" selected=\"selected\">PM</option>";
+            }
+            $ampm_sel .= "</select>";
+
+            $preview = display_topic(
+                array(
+                    "tid" => "\" style=\"display:none\"></a>Continue Editing: <a alt=\"",
+                    "title" => $topic['title'],
+                    "timestamp" => time(),
+                    "text" => $topic['text'],
+                ),
+                TRUE, TRUE
+            );
 
             $body = skinvoodoo(
                 "controlpanel_edit", "editform",
                 array(
-                    "posturl" => INDEX_URL . "?controlpanel:edit&amp;do_edit",
+                    "posturl" => INDEX_URL . "?controlpanel:edit",
                     "title"   => $topic['title'],
                     "date"    => date(DATE_FORMAT, $topic['timestamp']),
                     "text"    => $topic['text'],
                     "extra"   => $topic['extra'],
                     "tid"     => $_POST['tid'],
-                    "month_sel" => $month_sel,
+                    "month_sel"  => $month_sel,
+                    "date_sel"   => $date_sel,
+                    "year_sel"   => $year_sel,
+                    "hour_sel"   => $hour_sel,
+                    "minute_sel" => $minute_sel,
+                    "second_sel" => $second_sel,
+                    "ampm_sel"   => $ampm_sel,
+                    "preview" => $preview,
+                    "quicktags" => INDEX_URL . "?quicktags.js",
                 )
             );
+
+        } else {
+
+            if(!checkdate($_POST['month'], $_POST['date'], $_POST['year']))
+            {
+                $body = skinvoodoo("error", "error", array("message" => "Invalid date specified."));
+            } elseif(
+                $_POST['hour'] > 12   ||
+                $_POST['hour'] < 1    ||
+                $_POST['minute'] > 59 ||
+                $_POST['minute'] < 0  ||
+                $_POST['second'] > 59 ||
+                $_POST['second'] < 0  ||
+                ( $_POST['ampm'] != "am" && $_POST['ampm'] != "pm")
+            ) {
+                $body = skinvoodoo("error", "error", array("message" => "Invalid time specified."));
+            } else {
+
+                // int mktime ( [int hour [, int minute [, int second [, int month [, int day [, int year [, int is_dst]]]]]]] )
+                $time = mktime(
+                    $_POST['hour'] + ($_POST['ampm'] == "pm" ? 12 : 0),
+                    $_POST['minute'],
+                    $_POST['second'],
+                    $_POST['month'],
+                    $_POST['date'],
+                    $_POST['year']
+                );
+
+                $data = array
+                (
+                    "blogid" => BLOGID,
+                    "title" => $_POST['title'], // ToDo: check for uniqueness
+                    "timestamp" => $time,
+                    "text" => $_POST['text'],
+                );
+
+                $db->update("topics", $data, array("tid" => $_POST['tid']));
+
+                $body = skinvoodoo("controlpanel_edit", "success_redirect", array("topic_url" => INDEX_URL . "?tid={$_POST['tid']}"));
+
+            }
 
         }
     } elseif(isset($_GET['controlpanel:userinfo'])) {
