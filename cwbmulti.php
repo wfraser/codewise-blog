@@ -20,6 +20,22 @@
 **
 ** 1.0.0-ALPHA-r1 - September 15, 2005
 **   - added write page for UCP
+**
+** 1.0.0-ALPHA-r2 - September 27, 2005
+**   - moved some define()s to settings.php
+**   - fixed bugs in shoutbox
+**   - fixed divide-by-zero bugs in stats
+**
+** 1.0.0-ALPHA-r3 - October 16, 2005
+**   - added to Edit and Settings pages of controlpanel
+**   - more define()s moved to settings.php, controlpanel updated to handle them
+**   - added subfunction calling ability to voodoo skins
+**
+** 1.0.0-ALPHA-r4 - October 18, 2005
+**   - added RDF script
+**   - added PHP highlighting when using <php><?php ... ?></php>
+**   - different controlpanel sections for users and admin, access enforced
+**   - FINALLY fixed the problem of recursion in the Voodoo skin engine
 */
 
 // start execution timer
@@ -28,7 +44,7 @@ $starttime = (string) $sec + $usec;
 unset($sec, $usec);
 
 // define version string
-define("CWBVERSION","1.0.0-ALPHA-r3");
+define("CWBVERSION","1.0.0-ALPHA-r4");
 define("CWBTYPE", "Multi-User");
 
 require("settings.php");
@@ -75,32 +91,23 @@ $db->error_callback = $db->warning_callback = "mail_db_error";
 $db->database(SQL_DB);
 
 /*
-** Support Apache2 mod_rewrite proxying
-*/
-
-if(isset($_SERVER['HTTP_X_FORWARDED_HOST']))
-{
-    $_SERVER['HTTP_HOST'] = $_SERVER['HTTP_X_FORWARDED_HOST'];
-}
-
-/*
 ** Who are we running for?
 */
 
-$q = $db->issue_query("SELECT blogid,name FROM blogs");
+$q = $db->issue_query("SELECT blogid,name,custom_url FROM blogs");
 $blogdata = $db->fetch_all($q, L1SQL_ASSOC, "name");
 
-if(SUBDOMAIN_MODE)
+// set ?subdomain_mode=0 to pass the username by path anyways.
+// Useful when using mod_rewrite
+if(isset($_GET['subdomain_mode']) ? $_GET['subdomain_mode'] : SUBDOMAIN_MODE)
 {
     $who = preg_replace("/\." . quotemeta(BASE_DOMAIN) . "$/", "", $_SERVER['HTTP_HOST']);
     if($who == DEFAULT_SUBDOMAIN || $who == BASE_DOMAIN)
         $who = "";
 } else {
-    $who = preg_replace("/^" . str_replace("/", "\/", quotemeta(INSTALLED_PATH)) . "/", "", $_SERVER['REQUEST_URI']);
+    $who = preg_replace("/^" . str_replace("/", "\\/", quotemeta(INSTALLED_PATH)) . "/", "", $_SERVER['REQUEST_URI']);
+    $who = preg_replace("/\\?.*$/", "", $who);
 }
-
-//KEEP
-//$who = "netmanw00t";
 
 if($who == "")
 {
@@ -114,10 +121,15 @@ if($who == "")
     define("BLOGID", $blogdata[$who]['blogid']);
     define("BLOGNAME", $who);
     define("ADMIN_EMAIL", $blogdata[$who]['email']);
-    if(SUBDOMAIN_MODE)
+
+    if($blogdata[$who]['custom_url'] != NULL)
+    {
+        define("INDEX_URL", $blogdata[$who]['custom_url']);
+    } elseif(SUBDOMAIN_MODE) {
         define("INDEX_URL", "http://" . BLOGNAME . "." . BASE_DOMAIN . INSTALLED_PATH);
-    else
-        define("INDEX_URL", "http://" . DEFAULT_SUBDOMAIN . BASE_DOMAIN . INSTALLED_PATH . "/" . BLOGNAME);
+    } else {
+        define("INDEX_URL", "http://" . DEFAULT_SUBDOMAIN . BASE_DOMAIN . INSTALLED_PATH . BLOGNAME);
+    }
 }
 
 /*
