@@ -40,7 +40,7 @@ function skinvoodoo($skin_section, $subcall = "", $args = array())
     }
     */
 
-    $skin = file_get_contents("/srv/www/site/blogs.codewise.org/skin_blueEye/$skin_section.html");
+    $skin = file_get_contents(FSPATH . "/skin_blueEye/$skin_section.html");
 
     preg_match_all("/<\\!-- :cwb_start: ([^\s]+) -->(.*)<\\!-- :cwb_end: \\1 -->/Us", $skin, $matches, PREG_SET_ORDER);
 
