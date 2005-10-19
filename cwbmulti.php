@@ -25,17 +25,20 @@
 **   - moved some define()s to settings.php
 **   - fixed bugs in shoutbox
 **   - fixed divide-by-zero bugs in stats
-**
-** 1.0.0-ALPHA-r3 - October 16, 2005
 **   - added to Edit and Settings pages of controlpanel
 **   - more define()s moved to settings.php, controlpanel updated to handle them
 **   - added subfunction calling ability to voodoo skins
 **
-** 1.0.0-ALPHA-r4 - October 18, 2005
+** 1.0.0-ALPHA-r3 - October 16, 2005
 **   - added RDF script
 **   - added PHP highlighting when using <php><?php ... ?></php>
 **   - different controlpanel sections for users and admin, access enforced
 **   - FINALLY fixed the problem of recursion in the Voodoo skin engine
+**
+** 1.0.0-ALPHA-r4 - October 18, 2005
+**   - fixed user detection for non-subdomain mode
+**   - added custom_url field to 'blogs' database table, which sets INDEX_URL to arbitrary values specified by the user
+**   - added ability to specify ?subdomain_mode=X to enable or disable subdomain mode at request time
 */
 
 // start execution timer
