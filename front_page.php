@@ -1,10 +1,29 @@
 <?php
 
 /*
-** CodewiseBlog Multi-User Front Page
+** Front Page
+** for CodewiseBlog Multi-User
 **
 ** by Bill R. Fraser <bill.fraser@gmail.com>
-** (c) 2005 Codewise.org
+** Copyright (c) 2005 Codewise.org
+*/
+
+/*
+** This file is part of CodewiseBlog
+**
+** CodewiseBlog is free software; you can redistribute it and/or modify
+** it under the terms of the GNU General Public License as published by
+** the Free Software Foundation; either version 2 of the License, or
+** (at your option) any later version.
+**
+** CodewiseBlog is distributed in the hope that it will be useful,
+** but WITHOUT ANY WARRANTY; without even the implied warranty of
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+** GNU General Public License for more details.
+**
+** You should have received a copy of the GNU General Public License
+** along with CodewiseBlog; if not, write to the Free Software
+** Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 ?>
@@ -69,21 +88,6 @@ foreach($data as $blogname => $blog)
                                 </table>
                             </td>
                         </tr>
-<?php
-/*
-                        <tr>
-                            <td class="sidebar">
-                                <table style="border:none; text-align:center; width:100%">
-                                    <tr><td><b>Other blogs using CWB:</b></td></tr>
-                                    <tr><td><a href="http://blogs.codewise.org/cwb/notify.php">(get added to this list)</a></td></tr>
-                                </table>
-                            </td>
-                        </tr>
-*/
-?>
-<?php
-// no "welcome back" sidebar here
-?>
                         <tr>
                             <td class="sidebar">
                                 <b>Admin login:</b><br />
