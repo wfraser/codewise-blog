@@ -598,7 +598,7 @@ function edInsertExtLink(myField, i, defaultValue) {
         if (!edCheckOpenTags(i)) {
                 var URL = prompt('Enter the URL' ,defaultValue);
                 if (URL) {
-                        edButtons[i].tagStart = '<a href="' + URL + '" rel="external">';
+                        edButtons[i].tagStart = '<a href="' + URL + '" target="_blank">';
                         edInsertTag(myField, i);
                 }
         }
