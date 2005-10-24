@@ -31,7 +31,7 @@ unset($sec, $usec);
 // define version string
 define("CWBVERSION","1.0.0-BETA-r0");
 define("CWBTYPE", "Multi-User");
-define("SETTINGS_FILE", "settings.php");
+define("SETTINGS_FILE", "settings1.php");
 
 // Unique ID for this request
 define("UNIQ", md5(uniqid(mt_rand(), true)));
@@ -110,8 +110,8 @@ if($who == "")
     else
         define("INDEX_URL", "http://" . DEFAULT_SUBDOMAIN . "." . BASE_DOMAIN . INSTALLED_PATH);
 } elseif(!isset($blogdata[$who])) {
-    die( "<html><head><title>CodewiseBlog :: Invalid User</title><link rel=\"stylesheet\" href=\"http://www.codewise.org/blueEye.css\" /></head>"
-       . "<body><b>Invalid User \"$who\"</b><br /><br /><a href=\"http://" . DEFAULT_SUBDOMAIN . BASE_DOMAIN . INSTALLED_PATH . "\">...back to CodewiseBlog</a></body></html>" );
+    die( "<html><head><title>CodewiseBlog :: Invalid User</title><link rel=\"stylesheet\" href=\"stylesheet.php?id=1\" /></head>"
+       . "<body><b>Invalid User \"$who\"</b><br /><br /><a href=\"http://" . DEFAULT_SUBDOMAIN . BASE_DOMAIN . INSTALLED_PATH . "\">...go back</a></body></html>" );
 } else {
     define("BLOGID", $blogdata[$who]['blogid']);
     define("BLOGNAME", $who);
@@ -138,7 +138,10 @@ $q = $db->issue_query("SELECT blogid,name,email,realname,birthday,location,inter
 $BLOGINFO = $db->fetch_row($q, 0, L1SQL_ASSOC);
 
 if($BLOGINFO['birthday'])
-    $BLOGINFO['age'] = date("Y", time() - $BLOGINFO['birthday']);
+{
+    list($month,$day,$year) = explode("/", $BLOGINFO['birthday']);
+    $BLOGINFO['age'] = ($month > date("m") && $day > date("d")) ? date("Y") - $year - 1 : date("Y") - $year;
+}
 
 $BLOGINFO['index_url'] = INDEX_URL;
 $BLOGINFO['ucp_url'] = INDEX_URL . "?controlpanel";
