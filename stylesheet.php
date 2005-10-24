@@ -28,15 +28,15 @@
 
 header("Content-type: text/css");
 
+require("settings.php");
 require("l1_mysql.php");
 
-$db = new L1_MySQL("localhost", "codewiseblog", "!#joltColaINaCan");
-$db->database("codewiseblog");
+$db = new L1_MySQL(SQL_HOST, SQL_USER, SQL_PASS, SQL_DB);
 
 $q = $db->issue_query("SELECT css FROM skin WHERE blogid = " . $db->prepare_value($_GET['id']));
 
 if($db->num_rows[$q] == 0 || ($text = $db->fetch_var($q)) === NULL)
-    readfile("/srv/www/site/www.codewise.org/blueEye.css"); // this will have to be changed eventually...
+    $text = $db->fetch_var($db->issue_query("SELECT css FROM skin WHERE blogid = '1'"));
 
 echo $text;
 
