@@ -28,7 +28,7 @@
 
 function show_reply_form($tid, $preview_data = "", $text = "", $text_filter_msg = "")
 {
-    global $db, $ALLOWED_TAGS;
+    global $db, $ALLOWED_TAGS, $BLOGINFO, $TITLE;
 
     $q = $db->issue_query("SELECT * FROM topics WHERE tid = '$tid' AND blogid = '" . BLOGID . "'");
 
@@ -39,6 +39,8 @@ function show_reply_form($tid, $preview_data = "", $text = "", $text_filter_msg 
     }
 
     $topic = $db->fetch_row($q, 0, L1SQL_ASSOC);
+
+    $TITLE = $BLOGINFO['title'] . " :: Commenting on '" . $topic['title'] . "'";
 
     $out = display_topic($topic);
     //display_main_post($topic, TRUE);
