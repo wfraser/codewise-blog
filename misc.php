@@ -85,7 +85,7 @@ function textprocess($text)
     preg_match_all("/<php>(.*)<\\/php>/Us", $text, $matches, PREG_SET_ORDER);
     foreach($matches as $match)
     {
-        $text = str_replace($match[0], highlight_string($match[1], TRUE), $text);
+        $text = str_replace($match[0], trim(highlight_string(trim($match[1]), TRUE)), $text);
     }
 
     $text = str_replace("\n", "<br />", str_replace("\r", "", $text));
@@ -162,8 +162,8 @@ function in_text_filter($text, $text_filter_msg = "")
         }
 
         /*
-        ** Basically, check to make sure that there are only as many closing
-        ** tags as there are opening tags for each tag type
+        ** check to make sure that there are only as many closing tags as there
+        ** are opening tags for each tag type
         */
         $num_ends[strtolower($tag_name)]++;
         if($num_ends[strtolower($tag_name)] > $num_starts[strtolower($tag_name)])
