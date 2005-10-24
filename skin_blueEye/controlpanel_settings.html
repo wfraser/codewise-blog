@@ -25,6 +25,20 @@
         <td>SQL errors will get emailed to this address</td>
     </tr>
     <tr>
+        <td>Enable custom urls for users:</td>
+        <td>
+            <select name="custom_url_enabled">
+<!-- #cwb_if# ${custom_url_enabled} -->
+                <option value="TRUE" selected="selected">Enabled</option>
+                <option value="FALSE">Disabled</option>
+<!-- #cwb_else# -->
+                <option value="FALSE" selected="selected">Disabled</option>
+                <option value="TRUE">Enabled</option>
+<!-- #cwb_endif# -->
+            </select>
+        </td>
+    </tr>
+    <tr>
         <td>Enable email to subscribed addresses:</td>
         <td>
             <select name="email">

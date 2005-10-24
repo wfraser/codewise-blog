@@ -1,8 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
-<title>%{title}</title>
-<link rel="stylesheet" href="stylesheet.php" type="text/css" title="stylesheet" />
+<title>%{titletag}</title>
+<link rel="stylesheet" href="stylesheet.php?id=%{blogid}" type="text/css" title="stylesheet" />
 <!-- <link rel="stylesheet" href="http://www.codewise.org/OpenBoard.css" type="text/css" title="OpenBoard Dark Blue" /> -->
 <script type="text/javascript" language="JavaScript">
 function showbio()
@@ -23,14 +23,14 @@ function hidebio()
 </head>
 <body>
 
-<table style="border:none;width:100%;" class="titletable">
+<table style="border:none;width:100%" class="titletable">
     <tr>
         <td style="text-align:center">
             <a href="%{index_url}"><span class="main-title">%{title}</span></a><br />
             <i>by %{realname} / <!-- #cwb_if# %{homepage} --><a href="%{homepage}">%{name}</a><!-- #cwb_else# -->%{name}<!-- #cwb_endif# --></i>
         </td>
         <td style="width:100%;text-align:right;font-size:small">
-%{special_fortune}
+%{fortune}
         </td>
     </tr>
 </table>
@@ -123,5 +123,5 @@ function hidebio()
 </table>
 </body>
 </html>
-<!-- :cwb_start: versionfooter -->Powered by: CodewiseBlog %{cwb_type} <a href="changelog.php" style="color:#aaa;text-decoration:underline" title="${mtime}">v%{cwb_version}</a>
+<!-- :cwb_start: versionfooter -->Powered by: CodewiseBlog %{cwb_type} <a href="CHANGELOG" style="color:#aaa;text-decoration:underline" title="${mtime}">v%{cwb_version}</a>
 ${sig}(<a style="color:#aaa;text-decoration:underline" href="http://${hostname}.codewise.org/">${hostname}</a>)<!-- :cwb_end: versionfooter -->

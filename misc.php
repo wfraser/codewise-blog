@@ -5,7 +5,25 @@
 ** for CodewiseBlog Multi-User
 **
 ** by Bill R. Fraser <bill.fraser@gmail.com>
-** (c) 2005 Codewise.org
+** Copyright (c) 2005 Codewise.org
+*/
+
+/*
+** This file is part of CodewiseBlog
+**
+** CodewiseBlog is free software; you can redistribute it and/or modify
+** it under the terms of the GNU General Public License as published by
+** the Free Software Foundation; either version 2 of the License, or
+** (at your option) any later version.
+**
+** CodewiseBlog is distributed in the hope that it will be useful,
+** but WITHOUT ANY WARRANTY; without even the implied warranty of
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+** GNU General Public License for more details.
+**
+** You should have received a copy of the GNU General Public License
+** along with CodewiseBlog; if not, write to the Free Software
+** Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 function fortune()
@@ -67,7 +85,7 @@ function textprocess($text)
     preg_match_all("/<php>(.*)<\\/php>/Us", $text, $matches, PREG_SET_ORDER);
     foreach($matches as $match)
     {
-        $text = str_replace($match[0], highlight_string($match[1], TRUE), $text);
+        $text = str_replace($match[0], trim(highlight_string(trim($match[1]), TRUE)), $text);
     }
 
     $text = str_replace("\n", "<br />", str_replace("\r", "", $text));
@@ -144,8 +162,8 @@ function in_text_filter($text, $text_filter_msg = "")
         }
 
         /*
-        ** Basically, check to make sure that there are only as many closing
-        ** tags as there are opening tags for each tag type
+        ** check to make sure that there are only as many closing tags as there
+        ** are opening tags for each tag type
         */
         $num_ends[strtolower($tag_name)]++;
         if($num_ends[strtolower($tag_name)] > $num_starts[strtolower($tag_name)])
@@ -269,5 +287,17 @@ function mail_db_error($error)
         echo "<br /><br />";
     endif;
 } // end of mail_db_error()
+
+function ordinal($n)
+{
+    if(substr($n, -1, 1) == "1")
+        return "{$n}st";
+    elseif(substr($n, -1, 1) == "2")
+        return "{$n}nd";
+    elseif(substr($n, -1, 1) == "3")
+        return "{$n}rd";
+    else
+        return "{$n}th";
+}
 
 ?>

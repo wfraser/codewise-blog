@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
-<title>%{title}</title>
+<title>%{titletag}</title>
 <link rel="stylesheet" href="stylesheet.php" type="text/css" title="stylesheet" />
 <!-- <link rel="stylesheet" href="http://www.codewise.org/OpenBoard.css" type="text/css" title="OpenBoard Dark Blue" /> -->
 <script type="text/javascript" language="JavaScript">
@@ -36,70 +36,36 @@ function hidebio()
 
 <br />
 
+<!-- :cwb_start: div --><span style="font-size:larger">|</span><!-- :cwb_end: div -->
+
 <table width="100%">
     <tr>
-    <td width="1px" style="vertical-align:top">
-
-        <table class="sidebar" width="100%">
-
-        <tr>
-        <td class="sidebar">
-        <div style="text-align:center">
-
-<!-- #cwb_if# ${current} == "home" -->
-<b>Control Panel Home</b><br />
-<!-- #cwb_else# -->
-<a href="${cpurl}"><b>Control Panel Home</b></a><br />
-<!-- #cwb_endif# -->
-
-<hr style="width: 50%; border: 1px solid #ddd;" noshade="noshade" />
-
+    <td style="text-align:center">
 <!-- #cwb_if# ${root} -->
-<!-- #cwb_if# ${current} == "settings" -->
-<b>Blog Settings</b><br />
+
+<!-- #cwb_if# ${current} == "home" --><b>CP Home</b><!-- #cwb_else# --><a href="${cpurl}">CP Home</a><!-- #cwb_endif# -->
+<!-- *cwb_call* div -->
+<!-- #cwb_if# ${current} == "settings" --><b>Settings</b><!-- #cwb_else# --><a href="${url_settings}">Settings</a><!-- #cwb_endif# -->
+
 <!-- #cwb_else# -->
-<a href="${url_settings}">Blog Settings</a><br />
+
+<!-- #cwb_if# ${current} == "home" --><b>CP Home</b><!-- #cwb_else# --><a href="${cpurl}">CP Home</a><!-- #cwb_endif# -->
+<!-- *cwb_call* div -->
+<!-- #cwb_if# ${current} == "write" --><b>Write</b><!-- #cwb_else# --><a href="${url_write}">Write</a><!-- #cwb_endif# -->
+<!-- *cwb_call* div -->
+<!-- #cwb_if# ${current} == "edit" --><b>Edit</b><!-- #cwb_else# --><a href="${url_edit}">Edit</a><!-- #cwb_endif# -->
+<!-- *cwb_call* div -->
+<!-- #cwb_if# ${current} == "userinfo" --><b>User Info</b><!-- #cwb_else# --><a href="${url_userinfo}">User Info</a><!-- #cwb_endif# -->
+<!-- *cwb_call* div -->
+<!-- #cwb_if# ${current} == "manage" --><b>Manage</b><!-- #cwb_else# --><a href="${url_manage}">Manage</a><!-- #cwb_endif# -->
+<!-- *cwb_call* div -->
+<!-- #cwb_if# ${current} == "skin" --><b>Skin Editor</b><!-- #cwb_else# --><a href="${url_skin}">Skin Editor</a><!-- #cwb_endif# -->
+
 <!-- #cwb_endif# -->
-<!-- #cwb_endif# -->
-
-<!-- #cwb_if# !${root} -->
-<!-- #cwb_if# ${current} == "write" -->
-<b>Write Post</b><br />
-<!-- #cwb_else# -->
-<a href="${url_write}">Write Post</a><br />
-<!-- #cwb_endif# -->
-
-<!-- #cwb_if# ${current} == "edit" -->
-<b>Edit Post</b><br />
-<!-- #cwb_else# -->
-<a href="${url_edit}">Edit Post</a><br />
-<!-- #cwb_endif# -->
-
-<!-- #cwb_if# ${current} == "userinfo" -->
-<b>User Info</b><br />
-<!-- #cwb_else# -->
-<a href="${url_userinfo}">User Info</a><br />
-<!-- #cwb_endif# -->
-
-<!-- #cwb_if# ${current} == "skin" -->
-<b>Skin Editor</b><br />
-<!-- #cwb_else# -->
-<a href="${url_skin}">Skin Editor</a><br />
-<!-- #cwb_endif# -->
-<!-- #cwb_endif# -->
-
-<hr style="width: 50%; border: 1px solid #ddd;" noshade="noshade" />
-
-<a href="%{index_url}">Back to your<br />CodewiseBlog</a>
-
-        </div>
-        </td>
-        </tr>
-
-        </table>
-
     </td>
+    </tr>
 
+    <tr>
     <td class="blogbody">
 
 <!-- #cwb_if# ${root} -->
@@ -108,7 +74,15 @@ function hidebio()
         </div><br />
 <!-- #cwb_endif# -->
 
+<!-- #cwb_if# %{notify} -->
+        <div class="notify">
+            %{notify}
+        </div><br />
+<!-- #cwb_endif# -->
+
+        <table style="border:none" align="center"><tr><td>
         <!-- #CWB_CP_BODY# -->
+        </td></tr></table>
 
     </td>
     </tr>

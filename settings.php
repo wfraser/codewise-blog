@@ -1,6 +1,7 @@
 <?php
 
 define('FSPATH', '/var/www/htdocs/');
+define('CUSTOM_URL_ENABLED', TRUE);
 define('SUBDOMAIN_MODE', FALSE);
 define('BASE_DOMAIN', 'example.com');
 define('INSTALLED_PATH', '/');

@@ -1,10 +1,36 @@
 <?php
 
+/*
+** RDF Feed Generator
+** for CodewiseBlog Multi-User
+**
+** by Bill R. Fraser <bill.fraser@gmail.com>
+** Copyright (c) 2005 Codewise.org
+*/
+
+/*
+** This file is part of CodewiseBlog
+**
+** CodewiseBlog is free software; you can redistribute it and/or modify
+** it under the terms of the GNU General Public License as published by
+** the Free Software Foundation; either version 2 of the License, or
+** (at your option) any later version.
+**
+** CodewiseBlog is distributed in the hope that it will be useful,
+** but WITHOUT ANY WARRANTY; without even the implied warranty of
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+** GNU General Public License for more details.
+**
+** You should have received a copy of the GNU General Public License
+** along with CodewiseBlog; if not, write to the Free Software
+** Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+*/
+
 header("Content-Type: text/xml");
 
-echo "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>";
+echo "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n";
 
-require("settings.php");
+require("settings2.php");
 
 chdir(FSPATH);
 
@@ -30,15 +56,6 @@ $db->error_callback = $db->warning_callback = "mail_db_error";
 $db->database(SQL_DB);
 
 /*
-** Support Apache2 mod_rewrite proxying
-*/
-
-if(isset($_SERVER['HTTP_X_FORWARDED_HOST']))
-{
-$_SERVER['HTTP_HOST'] = $_SERVER['HTTP_X_FORWARDED_HOST'];
-}
-
-/*
 ** Who are we running for?
 */
 
@@ -47,11 +64,11 @@ $blogdata = $db->fetch_all($q, L1SQL_ASSOC, "name");
 
 if(SUBDOMAIN_MODE)
 {
-$who = preg_replace("/\." . quotemeta(BASE_DOMAIN) . "$/", "", $_SERVER['HTTP_HOST']);
-if($who == DEFAULT_SUBDOMAIN || $who == BASE_DOMAIN)
-$who = "";
+    $who = preg_replace("/\." . quotemeta(BASE_DOMAIN) . "$/", "", $_SERVER['HTTP_HOST']);
+    if($who == DEFAULT_SUBDOMAIN || $who == BASE_DOMAIN)
+        $who = "";
 } else {
-$who = preg_replace("/^" . str_replace("/", "\/", quotemeta(INSTALLED_PATH)) . "/", "", $_SERVER['REQUEST_URI']);
+    $who = preg_replace("/^" . str_replace("/", "\/", quotemeta(INSTALLED_PATH)) . "/", "", $_SERVER['REQUEST_URI']);
 }
 
 //KEEP
@@ -59,20 +76,19 @@ $who = preg_replace("/^" . str_replace("/", "\/", quotemeta(INSTALLED_PATH)) . "
 
 if($who == "")
 {
-define("BLOGID", 1);
-define("BLOGNAME", "");
-define("INDEX_URL", "http://" . DEFAULT_SUBDOMAIN . BASE_DOMAIN . INSTALLED_PATH);
+    define("BLOGID", 1);
+    define("BLOGNAME", "");
+    define("INDEX_URL", "http://" . DEFAULT_SUBDOMAIN . BASE_DOMAIN . INSTALLED_PATH);
 } elseif(!isset($blogdata[$who])) {
-die( "<html><head><title>CodewiseBlog :: Invalid User</title><link rel=\"stylesheet\" href=\"http://www.codewise.org/blueEye.css\" /></head>"
-    . "<body><b>Invalid User \"$who\"</b><br /><br /><a href=\"http://" . DEFAULT_SUBDOMAIN . BASE_DOMAIN . INSTALLED_PATH . "\">...back to CodewiseBlog</a></body></html>" );
+    die( "CodewiseBlog :: Invalid User \"$who\"" );
 } else {
-define("BLOGID", $blogdata[$who]['blogid']);
-define("BLOGNAME", $who);
-define("ADMIN_EMAIL", $blogdata[$who]['email']);
-if(SUBDOMAIN_MODE)
-define("INDEX_URL", "http://" . BLOGNAME . "." . BASE_DOMAIN . INSTALLED_PATH);
-else
-define("INDEX_URL", "http://" . DEFAULT_SUBDOMAIN . BASE_DOMAIN . INSTALLED_PATH . "/" . BLOGNAME);
+    define("BLOGID", $blogdata[$who]['blogid']);
+    define("BLOGNAME", $who);
+    define("ADMIN_EMAIL", $blogdata[$who]['email']);
+    if(SUBDOMAIN_MODE)
+        define("INDEX_URL", "http://" . BLOGNAME . "." . BASE_DOMAIN . INSTALLED_PATH);
+    else
+        define("INDEX_URL", "http://" . DEFAULT_SUBDOMAIN . BASE_DOMAIN . INSTALLED_PATH . "/" . BLOGNAME);
 }
 
 /*
@@ -83,7 +99,7 @@ $q = $db->issue_query("SELECT blogid,name,email,realname,birthday,location,inter
 $BLOGINFO = $db->fetch_row($q, 0, L1SQL_ASSOC);
 
 if($BLOGINFO['birthday'])
-$BLOGINFO['age'] = date("Y", time() - $BLOGINFO['birthday']);
+    $BLOGINFO['age'] = date("Y", time() - $BLOGINFO['birthday']);
 
 $BLOGINFO['index_url'] = INDEX_URL;
 $BLOGINFO['ucp_url'] = INDEX_URL . "?controlpanel";
@@ -104,13 +120,13 @@ $BLOGINFO['anonymous_name'] = ANONYMOUS_NAME;
 >
 
     <channel rdf:about="<?php echo INDEX_URL; ?>">
-        <title><?php echo $BLOGINFO['title']; ?></title>
+        <title><?php echo htmlspecialchars($BLOGINFO['title']); ?></title>
         <link><?php echo INDEX_URL; ?></link>
-        <description><?php echo $BLOGINFO['title']; ?> by <?php echo $BLOGINFO['realname'] == NULL ? BLOGNAME : $BLOGINFO['realname']; ?></description>
+        <description><?php echo htmlspecialchars($BLOGINFO['title']); ?> :: by <?php echo htmlspecialchars($BLOGINFO['realname'] == NULL ? BLOGNAME : $BLOGINFO['realname']); ?></description>
         <dc:language>en-us</dc:language>
-        <dc:rights>Copyright <?php echo $copyright_years; ?> - <?php echo $BLOGINFO['realname'] == NULL ? BLOGNAME : $BLOGINFO['realname']; ?></dc:rights>
+        <dc:rights>Copyright <?php echo $copyright_years; ?> - <?php echo htmlspecialchars($BLOGINFO['realname'] == NULL ? BLOGNAME : $BLOGINFO['realname']); ?></dc:rights>
         <dc:date>2005-10-16T02:00:01Z</dc:date>
-        <dc:creator><?php echo $BLOGINFO['realname'] == NULL ? BLOGNAME : $BLOGINFO['realname']; ?></dc:creator>
+        <dc:creator><?php echo htmlspecialchars($BLOGINFO['realname'] == NULL ? BLOGNAME : $BLOGINFO['realname']); ?></dc:creator>
         <items>
             <rdf:Seq>
 
@@ -134,7 +150,7 @@ foreach($data as $row)
     echo "    <item rdf:about=\"" . INDEX_URL . "?tid=" . $row['tid'] . "\">
         <title>" . $row['title'] . "</title>
         <link>" . INDEX_URL . "?tid=" . $row['tid'] . "</link>
-        <description></description>
+        <description>" . htmlspecialchars(textprocess($row['text'])) . "</description>
     </item>";
 }
 

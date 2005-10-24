@@ -5,42 +5,61 @@
 ** for CodewiseBlog Multi-User
 **
 ** by Bill R. Fraser <bill.fraser@gmail.com>
-** (c) 2005 Codewise.org
+** Copyright (c) 2005 Codewise.org
+*/
+
+/*
+** This file is part of CodewiseBlog
+**
+** CodewiseBlog is free software; you can redistribute it and/or modify
+** it under the terms of the GNU General Public License as published by
+** the Free Software Foundation; either version 2 of the License, or
+** (at your option) any later version.
+**
+** CodewiseBlog is distributed in the hope that it will be useful,
+** but WITHOUT ANY WARRANTY; without even the implied warranty of
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+** GNU General Public License for more details.
+**
+** You should have received a copy of the GNU General Public License
+** along with CodewiseBlog; if not, write to the Free Software
+** Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 /*
 ** Skin Voodoo
 **
-** $skin_section is the column in the skin database to use
+** $skin_section is the section of the Voodoo templates to use
 ** $subcall if left its default empty string value means to use the main skin
 **   subsection and discard the others. If set to another value, the specified
 **   subsection is used and the other parts are discarded.
 ** $args is an associative array in the form name => value of arguments to the
-**    skin. These are used in the skin in the form of %{foo} macros.
+**    skin. These are used in the skin in the form of ${foo} macros.
 **
 ** Returns the fully-processed skin section in all its glory.
 */
 function skinvoodoo($skin_section, $subcall = "", $args = array())
 {
-    global $db;
+    global $db, $SKIN_CACHE;
 
-    /* No DB for now. When come back bring pie.
-    $sections = array("main");
-    if(!in_array($skin_section, $sections))
-        return "";
-
-    $q = $db->issue_query("SELECT $skin_section FROM skin WHERE blogid = '" . BLOGID . "'");
-    $skin = $db->fetch_var($q);
-
-    // if the user's skin is NULL, use the master skin
-    if($skin == null)
+    if(in_array($skin_section, array_keys($SKIN_CACHE)))
     {
-        $q = $db->issue_query("SELECT $skin_section FROM skin WHERE blogid = '0'");
+        $skin = $SKIN_CACHE[$skin_section];
+    } else {
+        $q = $db->issue_query("SELECT $skin_section FROM skin WHERE blogid = '" . BLOGID . "'");
         $skin = $db->fetch_var($q);
-    }
-    */
 
-    $skin = file_get_contents("/srv/www/site/blogs.codewise.org/skin_blueEye/$skin_section.html");
+        // if the user's skin is NULL, use the master skin
+        if($skin == NULL)
+        {
+            $q = $db->issue_query("SELECT $skin_section FROM skin WHERE blogid = '1'");
+            $skin = $db->fetch_var($q);
+        }
+
+        $SKIN_CACHE[$skin_section] = $skin;
+    }
+
+    //$skin = file_get_contents(FSPATH . "/skin_blueEye/$skin_section.html");
 
     preg_match_all("/<\\!-- :cwb_start: ([^\s]+) -->(.*)<\\!-- :cwb_end: \\1 -->/Us", $skin, $matches, PREG_SET_ORDER);
 
@@ -60,6 +79,29 @@ function skinvoodoo($skin_section, $subcall = "", $args = array())
     return voodoo($skin, $args, $skin_section);
 }
 
+/*
+** Do not call this function directly.
+**
+** This function does all the processing of Voodoo tags with the exception of
+** subsection call tags (<!-- :cwb_start ... -->), which are handled by
+** skinvoodoo().
+**
+** Order of processing is as follows:
+** 1) If/Else/End (and variables in the If tag's condition)
+** 2) Local variables (${foo})
+** 3) Global variables (%{foo})
+** 4) Local subsection calls
+**
+** $skin is the Voodoo template code, sans subsection tags.
+** $args is an associative array containing the names and values of all local
+**   variables.
+** $skin_section is the name of the section in the Voodoo templates the code
+**   comes from (used when evaluating local subsection calls).
+** $expand is set to TRUE to replace variables with their values. It can be set
+**   to FALSE to return global variables as their PHP code equivalents (for use
+**   when evaluating the value of If tag conditions).
+**
+*/
 function voodoo($skin, $args = array(), $skin_section = "", $expand = TRUE)
 {
     global $BLOGINFO;
@@ -94,9 +136,9 @@ function voodoo($skin, $args = array(), $skin_section = "", $expand = TRUE)
 
             if($result)
             {
-                $skin = str_replace($old, voodoo($true, $args), $skin);
+                $skin = str_replace($old, voodoo($true, $args, $skin_section), $skin);
             } else {
-                $skin = str_replace($old, voodoo($false, $args), $skin);
+                $skin = str_replace($old, voodoo($false, $args, $skin_section), $skin);
             }
         }
 
@@ -124,7 +166,7 @@ function voodoo($skin, $args = array(), $skin_section = "", $expand = TRUE)
     }
 
     /*
-    ** System Variables & Calls
+    ** Global Variables & Calls
     */
 
     preg_match_all("/%{([a-zA-Z0-9-_]+)}/", $skin, $matches, PREG_SET_ORDER);
@@ -134,7 +176,7 @@ function voodoo($skin, $args = array(), $skin_section = "", $expand = TRUE)
         $name = $match[1];
 
         $function_table = array(
-            "special_fortune" => "fortune()",
+            "fortune" => "fortune()",
             "postcalendar" => "postcalendar()",
             "welcomeback" => "welcomeback()",
             "subscribeform" => "subscribeform()",
@@ -142,7 +184,8 @@ function voodoo($skin, $args = array(), $skin_section = "", $expand = TRUE)
             "shoutbox" => "shoutbox()",
             "statistics" => "statistics()",
             "querycount" => "querycount()",
-            "runtime" => "'%{runtime}'", // needs to be done last
+            "runtime" => "'%{".UNIQ ."runtime}'", // <---- these will be replaced at the very end of execution
+            "titletag" => "'%{".UNIQ."titletag}'", // <-/
             "versionfooter" => "versionfooter()",
             "copyright" => "'CodewiseBlog &copy; <a href=\"http://www.codewise.org/~netmanw00t/\">Bill Fraser</a>.<br />All textual content is the property of its author.'",
             "notify" => "\$GLOBALS['NOTIFY']",

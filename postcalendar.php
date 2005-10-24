@@ -5,51 +5,30 @@
 ** for CodewiseBlog Multi-User
 **
 ** by Bill R. Fraser <bill.fraser@gmail.com>
-** (c) 2005 Codewise.org
+** Copyright (c) 2005 Codewise.org
+*/
+
+/*
+** This file is part of CodewiseBlog
+**
+** CodewiseBlog is free software; you can redistribute it and/or modify
+** it under the terms of the GNU General Public License as published by
+** the Free Software Foundation; either version 2 of the License, or
+** (at your option) any later version.
+**
+** CodewiseBlog is distributed in the hope that it will be useful,
+** but WITHOUT ANY WARRANTY; without even the implied warranty of
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+** GNU General Public License for more details.
+**
+** You should have received a copy of the GNU General Public License
+** along with CodewiseBlog; if not, write to the Free Software
+** Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 function postcalendar()
 {
     global $db;
-
-/*
-    $q = $db->issue_query("SELECT timestamp FROM topics WHERE blogid = '" . BLOGID . "' ORDER BY timestamp ASC");
-    $data = $db->fetch_column($q);
-
-    if(count($data) == 0)
-        return(skinvoodoo("postcalendar", "", array("contents" => "<i>Nothing to show.</i>")));
-
-    $data = array_reverse($data);
-
-    $months = array();
-    foreach($data as $timestamp)
-    {
-        $time = date("mY",$timestamp);
-        $months[$time] .= true; // ugly, I know, but simple
-    }
-
-    $latestmonth = true;
-    foreach($months as $monthspec => $foo) // ignore $foo
-    {
-        $month = substr($monthspec,0,2);
-        $year  = substr($monthspec,2,4);
-
-        switch($month)
-        {
-            case 1: $name = "January";   break;
-            case 2: $name = "February";  break;
-            case 3: $name = "March";     break;
-            case 4: $name = "April";     break;
-            case 5: $name = "May";       break;
-            case 6: $name = "June";      break;
-            case 7: $name = "July";      break;
-            case 8: $name = "August";    break;
-            case 9: $name = "September"; break;
-            case 10: $name = "October";  break;
-            case 11: $name = "November"; break;
-            case 12: $name = "December"; break;
-        }
-*/
 
     $q = $db->issue_query("SELECT DISTINCT FROM_UNIXTIME(timestamp, '%Y') AS year, FROM_UNIXTIME(timestamp, '%m') AS month, FROM_UNIXTIME(timestamp, '%M') AS name FROM topics WHERE blogid = '" . BLOGID . "' ORDER BY timestamp DESC");
     $data = $db->fetch_all($q, L1SQL_ASSOC);
@@ -116,7 +95,7 @@ function postcalendar()
 
         $latestmonth = false;
 
-    } // foreach($months as $monthspec => $foo)
+    }
 
     return(skinvoodoo("postcalendar", "", array("contents" => $out)));
 }

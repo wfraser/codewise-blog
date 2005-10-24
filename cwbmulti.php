@@ -1,41 +1,26 @@
 <?php
 
 /*
-** Initializer
-** for CodewiseBlog Multi-User
+** CodewiseBlog Multi-User
 **
-** by Bill Fraser <firstname.lastname@gmail.com>
+** by Bill R. Fraser <bill.fraser@gmail.com>
 ** Copyright (c) 2005 Codewise.org
-** http://blogs.codewise.org/
 */
 
 /*
-** Change History:
+** CodewiseBlog is free software; you can redistribute it and/or modify
+** it under the terms of the GNU General Public License as published by
+** the Free Software Foundation; either version 2 of the License, or
+** (at your option) any later version.
 **
-** Dev - July 25 to September 12, 2005
-**   - developed alongside CodewiseBlog Single-User v1.2.4 to v1.2.9
+** CodewiseBlog is distributed in the hope that it will be useful,
+** but WITHOUT ANY WARRANTY; without even the implied warranty of
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+** GNU General Public License for more details.
 **
-** 1.0.0-ALPHA - September 12, 2005
-**   - basic alpha release
-**
-** 1.0.0-ALPHA-r1 - September 15, 2005
-**   - added write page for UCP
-**
-** 1.0.0-ALPHA-r2 - September 27, 2005
-**   - moved some define()s to settings.php
-**   - fixed bugs in shoutbox
-**   - fixed divide-by-zero bugs in stats
-**
-** 1.0.0-ALPHA-r3 - October 16, 2005
-**   - added to Edit and Settings pages of controlpanel
-**   - more define()s moved to settings.php, controlpanel updated to handle them
-**   - added subfunction calling ability to voodoo skins
-**
-** 1.0.0-ALPHA-r4 - October 18, 2005
-**   - added RDF script
-**   - added PHP highlighting when using <php><?php ... ?></php>
-**   - different controlpanel sections for users and admin, access enforced
-**   - FINALLY fixed the problem of recursion in the Voodoo skin engine
+** You should have received a copy of the GNU General Public License
+** along with CodewiseBlog; if not, write to the Free Software
+** Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 // start execution timer
@@ -44,10 +29,14 @@ $starttime = (string) $sec + $usec;
 unset($sec, $usec);
 
 // define version string
-define("CWBVERSION","1.0.0-ALPHA-r4");
+define("CWBVERSION","1.0.0-BETA-r0");
 define("CWBTYPE", "Multi-User");
+define("SETTINGS_FILE", "settings.php");
 
-require("settings.php");
+// Unique ID for this request
+define("UNIQ", md5(uniqid(mt_rand(), true)));
+
+require(SETTINGS_FILE);
 
 chdir(FSPATH);
 
@@ -62,11 +51,14 @@ error_reporting(E_ALL ^ E_NOTICE);
 // fire up a session
 ini_set("session.name", "codewiseblog");
 ini_set("session.cookie_lifetime", 60*60*24*365);
-ini_set("session.cookie_domain", BASE_DOMAIN);
+//ini_set("session.cookie_domain", BASE_DOMAIN);
 session_start();
 
 // clean out this crap - it's never used
 unset($HTTP_POST_VARS, $HTTP_GET_VARS, $HTTP_COOKIE_VARS, $HTTP_SERVER_VARS, $HTTP_ENV_VARS, $HTTP_POST_FILES, $HTTP_SESSION_VARS);
+
+// cache of skin data
+$SKIN_CACHE = array();
 
 // functions
 require("skinvoodoo.php");
@@ -113,7 +105,10 @@ if($who == "")
 {
     define("BLOGID", 1);
     define("BLOGNAME", "");
-        define("INDEX_URL", "http://" . DEFAULT_SUBDOMAIN . BASE_DOMAIN . INSTALLED_PATH);
+    if(DEFAULT_SUBDOMAIN == "")
+        define("INDEX_URL", "http://" . BASE_DOMAIN . INSTALLED_PATH);
+    else
+        define("INDEX_URL", "http://" . DEFAULT_SUBDOMAIN . "." . BASE_DOMAIN . INSTALLED_PATH);
 } elseif(!isset($blogdata[$who])) {
     die( "<html><head><title>CodewiseBlog :: Invalid User</title><link rel=\"stylesheet\" href=\"http://www.codewise.org/blueEye.css\" /></head>"
        . "<body><b>Invalid User \"$who\"</b><br /><br /><a href=\"http://" . DEFAULT_SUBDOMAIN . BASE_DOMAIN . INSTALLED_PATH . "\">...back to CodewiseBlog</a></body></html>" );
@@ -122,13 +117,16 @@ if($who == "")
     define("BLOGNAME", $who);
     define("ADMIN_EMAIL", $blogdata[$who]['email']);
 
-    if($blogdata[$who]['custom_url'] != NULL)
+    if($blogdata[$who]['custom_url'] != NULL && CUSTOM_URL_ENABLED)
     {
         define("INDEX_URL", $blogdata[$who]['custom_url']);
     } elseif(SUBDOMAIN_MODE) {
         define("INDEX_URL", "http://" . BLOGNAME . "." . BASE_DOMAIN . INSTALLED_PATH);
     } else {
-        define("INDEX_URL", "http://" . DEFAULT_SUBDOMAIN . BASE_DOMAIN . INSTALLED_PATH . BLOGNAME);
+        if(DEFAULT_SUBDOMAIN == "")
+            define("INDEX_URL", "http://" . BASE_DOMAIN . INSTALLED_PATH . BLOGNAME);
+        else
+            define("INDEX_URL", "http://" . DEFAULT_SUBDOMAIN . "." . BASE_DOMAIN . INSTALLED_PATH . BLOGNAME);
     }
 }
 
@@ -211,11 +209,17 @@ if(!defined("NO_ACTION"))
         $body = main_page($_GET['page']);
     }
 
-    $main = skinvoodoo("main");
+    $out = skinvoodoo("main");
 
-    $out = str_replace("<!-- #CWB_BODY# -->", $body, $main);
+    $out = str_replace("<!-- #CWB_BODY# -->", $body, $out);
 
-    echo str_replace("%{runtime}", runtime(), $out);
+    if($TITLE == "")
+        $TITLE = $BLOGINFO['title'];
+    $out = str_replace("%{".UNIQ."titletag}", $TITLE, $out);
+
+    $out = str_replace("%{".UNIQ."runtime}", runtime(), $out);
+
+    echo $out;
 }
 
 // and we're out. :)

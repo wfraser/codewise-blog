@@ -1,8 +1,36 @@
 <?php
 
+/*
+** Main Functions
+** for CodewiseBlog Multi-User
+**
+** by Bill R. Fraser <bill.fraser@gmail.com>
+** Copyright (c) 2005 Codewise.org
+*/
+
+/*
+** This file is part of CodewiseBlog
+**
+** CodewiseBlog is free software; you can redistribute it and/or modify
+** it under the terms of the GNU General Public License as published by
+** the Free Software Foundation; either version 2 of the License, or
+** (at your option) any later version.
+**
+** CodewiseBlog is distributed in the hope that it will be useful,
+** but WITHOUT ANY WARRANTY; without even the implied warranty of
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+** GNU General Public License for more details.
+**
+** You should have received a copy of the GNU General Public License
+** along with CodewiseBlog; if not, write to the Free Software
+** Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+*/
+
 function main_page($page)
 {
-    global $db;
+    global $db, $BLOGINFO, $TITLE;
+
+    $TITLE = $BLOGINFO['title'];
 
     $out = "";
 
@@ -49,7 +77,10 @@ function main_page($page)
 
 function show_month($month, $year, $page)
 {
-    global $db;
+    global $db, $BLOGINFO, $TITLE;
+
+    $months = array("null", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+    $TITLE = $BLOGINFO['title'] . " :: " . $months[$month] . " $year";
 
     $out = "";
 
@@ -95,7 +126,7 @@ function show_month($month, $year, $page)
 
 function show_topic($tid, $page)
 {
-    global $db;
+    global $db, $BLOGINFO, $TITLE;
 
     $out = "";
 
@@ -107,6 +138,9 @@ function show_topic($tid, $page)
     }
 
     $topic = $db->fetch_row($q, 0, L1SQL_ASSOC);
+
+   $TITLE = $BLOGINFO['title'] . " :: " . $topic['title'];
+
 
     $out .= display_topic($topic, TRUE);
     $out .= skinvoodoo("topic", "start_comments");
