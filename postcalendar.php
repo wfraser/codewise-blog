@@ -95,7 +95,7 @@ function postcalendar()
 
         $latestmonth = false;
 
-    } // foreach($months as $monthspec => $foo)
+    }
 
     return(skinvoodoo("postcalendar", "", array("contents" => $out)));
 }
