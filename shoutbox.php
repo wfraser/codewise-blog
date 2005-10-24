@@ -66,10 +66,14 @@ function shoutbox_process()
     global $db;
 
     $name = strip_tags($_POST['name']);
+    if($name == "")
+        $name = ANONYMOUS_NAME;
+
     if($_POST['link'] == "http://" || $_POST['link'] == "")
         $link = null;
     else
         $link = $_POST['link'];
+
     $filter = in_text_filter($_POST['text']);
 
     if(is_array($filter))
