@@ -28,7 +28,9 @@
 
 function main_page($page)
 {
-    global $db;
+    global $db, $BLOGINFO, $TITLE;
+
+    $TITLE = $BLOGINFO['title'];
 
     $out = "";
 
@@ -75,7 +77,10 @@ function main_page($page)
 
 function show_month($month, $year, $page)
 {
-    global $db;
+    global $db, $BLOGINFO, $TITLE;
+
+    $months = array("null", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+    $TITLE = $BLOGINFO['title'] . " :: " . $months[$month] . " $year";
 
     $out = "";
 
@@ -121,7 +126,7 @@ function show_month($month, $year, $page)
 
 function show_topic($tid, $page)
 {
-    global $db;
+    global $db, $BLOGINFO, $TITLE;
 
     $out = "";
 
@@ -133,6 +138,9 @@ function show_topic($tid, $page)
     }
 
     $topic = $db->fetch_row($q, 0, L1SQL_ASSOC);
+
+   $TITLE = $BLOGINFO['title'] . " :: " . $topic['title'];
+
 
     $out .= display_topic($topic, TRUE);
     $out .= skinvoodoo("topic", "start_comments");
