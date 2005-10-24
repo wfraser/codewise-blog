@@ -29,10 +29,14 @@ $starttime = (string) $sec + $usec;
 unset($sec, $usec);
 
 // define version string
-define("CWBVERSION","1.0.0-ALPHA-r4");
+define("CWBVERSION","1.0.0-BETA-r0");
 define("CWBTYPE", "Multi-User");
+define("SETTINGS_FILE", "settings.php");
 
-require("settings.php");
+// Unique ID for this request
+define("UNIQ", md5(uniqid(mt_rand(), true)));
+
+require(SETTINGS_FILE);
 
 chdir(FSPATH);
 
@@ -52,6 +56,9 @@ session_start();
 
 // clean out this crap - it's never used
 unset($HTTP_POST_VARS, $HTTP_GET_VARS, $HTTP_COOKIE_VARS, $HTTP_SERVER_VARS, $HTTP_ENV_VARS, $HTTP_POST_FILES, $HTTP_SESSION_VARS);
+
+// cache of skin data
+$SKIN_CACHE = array();
 
 // functions
 require("skinvoodoo.php");
@@ -98,7 +105,10 @@ if($who == "")
 {
     define("BLOGID", 1);
     define("BLOGNAME", "");
-        define("INDEX_URL", "http://" . DEFAULT_SUBDOMAIN . BASE_DOMAIN . INSTALLED_PATH);
+    if(DEFAULT_SUBDOMAIN == "")
+        define("INDEX_URL", "http://" . BASE_DOMAIN . INSTALLED_PATH);
+    else
+        define("INDEX_URL", "http://" . DEFAULT_SUBDOMAIN . "." . BASE_DOMAIN . INSTALLED_PATH);
 } elseif(!isset($blogdata[$who])) {
     die( "<html><head><title>CodewiseBlog :: Invalid User</title><link rel=\"stylesheet\" href=\"http://www.codewise.org/blueEye.css\" /></head>"
        . "<body><b>Invalid User \"$who\"</b><br /><br /><a href=\"http://" . DEFAULT_SUBDOMAIN . BASE_DOMAIN . INSTALLED_PATH . "\">...back to CodewiseBlog</a></body></html>" );
@@ -107,13 +117,16 @@ if($who == "")
     define("BLOGNAME", $who);
     define("ADMIN_EMAIL", $blogdata[$who]['email']);
 
-    if($blogdata[$who]['custom_url'] != NULL)
+    if($blogdata[$who]['custom_url'] != NULL && CUSTOM_URL_ENABLED)
     {
         define("INDEX_URL", $blogdata[$who]['custom_url']);
     } elseif(SUBDOMAIN_MODE) {
         define("INDEX_URL", "http://" . BLOGNAME . "." . BASE_DOMAIN . INSTALLED_PATH);
     } else {
-        define("INDEX_URL", "http://" . DEFAULT_SUBDOMAIN . BASE_DOMAIN . INSTALLED_PATH . BLOGNAME);
+        if(DEFAULT_SUBDOMAIN == "")
+            define("INDEX_URL", "http://" . BASE_DOMAIN . INSTALLED_PATH . BLOGNAME);
+        else
+            define("INDEX_URL", "http://" . DEFAULT_SUBDOMAIN . "." . BASE_DOMAIN . INSTALLED_PATH . BLOGNAME);
     }
 }
 
@@ -196,11 +209,17 @@ if(!defined("NO_ACTION"))
         $body = main_page($_GET['page']);
     }
 
-    $main = skinvoodoo("main");
+    $out = skinvoodoo("main");
 
-    $out = str_replace("<!-- #CWB_BODY# -->", $body, $main);
+    $out = str_replace("<!-- #CWB_BODY# -->", $body, $out);
 
-    echo str_replace("%{runtime}", runtime(), $out);
+    if($TITLE == "")
+        $TITLE = $BLOGINFO['title'];
+    $out = str_replace("%{".UNIQ."titletag}", $TITLE, $out);
+
+    $out = str_replace("%{".UNIQ."runtime}", runtime(), $out);
+
+    echo $out;
 }
 
 // and we're out. :)
