@@ -34,28 +34,32 @@
 **   subsection and discard the others. If set to another value, the specified
 **   subsection is used and the other parts are discarded.
 ** $args is an associative array in the form name => value of arguments to the
-**    skin. These are used in the skin in the form of %{foo} macros.
+**    skin. These are used in the skin in the form of ${foo} macros.
 **
 ** Returns the fully-processed skin section in all its glory.
 */
 function skinvoodoo($skin_section, $subcall = "", $args = array())
 {
-    global $db;
+    global $db, $SKIN_CACHE;
 
-    /* No DB for now. When come back bring pie.
-
-    $q = $db->issue_query("SELECT $skin_section FROM skin WHERE blogid = '" . BLOGID . "'");
-    $skin = $db->fetch_var($q);
-
-    // if the user's skin is NULL, use the master skin
-    if($skin == null)
+    if(in_array($skin_section, array_keys($SKIN_CACHE)))
     {
-        $q = $db->issue_query("SELECT $skin_section FROM skin WHERE blogid = '1'");
+        $skin = $SKIN_CACHE[$skin_section];
+    } else {
+        $q = $db->issue_query("SELECT $skin_section FROM skin WHERE blogid = '" . BLOGID . "'");
         $skin = $db->fetch_var($q);
-    }
-    */
 
-    $skin = file_get_contents(FSPATH . "/skin_blueEye/$skin_section.html");
+        // if the user's skin is NULL, use the master skin
+        if($skin == NULL)
+        {
+            $q = $db->issue_query("SELECT $skin_section FROM skin WHERE blogid = '1'");
+            $skin = $db->fetch_var($q);
+        }
+
+        $SKIN_CACHE[$skin_section] = $skin;
+    }
+
+    //$skin = file_get_contents(FSPATH . "/skin_blueEye/$skin_section.html");
 
     preg_match_all("/<\\!-- :cwb_start: ([^\s]+) -->(.*)<\\!-- :cwb_end: \\1 -->/Us", $skin, $matches, PREG_SET_ORDER);
 
@@ -132,9 +136,9 @@ function voodoo($skin, $args = array(), $skin_section = "", $expand = TRUE)
 
             if($result)
             {
-                $skin = str_replace($old, voodoo($true, $args), $skin);
+                $skin = str_replace($old, voodoo($true, $args, $skin_section), $skin);
             } else {
-                $skin = str_replace($old, voodoo($false, $args), $skin);
+                $skin = str_replace($old, voodoo($false, $args, $skin_section), $skin);
             }
         }
 
@@ -172,7 +176,7 @@ function voodoo($skin, $args = array(), $skin_section = "", $expand = TRUE)
         $name = $match[1];
 
         $function_table = array(
-            "special_fortune" => "fortune()",
+            "fortune" => "fortune()",
             "postcalendar" => "postcalendar()",
             "welcomeback" => "welcomeback()",
             "subscribeform" => "subscribeform()",
@@ -180,7 +184,8 @@ function voodoo($skin, $args = array(), $skin_section = "", $expand = TRUE)
             "shoutbox" => "shoutbox()",
             "statistics" => "statistics()",
             "querycount" => "querycount()",
-            "runtime" => "'%{runtime}'", // needs to be done last
+            "runtime" => "'%{".UNIQ ."runtime}'", // <---- these will be replaced at the very end of execution
+            "titletag" => "'%{".UNIQ."titletag}'", // <-/
             "versionfooter" => "versionfooter()",
             "copyright" => "'CodewiseBlog &copy; <a href=\"http://www.codewise.org/~netmanw00t/\">Bill Fraser</a>.<br />All textual content is the property of its author.'",
             "notify" => "\$GLOBALS['NOTIFY']",
