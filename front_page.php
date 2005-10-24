@@ -77,9 +77,16 @@ foreach($data as $blogname => $blog)
     } else {
         $name = $blog['name'];
     }
+
+    if(SUBDOMAIN_MODE)
+    {
+        $link = "http://$blogname." . BASE_DOMAIN . INSTALLED_PATH;
+    } else {
+        $link = "http://" . (DEFAULT_SUBDOMAIN == "" ? "" : DEFAULT_SUBDOMAIN . ".") . BASE_DOMAIN . INSTALLED_PATH . $blogname;
+    }
 ?>
                                     <tr><td><hr align="center" style="border:1px solid #eee" width="50%" noshade="noshade" /></td></tr>
-                                    <tr><td><a href="http://<?php echo $blogname; ?>.blogs.codewise.org/"><?php echo $blog['title']; ?></a><br />
+                                    <tr><td><a href="<?php echo $link; ?>"><?php echo $blog['title']; ?></a><br />
                                             <span style="font-size:smaller">by <?php echo $name; ?></span></td></tr>
 <?php
 }
@@ -106,9 +113,9 @@ foreach($data as $blogname => $blog)
                     <div style="background-color: yellow"><div style="border: 5px dashed red"><div style="background-color:white; padding:10px">
                         <b style="font-size: xx-large">CodewiseBlog Multi-User</b><br />
                         <br />
-                        <b>v1.0.0-ALPHA</b><br />
+                        <b>v1.0.0-BETA</b><br />
                         <br />
-                        "It's ALIVVEEEE! Yayuhh!"<br />
+                        "Let's get this baby out the door!"<br />
                         &nbsp;&nbsp;&nbsp;&nbsp;-NMW
                     </div></div></div>
 
