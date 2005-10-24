@@ -1,0 +1,29 @@
+Change History:
+
+Dev - July 25 to September 12, 2005
+  - developed alongside CodewiseBlog Single-User v1.2.4 to v1.2.9
+
+1.0.0-ALPHA - September 12, 2005
+  - basic alpha release
+
+1.0.0-ALPHA-r1 - September 15, 2005
+  - added write page for UCP
+
+1.0.0-ALPHA-r2 - September 27, 2005
+  - moved some define()s to settings.php
+  - fixed bugs in shoutbox
+  - fixed divide-by-zero bugs in stats
+  - added to Edit and Settings pages of controlpanel
+  - more define()s moved to settings.php, controlpanel updated to handle them
+  - added subfunction calling ability to voodoo skins
+
+1.0.0-ALPHA-r3 - October 16, 2005
+  - added RDF script
+  - added PHP highlighting when using <php><?php ... ?></php>
+  - different controlpanel sections for users and admin, access enforced
+  - FINALLY fixed the problem of recursion in the Voodoo skin engine
+
+1.0.0-ALPHA-r4 - October 18, 2005
+  - fixed user detection for non-subdomain mode
+  - added custom_url field to 'blogs' database table, which sets INDEX_URL to arbitrary values specified by the user
+  - added ability to specify ?subdomain_mode=X to enable or disable subdomain mode at request time

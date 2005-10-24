@@ -1,0 +1,59 @@
+<!-- :cwb_start: sectionlist_entry -->
+<tr><td><input type="submit" name="section_sel" value="${section}" /></td></tr>
+<!-- :cwb_end: sectionlist_entry -->
+<!-- :cwb_start: sectionlist_current -->
+<tr><td><input type="submit" name="section_sel" value="${section}" disabled="disabled" /></td></tr>
+<!-- :cwb_end: sectionlist_current -->
+
+<!-- :cwb_start: varlist_entry -->
+<tr>
+<td>${varname}</td>
+<td><blockquote>${vardesc}</td>
+</tr>
+<!-- :cwb_end: varlist_entry -->
+
+<form action="${posturl}" method="post">
+<style type="text/css">
+table.skintable {
+    border:none;
+}
+
+table.skintable td {
+    padding: 10px;
+}
+
+table.skintable td td {
+    padding: 0px;
+}
+</style>
+<table class="skintable">
+<tr>
+<td style="vertical-align:top">
+    <table>
+    ${sectionlist}
+    </table>
+    <br />
+    <table>
+    ${varlist}
+    </table>
+</td>
+<td style="vertical-align:top">
+    ${content}
+</td>
+</tr>
+</table>
+</form>
+
+<!-- :cwb_start: section_edit -->
+<input type="hidden" name="section" value="${section_name}" />
+<!-- #cwb_if# ${using_master} -->
+<b>Using master skin</b>
+</b>
+<!-- #cwb_else# -->
+<input type="submit" name="revert" value="Revert to Master" />
+<!-- #cwb_endif# -->
+<br /><br />
+<textarea name="section_content" rows="30" cols="80">${section_content}</textarea>
+<br /><br />
+<input type="submit" name="go_baby_go" value="Submit Changes" />
+<!-- :cwb_end: section_edit -->

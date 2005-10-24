@@ -1,0 +1,170 @@
+/*
+** Codewise.org 'blueEye' Colors
+** by Bill Fraser <bill.fraser@gmail.com>
+** Copyright (c) 2004-2005 Codewise.org
+*/
+
+body {
+    font-family: Trebuchet, sans-serif;
+    font-size: 10pt;
+    background: white;
+/*  color: #AAA; */
+    color: #333;
+}
+
+a:link {
+    color: #487393;
+    text-decoration: none;
+}
+
+a:visited {
+    color: #487393;
+    text-decoration: none;
+}
+
+a:hover {
+    color: black;
+    text-decoration: underline;
+}
+
+a:active {
+    color: #777;
+    text-decoration: none;
+}
+
+table {
+    border: 1px solid #DDD;
+    padding: .25em;
+}
+
+.title {
+    color: #333;
+    font-size: 1.5em;
+}
+
+/*
+** These are from www.codewise.org
+*/
+
+table.sidebar {
+    border: none;
+    border-spacing: 1em;
+    padding: 0;
+}
+
+td.sidebar {
+    border: 1px solid #ccc;
+    padding: .25em;
+    white-space: nowrap; /* CSS 2.1.... it will surely be ignored by IE */
+}
+
+.main-title {
+    font-size: 2em;
+    text-decoration: underline;
+    font-weight: bold;
+    font-variant: small-caps;
+    /* color: #777; */
+    color: #487393;
+    white-space: nowrap;
+}
+
+/*
+** These are for CodewiseBlog
+*/
+
+td.profleft {
+    text-align: right;
+    vertical-align: top;
+}
+
+td.profright {
+    text-align: left;
+    white-space: normal;
+}
+
+td.blogbody {
+    color: #3d3d3d;
+    vertical-align: top;
+    padding-top: 1em;
+    text-align: justify;
+}
+
+div.topicheader {
+    /* border: 1px solid black;
+    background: #DDD; */
+    border: 1px solid #DDD;
+    padding: .25em;
+    vertical-align: middle;
+}
+
+span.topictitle {
+    color: #AAA;
+    font-weight: bold;
+/*     text-decoration: underline; */
+}
+
+div.topicbody {
+/*     border: 1px solid #DDD; */
+    padding-left: 1em;
+    padding-top: .75em;
+    padding-bottom: .75em;
+}
+
+div.topicfooter {
+    font-size: smaller;
+/*     padding-top: .25em; */
+}
+
+div.postheader {
+    border: 1px solid #DDD;
+    padding: .25em;
+    vertical-align: middle;
+}
+
+div.postbody {
+    padding-left: 1em;
+    padding-top: .75em;
+    padding-bottom: .75em;
+}
+
+span.postername {
+    color: #487393;
+}
+
+div.notify {
+    border: 1px solid black;
+    color: white;
+    background: #487393;
+    font-weight: bold;
+    padding: 5px;
+}
+
+div.notify a:link {
+    color: black;
+}
+
+div.notify a:visited {
+    color: black;
+}
+
+div.error {
+    border: 1px solid black;
+    color: black;
+    background: red;
+    font-weight: bold;
+    padding: 5px;
+}
+
+div.latestmonth {
+    padding-left:3em;
+    font-size:smaller;
+}
+
+span.postref {
+    color: #487393;
+    text-decoration: underline;
+}
+
+span.emphasis {
+    color: #487393;
+}

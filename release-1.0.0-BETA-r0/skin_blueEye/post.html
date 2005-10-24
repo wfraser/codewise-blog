@@ -1,0 +1,15 @@
+<!-- #cwb_if# ${special_anchor} --><a name="${special_anchor}"></a><!-- #cwb_endif# -->
+<a name="pid${pid}"></a>
+<!-- #cwb_if# ${highlight} --><div style="border: 1px solid #487393"><!-- #cwb_endif# -->
+<div class="postheadeer">
+    <span class="postername">
+        <b>${name}</b> <!-- #cwb_if# ${tripcode} != null --><i>${tripcode}</i><!-- #cwb_endif# -->
+    </span>${date}
+    <a href="${url_post}">No.${pid}</a>
+    <a href="${url_reply}">(reply)</a>
+</div>
+<div class="postbody">
+${text}
+</div>
+<!-- #cwb_if# ${highlight} --></div><!-- #cwb_endif# -->
+<br />
