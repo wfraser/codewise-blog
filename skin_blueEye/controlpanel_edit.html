@@ -8,9 +8,9 @@
 ${options}
             </select>
         </td>
+        <td><input type="submit" value="Edit" /></td>
     </tr>
 </table>
-<input type="submit" value="Edit" />
 </form>
 <!-- :cwb_end: showselect -->
 <!-- :cwb_start: editform -->
@@ -18,7 +18,7 @@ ${options}
 <table>
     <tr>
         <td>Title:</td>
-        <td><input type="text" width="50" name="title" value="${title}" /></td>
+        <td><input type="text" size="50" name="title" value="${title}" /></td>
     </tr>
     <tr>
         <td>Timestamp:</td>
@@ -44,6 +44,8 @@ ${preview}
             <input type="submit" value="Save Changes" name="do_edit" />
             &nbsp;&nbsp;&nbsp;&nbsp;
             <input type="submit" value="Preview" name="preview" />
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="submit" value="Delete" name="delete" />
         </td>
     </tr>
 </table>
@@ -54,3 +56,17 @@ Your post has been recorded.<br />
 You can view it <a href="${topic_url}">here</a><br />
 Alternatively, you can go <a href="%{ucp_link}">back to the Control Panel</a>
 <!-- :cwb_end: success_redirect -->
+<!-- :cwb_start: delete_ask -->
+<form action="${posturl}" method="post">
+<input type="hidden" name="tid" value="${tid}" />
+<input type="hidden" name="delete" value="anything" />
+<div class="error">
+ARE YOU SURE YOU WANT TO DELETE THAT??<br /><br />
+<input type="submit" name="REALLY_FREAKING_SURE" value="REALLY SURE!" />
+</div>
+</form>
+<!-- :cwb_end: delete_ask -->
+<!-- :cwb_start: delete_successful -->
+Your post and its ${num_comments} comments been deleted.<br />
+<a href="%{ucp_link}">Back to the Control Panel</a>
+<!-- :cwb_end: delete_successful -->
