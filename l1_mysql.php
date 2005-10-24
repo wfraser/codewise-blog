@@ -58,7 +58,7 @@ if(!class_exists("L1_MySQL")) { class L1_MySQL
     */
     function version()
     {
-        return("1.6.3");
+        return("1.6.4");
     }
 
     function get($var)
@@ -75,25 +75,27 @@ if(!class_exists("L1_MySQL")) { class L1_MySQL
     /*
     ** Escape and prepare values for inclusion in a MySQL query.
     **
-    ** Data can be given either as a single value or as an associative
-    ** array of fields and values where only the values will be prepared.
-    **
     ** Backslashes single slashes and adds single slashes around values.
     ** eg: "O'Reilly's" => "'O\'Reilly\'s'"
     ** Also converts php null value to "null"
     */
-    function prepare_value($data)
+    function prepare_value($data, $use_slashes = TRUE)
     {
+        if($use_slashes)
+            $slash = "'";
+        else
+            $slash = "";
+
         if(is_array($data))
         {
             $a_sql = array();
             foreach($data as $field => $value)
             {
-                $a_sql[$field] = ($value === null ? "null" : "'".mysql_real_escape_string($value,$this->session)."'");
+                $a_sql[ $this->prepare_value($field,FALSE) ] = ($value === null ? "null" : $slash.mysql_real_escape_string($value,$this->session).$slash);
             }
             return($a_sql);
         } else {
-            $sql = ($data === null ? "null" : "'".mysql_real_escape_string($data,$this->session)."'");
+            $sql = ($data === null ? "null" : $slash.mysql_real_escape_string($data,$this->session).$slash);
             return($sql);
         }
     }
