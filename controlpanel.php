@@ -615,7 +615,10 @@ function controlpanel()
             $content = skinvoodoo("controlpanel_skin", "section_edit", array(
                 "section_name" => $_POST['section_sel'],
                 "using_master" => $using_master,
-                "section_content" => htmlspecialchars($skin),
+                "section_content" => str_replace(
+                    array("%{",         "\${"       ),
+                    array("&#x0025;{",  "&#x0024{"  ),
+                    htmlspecialchars($skin)),
             ));
         }
 
