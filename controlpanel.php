@@ -45,7 +45,9 @@ function cplogin()
 
 function controlpanel()
 {
-    global $db;
+    global $db, $BLOGINFO;
+
+    $TITLE = $BLOGINFO['title'] . " :: Control Panel";
 
     if(!$_SESSION['controlpanel'])
     {
@@ -75,6 +77,7 @@ function controlpanel()
                 array(
                     "posturl" => INDEX_URL . "?controlpanel:settings",
                     "fspath"  => FSPATH,
+                    "custom_url_enabled" => CUSTOM_URL_ENABLED,
                     "sample_url" => SUBDOMAIN_MODE ? "http://username." . BASE_DOMAIN . INSTALLED_PATH : "http://" . DEFAULT_SUBDOMAIN . BASE_DOMAIN . INSTALLED_PATH . "/username",
                     "main_url" => "http://" . (DEFAULT_SUBDOMAIN == "" ? "" : DEFAULT_SUBDOMAIN . "." ) . BASE_DOMAIN . INSTALLED_PATH,
                     "subdomain_mode" => SUBDOMAIN_MODE,
@@ -96,7 +99,7 @@ function controlpanel()
             );
         } else {
 
-            $file = file_get_contents("settings.php");
+            $file = file_get_contents(SETTINGS_FILE);
 
             $applied = array();
 
@@ -106,6 +109,14 @@ function controlpanel()
                 $file);
             if($file != $filenew)
                 $applied[] = "FSPATH";
+            $file = $filenew;
+
+            $filenew = preg_replace(
+                "/(?<=\\s)define\\(\\s*(['\"])((?-i)CUSTOM_URL_ENABLED)\\1,\\s*" . (CUSTOM_URL_ENABLED ? "TRUE" : "FALSE") . "\\s*\\);/is",
+                "define('CUSTOM_URL_ENABLED', " . $_POST['custom_url_enabled'] . ");",
+                $file);
+            if($file != $filenew)
+                $applied[] = "CUSTOM_URL_ENABLED";
             $file = $filenew;
 
             $filenew = preg_replace(
@@ -255,9 +266,9 @@ function controlpanel()
                 $message = "No config values changed.";
             }
 
-            $body = skinvoodoo("error", "notify", array("message" => $message)) . "<a href=\"" . INDEX_URL . "?controlpanel:settings\">Back to Settings</a>";
+            file_put_contents(SETTINGS_FILE, $file);
 
-            file_put_contents("settings2.php", $file);
+            $body = skinvoodoo("error", "notify", array("message" => $message)) . "<a href=\"" . INDEX_URL . "?controlpanel:settings\">Back to Settings</a>";
         }
 
     } elseif(isset($_GET['controlpanel:write'])) {
@@ -337,6 +348,13 @@ function controlpanel()
                     "options"  => $html,
                 )
             );
+        } elseif(isset($_POST['delete']) && !isset($_POST['REALLY_FREAKING_SURE'])) {
+            $body = skinvoodoo("controlpanel_edit", "delete_ask", array("posturl" => INDEX_URL . "?controlpanel:edit", "tid" => $_POST['tid']));
+        } elseif(isset($_POST['delete']) && isset($_POST['REALLY_FREAKING_SURE'])) {
+            $q1 = $db->issue_query("DELETE FROM topics WHERE tid = " . $db->prepare_value($_POST['tid']) . " AND blogid = '" . BLOGID . "' LIMIT 1");
+            $q2 = $db->issue_query("DELETE FROM replies WHERE tid = " . $db->prepare_value($_POST['tid']) . " AND blogid = '" . BLOGID . "'");
+
+            $body = skinvoodoo("controlpanel_edit", "delete_successful", array("num_comments" => $db->num_rows[$q2]));
         } elseif(!isset($_POST['do_edit'])) {
 
             if(isset($_POST['preview']))
@@ -505,7 +523,7 @@ function controlpanel()
         }
     } elseif(isset($_GET['controlpanel:userinfo'])) {
         $current = "userinfo";
-        
+
         if($_POST)
         {
             if(isset($_POST['chpasswd']))
@@ -525,7 +543,7 @@ function controlpanel()
             } elseif($_POST['email'] == "") {
                 $body = skinvoodoo("error", "error", array("message" => "Email address must not be empty"));
             } else {
-            
+
                 $data = array(
                     "email" => $_POST['email'],
                     "realname" => $_POST['realname'] == "" ? NULL : $_POST['realname'],
@@ -557,15 +575,60 @@ function controlpanel()
     } elseif(isset($_GET['controlpanel:skin'])) {
         $current = "skin";
 
-        if($_POST)
+        if(isset($_POST['go_baby_go']))
         {
-            $body = $_POST['section'];
-        } else {
-            //$body = skinvoodoo("controlpanel_skin", "sectionsel",
+            $db->update("skin", array($_POST['section'] => $_POST['section_content']), array("blogid" => BLOGID));
+            $GLOBALS['NOTIFY'] = "Skin Updated";
+            $_POST['section_sel'] = $_POST['section']; // redisplay the current one
+        } elseif(isset($_POST['revert'])) {
+            $db->update("skin", array($_POST['section'] => NULL), array("blogid" => BLOGID));
+            $GLOBALS['NOTIFY'] = "Reverted to Master Skin";
+            $_POST['section_sel'] = $_POST['section']; // redisplay the current one
         }
+
+        $q = $db->issue_query("DESCRIBE skin");
+        $desc = $db->fetch_all($q, L1SQL_ASSOC);
+
+        $sectionlist = "";
+        foreach($desc as $col)
+        {
+            if($col['Field'] == "blogid")
+                continue;
+            elseif($col['Field'] == $_POST['section_sel'])
+                $sectionlist .= skinvoodoo("controlpanel_skin", "sectionlist_current", array("section" => $col['Field']));
+            else
+                $sectionlist .= skinvoodoo("controlpanel_skin", "sectionlist_entry",   array("section" => $col['Field']));
+        }
+
+        if(isset($_POST['section_sel']))
+        {
+            $q = $db->issue_query("SELECT ".$db->prepare_value($_POST['section_sel'], FALSE)." FROM skin WHERE blogid = '".BLOGID."'");
+            $skin = $db->fetch_var($q);
+            if($skin === NULL)
+            {
+                $using_master = TRUE;
+                $q = $db->issue_query("SELECT ".$db->prepare_value($_POST['section_sel'], FALSE)." FROM skin WHERE blogid = '1'");
+                $skin = $db->fetch_var($q);
+            } else {
+                $using_master = FALSE;
+            }
+
+            $content = skinvoodoo("controlpanel_skin", "section_edit", array(
+                "section_name" => $_POST['section_sel'],
+                "using_master" => $using_master,
+                "section_content" => htmlspecialchars($skin),
+            ));
+        }
+
+        $body = skinvoodoo("controlpanel_skin", "", array(
+            "posturl" => INDEX_URL . "?controlpanel:skin",
+            "sectionlist" => $sectionlist,
+            "varlist" => $varlist,
+            "content" => $content,
+        ));
     } else {
         $current = "home";
-        $body = "Body goes here...";
+        $body = "Welcome to the CodewiseBlog control panel.<br />Powered by CodewiseBlog ".CWBVERSION;
     }
 
     $args = array
@@ -580,9 +643,11 @@ function controlpanel()
         "url_skin"     => INDEX_URL . "?controlpanel:skin",
     );
 
-    $main = skinvoodoo("controlpanel", "", $args);
+    $out = skinvoodoo("controlpanel", "", $args);
 
-    $out = str_replace("<!-- #CWB_CP_BODY# -->", $body, $main);
+    $out = str_replace("<!-- #CWB_CP_BODY# -->", $body, $out);
+    $out = str_replace("%{".UNIQ."titletag}", $BLOGINFO['title'] . " :: Control Panel", $out);
+    $out = str_replace("%{".UNIQ."runtime}", runtime(), $out);
 
     return $out;
 }
