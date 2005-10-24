@@ -530,7 +530,7 @@ function controlpanel()
             {
                 if($_POST['password1'] != $_POST['password2'])
                 {
-                    $body = skinvoodoo("error", "error", array("message" => "Passwords do not match"));
+                    $GLOBALS['NOTIFY'] = "Passwords do not match";
                 } else {
                     $data = array(
                         "password" => md5($_POST['password1']),
@@ -538,10 +538,10 @@ function controlpanel()
 
                     $db->update("blogs", $data, array("blogid" => BLOGID));
 
-                    $body = skinvoodoo("error", "notify", array("message" => "Password updated successfully."));
+                    $GLOBALS['NOTIFY'] = "Password updated successfully.";
                 }
             } elseif($_POST['email'] == "") {
-                $body = skinvoodoo("error", "error", array("message" => "Email address must not be empty"));
+                $GLOBALS['NOTIFY'] = "Email address must not be empty";
             } else {
 
                 $data = array(
@@ -549,7 +549,6 @@ function controlpanel()
                     "realname" => $_POST['realname'] == "" ? NULL : $_POST['realname'],
                     "birthday" => $_POST['birthday'] == "" ? NULL : $_POST['birthday'],
                     "location" => $_POST['location'] == "" ? NULL : $_POST['location'],
-
                     "interests" => $_POST['interests'] == "" ? NULL : $_POST['interests'],
                     "links" => $_POST['links'] == "" ? NULL : $_POST['links'],
                     "photo" => $_POST['photo'] == "" ? NULL : $_POST['photo'],
@@ -560,18 +559,18 @@ function controlpanel()
 
                 $db->update("blogs", $data, array("blogid" => BLOGID));
 
-                $body = skinvoodoo("error", "notify", array("message" => "User info successfully changed."));
+                $GLOBALS['NOTIFY'] = "User info successfully changed";
             }
-        } else {
-            $q = $db->issue_query("SELECT email,realname,birthday,location,interests,links,photo,homepage,title,custom_url FROM blogs WHERE blogid = '" . BLOGID . "'");
-            $userinfo = $db->fetch_row($q, 0, L1SQL_ASSOC);
-
-            $data = array(
-                "posturl" => INDEX_URL . "?controlpanel:userinfo",
-            );
-
-            $body = skinvoodoo("controlpanel_userinfo", "", array_merge($userinfo, $data));
         }
+
+        $q = $db->issue_query("SELECT email,realname,birthday,location,interests,links,photo,homepage,title,custom_url FROM blogs WHERE blogid = '" . BLOGID . "'");
+        $userinfo = $db->fetch_row($q, 0, L1SQL_ASSOC);
+
+        $data = array(
+            "posturl" => INDEX_URL . "?controlpanel:userinfo",
+        );
+
+        $body = skinvoodoo("controlpanel_userinfo", "", array_merge($userinfo, $data));
     } elseif(isset($_GET['controlpanel:skin'])) {
         $current = "skin";
 
