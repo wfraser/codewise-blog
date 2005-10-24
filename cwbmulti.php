@@ -31,7 +31,7 @@ unset($sec, $usec);
 // define version string
 define("CWBVERSION","1.0.0-BETA-r0");
 define("CWBTYPE", "Multi-User");
-define("SETTINGS_FILE", "settings1.php");
+define("SETTINGS_FILE", "settings.php");
 
 // Unique ID for this request
 define("UNIQ", md5(uniqid(mt_rand(), true)));
@@ -140,7 +140,12 @@ $BLOGINFO = $db->fetch_row($q, 0, L1SQL_ASSOC);
 if($BLOGINFO['birthday'])
 {
     list($month,$day,$year) = explode("/", $BLOGINFO['birthday']);
-    $BLOGINFO['age'] = ($month > date("m") && $day > date("d")) ? date("Y") - $year - 1 : date("Y") - $year;
+    $BLOGINFO['birthday_month'] = $month;
+    $BLOGINFO['birthday_day'] = $day;
+    $BLOGINFO['birthday_year'] = $year;
+    $BLOGINFO['age'] = ($month >= date("m") && $day > date("d")) ? date("Y") - $year - 1 : date("Y") - $year;
+} else {
+    $BLOGINFO['age'] = $BLOGINFO['birthday_month'] = $BLOGINFO['birthday_day'] = $BLOGINFO['birthday_year'] = "";
 }
 
 $BLOGINFO['index_url'] = INDEX_URL;
