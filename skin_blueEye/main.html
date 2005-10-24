@@ -55,7 +55,7 @@ function hidebio()
                 <table style="border:none; font-size:smaller; display:none;" id="bio">
 <!-- #cwb_if# %{realname} --><tr><td class="profleft">name:</td><td class="profright">%{realname}</td></tr><!-- #cwb_endif# -->
 <!-- #cwb_if# %{location} --><tr><td class="profleft" >location:</td><td class="profright">%{location}</td></tr><!-- #cwb_endif# -->
-<!-- #cwb_if# %{age} --><tr><td class="profleft" >age:</td><td class="profright">%{age}</td></tr><!-- #cwb_endif# -->
+<!-- #cwb_if# %{age} != "" --><tr><td class="profleft" >age:</td><td class="profright">%{age}</td></tr><!-- #cwb_endif# -->
 <!-- #cwb_if# %{interests} --><tr><td class="profleft" >specialties:</td><td class="profright">%{interests}</td></tr><!-- #cwb_endif# -->
                 </table>
                 </div>
