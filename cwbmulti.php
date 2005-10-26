@@ -29,7 +29,7 @@ $starttime = (string) $sec + $usec;
 unset($sec, $usec);
 
 // define version string
-define("CWBVERSION","1.0.0-BETA-r0");
+define("CWBVERSION","1.0.0-BETA-r1");
 define("CWBTYPE", "Multi-User");
 define("SETTINGS_FILE", "settings.php");
 
@@ -97,7 +97,8 @@ if(isset($_GET['subdomain_mode']) ? $_GET['subdomain_mode'] : SUBDOMAIN_MODE)
     if($who == DEFAULT_SUBDOMAIN || $who == BASE_DOMAIN)
         $who = "";
 } else {
-    $who = preg_replace("/^" . str_replace("/", "\\/", quotemeta(INSTALLED_PATH)) . "/", "", $_SERVER['REQUEST_URI']);
+    $preg_path = str_replace("/", "\\/", quotemeta(INSTALLED_PATH));
+    $who = preg_replace("/^$preg_path(.*\\/)*/", "", $_SERVER['REQUEST_URI']);
     $who = preg_replace("/\\?.*$/", "", $who);
 }
 
@@ -110,8 +111,8 @@ if($who == "")
     else
         define("INDEX_URL", "http://" . DEFAULT_SUBDOMAIN . "." . BASE_DOMAIN . INSTALLED_PATH);
 } elseif(!isset($blogdata[$who])) {
-    die( "<html><head><title>CodewiseBlog :: Invalid User</title><link rel=\"stylesheet\" href=\"http://www.codewise.org/blueEye.css\" /></head>"
-       . "<body><b>Invalid User \"$who\"</b><br /><br /><a href=\"http://" . DEFAULT_SUBDOMAIN . BASE_DOMAIN . INSTALLED_PATH . "\">...back to CodewiseBlog</a></body></html>" );
+    die( "<html><head><title>CodewiseBlog :: Invalid User</title><link rel=\"stylesheet\" href=\"stylesheet.php?id=1\" /></head>"
+       . "<body><b>Invalid User \"$who\"</b><br /><br /><a href=\"http://" . DEFAULT_SUBDOMAIN . BASE_DOMAIN . INSTALLED_PATH . "\">...go back</a></body></html>" );
 } else {
     define("BLOGID", $blogdata[$who]['blogid']);
     define("BLOGNAME", $who);
@@ -138,10 +139,21 @@ $q = $db->issue_query("SELECT blogid,name,email,realname,birthday,location,inter
 $BLOGINFO = $db->fetch_row($q, 0, L1SQL_ASSOC);
 
 if($BLOGINFO['birthday'])
-    $BLOGINFO['age'] = date("Y", time() - $BLOGINFO['birthday']);
+{
+    list($month,$day,$year) = explode("/", $BLOGINFO['birthday']);
+    $BLOGINFO['birthday_month'] = $month;
+    $BLOGINFO['birthday_day'] = $day;
+    $BLOGINFO['birthday_year'] = $year;
+    $BLOGINFO['age'] = ($month >= date("m") && $day > date("d")) ? date("Y") - $year - 1 : date("Y") - $year;
+} else {
+    $BLOGINFO['age'] = $BLOGINFO['birthday_month'] = $BLOGINFO['birthday_day'] = $BLOGINFO['birthday_year'] = "";
+}
 
 $BLOGINFO['index_url'] = INDEX_URL;
 $BLOGINFO['ucp_url'] = INDEX_URL . "?controlpanel";
+if(!SUBDOMAIN_MODE) $BLOGINFO['rdf_url'] = "rdf.php/" . BLOGNAME;
+else                $BLOGINFO['rdf_url'] = "rdf.php";
+$BLOGINFO['css_url'] = "stylesheet.php?id=" . BLOGID;
 
 $BLOGINFO['interests'] = nl2br($BLOGINFO['interests']);
 $BLOGINFO['links'] = nl2br($BLOGINFO['links']);

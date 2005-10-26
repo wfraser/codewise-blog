@@ -2,8 +2,8 @@
 <html>
 <head>
 <title>%{titletag}</title>
-<link rel="stylesheet" href="stylesheet.php?id=%{blogid}" type="text/css" title="stylesheet" />
-<!-- <link rel="stylesheet" href="http://www.codewise.org/OpenBoard.css" type="text/css" title="OpenBoard Dark Blue" /> -->
+<link rel="stylesheet" href="%{css_url}" type="text/css" title="stylesheet" />
+<link rel="alternate" type="application/rss+xml" title="%{title}" href="%{rdf_url}" />
 <script type="text/javascript" language="JavaScript">
 function showbio()
 {
@@ -19,7 +19,6 @@ function hidebio()
     document.getElementById("bio").style.display = "none";
 }
 </script>
-<link rel="alternate" type="application/rss+xml" title="%{title}" href="rdf.php" />
 </head>
 <body>
 
@@ -55,7 +54,7 @@ function hidebio()
                 <table style="border:none; font-size:smaller; display:none;" id="bio">
 <!-- #cwb_if# %{realname} --><tr><td class="profleft">name:</td><td class="profright">%{realname}</td></tr><!-- #cwb_endif# -->
 <!-- #cwb_if# %{location} --><tr><td class="profleft" >location:</td><td class="profright">%{location}</td></tr><!-- #cwb_endif# -->
-<!-- #cwb_if# %{age} --><tr><td class="profleft" >age:</td><td class="profright">%{age}</td></tr><!-- #cwb_endif# -->
+<!-- #cwb_if# %{age} != "" --><tr><td class="profleft" >age:</td><td class="profright">%{age}</td></tr><!-- #cwb_endif# -->
 <!-- #cwb_if# %{interests} --><tr><td class="profleft" >specialties:</td><td class="profright">%{interests}</td></tr><!-- #cwb_endif# -->
                 </table>
                 </div>
