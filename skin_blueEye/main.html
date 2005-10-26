@@ -3,7 +3,7 @@
 <head>
 <title>%{titletag}</title>
 <link rel="stylesheet" href="stylesheet.php?id=%{blogid}" type="text/css" title="stylesheet" />
-<!-- <link rel="stylesheet" href="http://www.codewise.org/OpenBoard.css" type="text/css" title="OpenBoard Dark Blue" /> -->
+<link rel="alternate" type="application/rss+xml" title="%{title}" href="rdf.php/%{name}" />
 <script type="text/javascript" language="JavaScript">
 function showbio()
 {
@@ -19,7 +19,6 @@ function hidebio()
     document.getElementById("bio").style.display = "none";
 }
 </script>
-<link rel="alternate" type="application/rss+xml" title="%{title}" href="rdf.php" />
 </head>
 <body>
 
