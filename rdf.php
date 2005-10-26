@@ -30,7 +30,7 @@ header("Content-Type: text/xml");
 
 echo "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n";
 
-require("settings2.php");
+require("settings.php");
 
 chdir(FSPATH);
 
@@ -132,7 +132,11 @@ $BLOGINFO['anonymous_name'] = ANONYMOUS_NAME;
 
 <?php
 
-$q = $db->issue_query("SELECT tid,title,text FROM topics WHERE blogid = '" . BLOGID . "' ORDER BY timestamp DESC LIMIT 10");
+if(isset($_GET['all_one_page']))
+    $limit = "";
+else
+    $limit = "LIMIT 10"; // rdf spec says it must be 10
+$q = $db->issue_query("SELECT tid,title,text FROM topics WHERE blogid = '" . BLOGID . "' ORDER BY timestamp $limit");
 $data = $db->fetch_all($q);
 
 foreach($data as $row)
@@ -151,6 +155,7 @@ foreach($data as $row)
         <title>" . $row['title'] . "</title>
         <link>" . INDEX_URL . "?tid=" . $row['tid'] . "</link>
         <description>" . htmlspecialchars(textprocess($row['text'])) . "</description>
+        <dc:date>" . iso8601_date($row['timestamp']) . "</dc:date>
     </item>";
 }
 
