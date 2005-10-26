@@ -29,7 +29,7 @@ $starttime = (string) $sec + $usec;
 unset($sec, $usec);
 
 // define version string
-define("CWBVERSION","1.0.0-BETA-r0");
+define("CWBVERSION","1.0.0-BETA-r1");
 define("CWBTYPE", "Multi-User");
 define("SETTINGS_FILE", "settings.php");
 
@@ -97,7 +97,8 @@ if(isset($_GET['subdomain_mode']) ? $_GET['subdomain_mode'] : SUBDOMAIN_MODE)
     if($who == DEFAULT_SUBDOMAIN || $who == BASE_DOMAIN)
         $who = "";
 } else {
-    $who = preg_replace("/^" . str_replace("/", "\\/", quotemeta(INSTALLED_PATH)) . "/", "", $_SERVER['REQUEST_URI']);
+    $preg_path = str_replace("/", "\\/", quotemeta(INSTALLED_PATH));
+    $who = preg_replace("/^$preg_path(.*\\/)*/", "", $_SERVER['REQUEST_URI']);
     $who = preg_replace("/\\?.*$/", "", $who);
 }
 
@@ -150,6 +151,9 @@ if($BLOGINFO['birthday'])
 
 $BLOGINFO['index_url'] = INDEX_URL;
 $BLOGINFO['ucp_url'] = INDEX_URL . "?controlpanel";
+if(!SUBDOMAIN_MODE) $BLOGINFO['rdf_url'] = "rdf.php/" . BLOGNAME;
+else                $BLOGINFO['rdf_url'] = "rdf.php";
+$BLOGINFO['css_url'] = "stylesheet.php?id=" . BLOGID;
 
 $BLOGINFO['interests'] = nl2br($BLOGINFO['interests']);
 $BLOGINFO['links'] = nl2br($BLOGINFO['links']);
