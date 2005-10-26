@@ -27,3 +27,18 @@ Dev - July 25 to September 12, 2005
   - fixed user detection for non-subdomain mode
   - added custom_url field to 'blogs' database table, which sets INDEX_URL to arbitrary values specified by the user
   - added ability to specify ?subdomain_mode=X to enable or disable subdomain mode at request time
+
+1.0.0-BETA-r0 - October 24, 2005
+  - added config var CUSTOM_URL_ENABLED to enable or disable custom urls
+  - skin editor page in control panel!
+  - L1_MySQL 1.6.4
+  - CWB main functions can set the contents of the <title> tag
+  - fixed up rdf.php potential bugs by using htmlspecialchars() like a crazy mofo
+  - now using database for skins. Importer included.
+
+1.0.0-BETA-r1 - October 26, 2005
+  - fixed giant OMFG-scale bug in skin editor that let skinvoodoo translate voodoo tags before being sent out in the editor.
+  - age calculation now works
+  - rdf.php uses the <dc:date> element and defers to cwbmulti.php for user detection
+  - rdf.php should be requested as rdf.php/username when subdomain mode is off.
+  - skins should use %{css_url} and %{rdf_url} instead of specifying stylesheet.php and rdf.php by hand
