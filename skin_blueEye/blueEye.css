@@ -104,15 +104,17 @@ span.topictitle {
 }
 
 div.topicbody {
-/*     border: 1px solid #DDD; */
+    border: 1px dashed #DDD;
+    border-top: none;
     padding-left: 1em;
+    padding-right: 1em;
     padding-top: .75em;
     padding-bottom: .75em;
 }
 
 div.topicfooter {
     font-size: smaller;
-/*     padding-top: .25em; */
+    padding-top: .25em;
 }
 
 div.postheader {
