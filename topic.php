@@ -26,41 +26,29 @@
 ** Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-function display_topic($topic, $topic_page = FALSE, $bare_minimum = FALSE)
+function display_topic($topic, $topic_page = FALSE)
 {
     global $db;
 
     $tid = $topic['tid'];
     $title = $topic['title'];
     $date = date(DATE_FORMAT, $topic['timestamp']);
-    $text = $topic['text'];
-
-    $parts = preg_split("/(<noautobr>(.*)<\/noautobr>)/Us", $text, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
-
-    $text = "";
-    for($i = 0; $i < count($parts); $i++)
-    {
-        if(strpos($parts[$i], "<noautobr>") === 0)
-            $text .= $parts[++$i];
-        else
-            $text .= textprocess($parts[$i]);
-    }
+    $text = output_topic_text($topic['text']);
 
     $q = $db->issue_query("SELECT pid FROM replies WHERE tid = '$tid'");
     $num_replies = $db->num_rows[$q];
 
     $out = "";
 
-    if(!$bare_minimum)
-        $out .= skinvoodoo("topic", "topicheader", array(
-            "date" => $date,
-            "title" => $title,
-            "text" => $text,
-            "url_showtopic" => INDEX_URL . "?tid=$tid",
-            "url_showcomments" => INDEX_URL . "?tid=$tid#comments",
-            "url_addcomment" => INDEX_URL . "?reply=$tid#commentform",
-            "num_comments" => ($topic_page ? NULL : $num_replies)
-        ));
+    $out .= skinvoodoo("topic", "topicheader", array(
+        "date" => $date,
+        "title" => $title,
+        "text" => $text,
+        "url_showtopic" => INDEX_URL . "?tid=$tid",
+        "url_showcomments" => INDEX_URL . "?tid=$tid#comments",
+        "url_addcomment" => INDEX_URL . "?reply=$tid#commentform",
+        "num_comments" => ($topic_page ? NULL : $num_replies)
+    ));
 
     $out .= skinvoodoo("topic", "", array(
         "date" => $date,
@@ -71,15 +59,14 @@ function display_topic($topic, $topic_page = FALSE, $bare_minimum = FALSE)
         "num_comments" => ($topic_page ? NULL : $num_replies)
     ));
 
-    if(!$bare_minimum)
-        $out .= skinvoodoo("topic", "topicfooter", array(
-            "date" => $date,
-            "title" => $title,
-            "text" => $text,
-            "url_showcomments" => INDEX_URL . "?tid=$tid#comments",
-            "url_addcomment" => INDEX_URL . "?reply=$tid#commentform",
-            "num_comments" => ($topic_page ? NULL : $num_replies)
-        ));
+    $out .= skinvoodoo("topic", "topicfooter", array(
+        "date" => $date,
+        "title" => $title,
+        "text" => $text,
+        "url_showcomments" => INDEX_URL . "?tid=$tid#comments",
+        "url_addcomment" => INDEX_URL . "?reply=$tid#commentform",
+        "num_comments" => ($topic_page ? NULL : $num_replies)
+    ));
 
     return $out;
 
@@ -117,5 +104,21 @@ function display_post($post, $highlight = FALSE)
     ));
 
 } // end of display_post()
+
+function output_topic_text($text)
+{
+    $parts = preg_split("/(<noautobr>(.*)<\/noautobr>)/Us", $text, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+
+    $text = "";
+    for($i = 0; $i < count($parts); $i++)
+    {
+        if(strpos($parts[$i], "<noautobr>") === 0)
+            $text .= $parts[++$i];
+        else
+            $text .= textprocess($parts[$i]);
+    }
+
+    return $text;
+}
 
 ?>
