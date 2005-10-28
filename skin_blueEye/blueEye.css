@@ -170,3 +170,8 @@ span.postref {
 span.emphasis {
     color: #487393;
 }
+
+div.topicpreview {
+    border: 1px solid #DDD;
+    padding: .50em;
+}
