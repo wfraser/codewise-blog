@@ -158,8 +158,8 @@ div.error {
 }
 
 div.latestmonth {
-    padding-left:3em;
-    font-size:smaller;
+    padding-left: 3em;
+    font-size: smaller;
 }
 
 span.postref {
@@ -174,4 +174,10 @@ span.emphasis {
 div.topicpreview {
     border: 1px solid #DDD;
     padding: .50em;
+}
+
+textarea {
+/*     font-family: Georgia, "Times New Roman", Times, serif; */
+    font-family: Trebuchet, sans-serif;
+    font-size: 10pt;
 }
