@@ -60,20 +60,40 @@ if(empty($_POST) || isset($_POST['resize']))
 
     } else {
 
-        // tid blogid title timestamp text extra
-        $data = array
-        (
-            "blogid" => BLOGID,
-            "title" => $_POST['title'], // ToDo: check for uniqueness
-            "timestamp" => time(),
-            "text" => $_POST['text'],
-        );
+        $q = $db->issue_query("SELECT tid,timestamp FROM topics WHERE title = " . $db->prepare_value($_POST['title']) . " AND blogid = '".BLOGID."'");
+        if($db->num_rows[$q] > 0)
+        {
+            list($row,$timestamp) = $db->fetch_row($q, 0, L1SQL_NUM);
+            $GLOBALS['NOTIFY'] = "A post with that title already exists: <a href=\"" . INDEX_URL . "?tid=$tid\">" . $_POST['title'] . "</a>"
+                . " (posted " . date(DATE_FORMAT, $timestamp) . ")";
 
-        $db->insert("topics", $data);
+            $body = skinvoodoo(
+                "controlpanel_write", "",
+                array(
+                    "posturl" => INDEX_URL . "?controlpanel:write",
+                    "quicktags" => INDEX_URL . "?quicktags.js",
+                    "rows" => $_POST['rows'] ? $_POST['rows'] : 25,
+                    "cols" => $_POST['cols'] ? $_POST['cols'] : 80,
+                    "text" => $_POST['text'],
+                    "title" => $_POST['title'],
+                )
+            );
+        } else {
+            // tid blogid title timestamp text extra
+            $data = array
+            (
+                "blogid" => BLOGID,
+                "title" => $_POST['title'],
+                "timestamp" => time(),
+                "text" => $_POST['text'],
+            );
 
-        $tid = $db->fetch_var( $db->issue_query("SELECT tid FROM topics WHERE timestamp = " . $data['timestamp']) );
+            //$db->insert("topics", $data);
 
-        $body = skinvoodoo("controlpanel_write", "success_redirect", array("topic_url" => INDEX_URL . "?tid=$tid"));
+            //$tid = $db->fetch_var( $db->issue_query("SELECT tid FROM topics WHERE timestamp = " . $data['timestamp']) );
+
+            $body = skinvoodoo("controlpanel_write", "success_redirect", array("topic_url" => INDEX_URL . "?tid=$tid"));
+        }
 
     }
 }
