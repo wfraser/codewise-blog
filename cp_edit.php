@@ -28,7 +28,7 @@
 
 $current = "edit";
 
-if(empty($_POST) || isset($_POST['resize']))
+if(empty($_POST))
 {
     $q = $db->issue_query("SELECT tid,title,timestamp FROM topics WHERE blogid = '" . BLOGID . "' ORDER BY tid DESC");
     $data = $db->fetch_all($q);
