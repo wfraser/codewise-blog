@@ -1,86 +1,86 @@
 <form action="${posturl}" method="post">
 <script type="text/javascript">
+function getScrollX()
+{
+    if(typeof(window.pageXOffset) == 'number')
+    {
+        return window.pageXOffset;
+    } else if(document.body && document.body.scrollLeft) {
+        return document.body.scrollLeft;
+    } else if(document.documentElement && document.documentElement.scrollLeft) {
+        return document.documentElement.scrollLeft;
+    }
+}
+
+function getScrollY()
+{
+    if(typeof(window.pageYOffset) == 'number')
+    {
+        return window.pageYOffset;
+    } else if(document.body && document.body.scrollTop) {
+        return document.body.scrollTop;
+    } else if(document.documentElement && document.documentElement.scrollTop) {
+        return document.documentElement.scrollTop;
+    }
+}
+
 function autoResize(internal)
 {
-    var xdec = 0; xinc = 0; ydec = 0; yinc = 0;
-    var xdone = 0; ydone = 0;
-
     if(navigator.appName == "Konqueror")
     {
         alert("this feature does not work under Konqueror");
         return;
     }
 
+    /*
+    ** Step 1: resize to 0,0
+    ** Step 2: read scrollbar info (use this as the limit)
+    ** Step 3: (for x and y) expand until scrollbar info is greater than limit
+    ** Step 4: step back one x and y.
+    ** Step 5: done!
+    */
+
+    var canvas = document.getElementById("canvas");
+    var cols = document.getElementById("cols");
+    var rows = document.getElementById("rows");
+
+    canvas.cols = 0;
+    canvas.rows = 0;
+
+    window.scrollTo(1e6, 1e6); // that should be high enough ;)
+
+    var sxmax = getScrollX();
+    var symax = getScrollY();
+
+    var xdone = false;
+
     while(true) {
 
-        window.scrollTo(1,1);
+        window.scrollTo(1e6,1e6);
 
-        var sx = 0; sy = 0;
-        if(typeof(window.pageYOffset) == 'number')
+        var sx = getScrollX();
+        var sy = getScrollY();
+
+        if(sx <= sxmax)
         {
-            sx = window.pageXOffset;
-            sy = window.pageYOffset;
-        } else if(document.body && (document.body.scrollLeft || document.body.scrollTop)) {
-            sx = document.body.scrollLeft;
-            sy = document.body.scrollTop;
-        } else if(document.documentElement && (document.documentElement.scrollLeft || document.documentElement.scrollTop)) {
-            sx = document.documentElement.scrollLeft;
-            sy = document.documentElement.scrollTop;
+            canvas.cols++;
         }
 
-        if(xdone == 0)
+        if(sy <= symax)
         {
-            if(sx == 1)
-            {
-                if(xinc == 1)
-                {
-                    xdone = 1;
-                } else {
-                    xdec = 1;
-                    document.getElementById("canvas").cols--;
-                }
-            } else {
-                if(xdec == 1)
-                {
-                    xdone = 1;
-                } else {
-                    xinc = 1;
-                    document.getElementById("canvas").cols++;
-                }
-            }
+            canvas.rows++;
         }
 
-        if(ydone == 0)
+        if(sx > sxmax && sy > symax)
         {
-            if(sy == 1)
-            {
-                if(yinc == 1)
-                {
-                    ydone = 1;
-                } else {
-                    ydec = 1;
-                    document.getElementById("canvas").rows--;
-                }
-            } else {
-                if(ydec == 1)
-                {
-                    ydone = 1;
-                } else {
-                    yinc = 1;
-                    document.getElementById("canvas").rows++;
-                }
-            }
-        }
+            canvas.cols--;
+            canvas.rows--;
 
-        if(xdone == 1 && ydone == 1)
-        {
-            if(!internal)
-                autoResize(true);
-            document.getElementById("rows").value = document.getElementById("canvas").rows;
-            document.getElementById("cols").value = document.getElementById("canvas").cols;
+            cols.value = canvas.cols;
+            rows.value = canvas.rows;
+
             return;
         }
-
     }
 
 }

@@ -53,65 +53,61 @@ function getScrollY()
 
 function autoResize(internal)
 {
-    var xdec = 0; xinc = 0;
-    var xdone = 0;
-
     if(navigator.appName == "Konqueror")
     {
         alert("this feature does not work under Konqueror");
         return;
     }
 
-    var sy = getScrollY();
+    /*
+    ** Step 1: resize to 0,0
+    ** Step 2: read scrollbar info (use this as the limit)
+    ** Step 3: (for x and y) expand until scrollbar info is greater than limit
+    ** Step 4: step back one x and y.
+    ** Step 5: done!
+    */
+
+    var canvas = document.getElementById("canvas");
+    var cols = document.getElementById("cols");
+    var rows = document.getElementById("rows");
+
+    canvas.cols = 0;
+    canvas.rows = 0;
+
+    window.scrollTo(1e6, 1e6); // that should be high enough ;)
+
+    var sxmax = getScrollX();
+    var symax = getScrollY();
+
+    var xdone = false;
 
     while(true) {
 
-        window.scrollTo(1, sy);
+        window.scrollTo(1e6,1e6);
 
         var sx = getScrollX();
+        var sy = getScrollY();
 
-        //alert("xdone:"+xdone+"\nsx:"+sx+"\nxinc:"+xinc+"\nxdec:"+xdec);
-
-        if(xdone == 0)
+        if(sx <= sxmax)
         {
-            if(sx == 1)
-            {
-                if(xinc == 1)
-                {
-                    xdone = 1;
-                } else {
-                    xdec = 1;
-                    document.getElementById("canvas").cols--;
-                }
-            } else {
-                if(xdec == 1)
-                {
-                    xdone = 1;
-                } else {
-                    xinc = 1;
-                    document.getElementById("canvas").cols++;
-                }
-            }
+            canvas.cols++;
         }
 
-        if(xdone == 1)
+        if(sy <= symax)
         {
-/*
-These lines will lock up Gecko browsers!
+            canvas.rows++;
+        }
 
-Apparently, when the first time through the script resizes it too large, on the
-second time through the script, changing the "cols" value down does nothing to
-resize the page, and it will keep resizing down and never stop.
+        if(sx > sxmax && sy > symax)
+        {
+            canvas.cols--;
+            canvas.rows--;
 
-However, this problem doesn't happen on the controlpanel:write page for equally
-unknown reasons.
-*/
-            //if(!internal)
-            //    autoResize(true);
-            document.getElementById("cols").value = document.getElementById("canvas").cols;
+            cols.value = canvas.cols;
+            rows.value = canvas.rows;
+
             return;
         }
-
     }
 
 }
