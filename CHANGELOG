@@ -42,3 +42,10 @@ Dev - July 25 to September 12, 2005
   - rdf.php uses the <dc:date> element and defers to cwbmulti.php for user detection
   - rdf.php should be requested as rdf.php/username when subdomain mode is off.
   - skins should use %{css_url} and %{rdf_url} instead of specifying stylesheet.php and rdf.php by hand
+
+1.0.0-BETA-r2 - October 29, 2005
+  - split controlpanel.php into multiple cp_*.php files
+  - excised display_topic() hackery, created output_topic_text() to display topic text without header and footer.
+  - added controlpanel_write::topic_preview for above reason. controlpanel_edit uses it too
+  - added JavaScript to automatically maximize the size of the textareas in the write and edit controlpanel pages
+  - controlpanel write page checks for duplicate topic titles
