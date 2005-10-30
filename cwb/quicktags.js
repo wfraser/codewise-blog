@@ -55,6 +55,24 @@ edButtons.push(
 
 edButtons.push(
         new edButton(
+                'ed_under'
+                ,'U'
+                ,'<u>'
+                ,'</u>'
+        )
+);
+
+edButtons.push(
+        new edButton(
+                'ed_strike'
+                ,'S'
+                ,'<s>'
+                ,'</s>'
+        )
+);
+
+edButtons.push(
+        new edButton(
                 'ed_link'
                 ,'Link'
                 ,''
@@ -258,24 +276,6 @@ edButtons.push(
                 ,'TD'
                 ,'\t\t<td>'
                 ,'</td>\n'
-        )
-);
-
-edButtons.push(
-        new edButton(
-                'ed_under'
-                ,'U'
-                ,'<u>'
-                ,'</u>'
-        )
-);
-
-edButtons.push(
-        new edButton(
-                'ed_strike'
-                ,'S'
-                ,'<s>'
-                ,'</s>'
         )
 );
 
