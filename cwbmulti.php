@@ -29,7 +29,7 @@ $starttime = (string) $sec + $usec;
 unset($sec, $usec);
 
 // define version string
-define("CWBVERSION","1.0.0-BETA-r1");
+define("CWBVERSION","1.0.0-BETA-r2");
 define("CWBTYPE", "Multi-User");
 define("SETTINGS_FILE", "settings.php");
 
@@ -116,7 +116,6 @@ if($who == "")
 } else {
     define("BLOGID", $blogdata[$who]['blogid']);
     define("BLOGNAME", $who);
-    define("ADMIN_EMAIL", $blogdata[$who]['email']);
 
     if($blogdata[$who]['custom_url'] != NULL && CUSTOM_URL_ENABLED)
     {
@@ -137,6 +136,9 @@ if($who == "")
 
 $q = $db->issue_query("SELECT blogid,name,email,realname,birthday,location,interests,links,photo,homepage,title FROM blogs WHERE blogid = '" . BLOGID . "'");
 $BLOGINFO = $db->fetch_row($q, 0, L1SQL_ASSOC);
+
+define("ADMIN_EMAIL", $BLOGINFO['email']);
+
 
 if($BLOGINFO['birthday'])
 {
