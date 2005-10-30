@@ -37,7 +37,7 @@ if(empty($_POST) || isset($_POST['resize']))
             "quicktags" => INDEX_URL . "?quicktags.js",
             "rows" => $_POST['rows'] ? $_POST['rows'] : 25,
             "cols" => $_POST['cols'] ? $_POST['cols'] : 80,
-            "text" => "",
+            "text" => $_POST['text'] ? $_POST['text'] : "",
             "title" => "Title",
         )
     );
