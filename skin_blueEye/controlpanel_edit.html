@@ -96,7 +96,7 @@ function autoResize(internal)
 
         if(xdone == 1)
         {
-<!-- :cwb_begin: comment -->
+/*
 These lines will lock up Gecko browsers!
 
 Apparently, when the first time through the script resizes it too large, on the
@@ -105,7 +105,7 @@ resize the page, and it will keep resizing down and never stop.
 
 However, this problem doesn't happen on the controlpanel:write page for equally
 unknown reasons.
-<!-- :cwb_end: comment -->
+*/
             //if(!internal)
             //    autoResize(true);
             document.getElementById("cols").value = document.getElementById("canvas").cols;
