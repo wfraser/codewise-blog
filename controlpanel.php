@@ -49,7 +49,7 @@ function controlpanel()
 
     $TITLE = $BLOGINFO['title'] . " :: Control Panel";
 
-    if(!$_SESSION['controlpanel'])
+    if($_SESSION['controlpanel'] != BLOGID)
     {
         header("Location: " . INDEX_URL . "?notloggedin");
         return;
