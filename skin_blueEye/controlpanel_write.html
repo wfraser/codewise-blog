@@ -1,11 +1,97 @@
 <form action="${posturl}" method="post">
+<script type="text/javascript">
+function autoResize(internal)
+{
+    var xdec = 0; xinc = 0; ydec = 0; yinc = 0;
+    var xdone = 0; ydone = 0;
+
+    if(navigator.appName == "Konqueror")
+    {
+        alert("this feature does not work under Konqueror");
+        return;
+    }
+
+    while(true) {
+
+        window.scrollTo(1,1);
+
+        var sx = 0; sy = 0;
+        if(typeof(window.pageYOffset) == 'number')
+        {
+            sx = window.pageXOffset;
+            sy = window.pageYOffset;
+        } else if(document.body && (document.body.scrollLeft || document.body.scrollTop)) {
+            sx = document.body.scrollLeft;
+            sy = document.body.scrollTop;
+        } else if(document.documentElement && (document.documentElement.scrollLeft || document.documentElement.scrollTop)) {
+            sx = document.documentElement.scrollLeft;
+            sy = document.documentElement.scrollTop;
+        }
+
+        if(xdone == 0)
+        {
+            if(sx == 1)
+            {
+                if(xinc == 1)
+                {
+                    xdone = 1;
+                } else {
+                    xdec = 1;
+                    document.getElementById("canvas").cols--;
+                }
+            } else {
+                if(xdec == 1)
+                {
+                    xdone = 1;
+                } else {
+                    xinc = 1;
+                    document.getElementById("canvas").cols++;
+                }
+            }
+        }
+
+        if(ydone == 0)
+        {
+            if(sy == 1)
+            {
+                if(yinc == 1)
+                {
+                    ydone = 1;
+                } else {
+                    ydec = 1;
+                    document.getElementById("canvas").rows--;
+                }
+            } else {
+                if(ydec == 1)
+                {
+                    ydone = 1;
+                } else {
+                    yinc = 1;
+                    document.getElementById("canvas").rows++;
+                }
+            }
+        }
+
+        if(xdone == 1 && ydone == 1)
+        {
+            if(!internal)
+                autoResize(true);
+            document.getElementById("rows").value = document.getElementById("canvas").rows;
+            document.getElementById("cols").value = document.getElementById("canvas").cols;
+            return;
+        }
+
+    }
+
+}
+</script>
 <script type="text/javascript" src="${quicktags}"></script>
 <table>
     <tr>
         <td>
             <table style="border:none">
                 <tr>
-                    <td><input type="text" width="20em" name="title" value="${title}" /></td>
+                    <td><input type="text" size="20" name="title" value="${title}" /></td>
                     <td><script type="text/javascript">edToolbar();</script></td>
                 </tr>
             </table>
@@ -13,15 +99,28 @@
     </tr>
     <tr>
         <td>
-            <textarea name="text" id="canvas" rows="25" cols="130">${text}</textarea>
+            <textarea name="text" id="canvas" rows="${rows}" cols="${cols}">${text}</textarea>
             <script type="text/javascript">var edCanvas = document.getElementById('canvas');</script>
         </td>
     </tr>
     <tr>
         <td>
-            <input type="submit" value="submit" />
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <input type="submit" value="preview" name="preview" />
+            <table style="border:none" width="100%">
+                <tr>
+                    <td>
+                        <input type="submit" value="submit" />
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="submit" value="preview" name="preview" />
+                    </td>
+                    <td align="right">
+                        <input type="submit" name="resize" value="resize text area" />
+                        <input type="text" size="3" name="cols" id="cols" value="${cols}" />
+                        x
+                        <input type="text" size="3" name="rows" id="rows" value="${rows}" />
+                        <input type="button" value="auto resize" onclick="autoResize()" />
+                    </td>
+                </tr>
+            </table>
         </td>
     </tr>
 </table>

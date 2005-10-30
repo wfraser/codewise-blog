@@ -28,13 +28,15 @@
 
 $current = "write";
 
-if(empty($_POST))
+if(empty($_POST) || isset($_POST['resize']))
 {
     $body = skinvoodoo(
         "controlpanel_write", "",
         array(
             "posturl" => INDEX_URL . "?controlpanel:write",
             "quicktags" => INDEX_URL . "?quicktags.js",
+            "rows" => $_POST['rows'] ? $_POST['rows'] : 25,
+            "cols" => $_POST['cols'] ? $_POST['cols'] : 80,
             "text" => "",
             "title" => "Title",
         )
@@ -49,6 +51,8 @@ if(empty($_POST))
             array(
                 "posturl" => INDEX_URL . "?controlpanel:write",
                 "quicktags" => INDEX_URL . "?quicktags.js",
+                "rows" => $_POST['rows'] ? $_POST['rows'] : 25,
+                "cols" => $_POST['cols'] ? $_POST['cols'] : 80,
                 "text" => $_POST['text'],
                 "title" => $_POST['title'],
             )
@@ -65,9 +69,9 @@ if(empty($_POST))
             "text" => $_POST['text'],
         );
 
-        //$db->insert("topics", $data);
+        $db->insert("topics", $data);
 
-        //$tid = $db->fetch_var( $db->issue_query("SELECT tid FROM topics WHERE timestamp = " . $data['timestamp']) );
+        $tid = $db->fetch_var( $db->issue_query("SELECT tid FROM topics WHERE timestamp = " . $data['timestamp']) );
 
         $body = skinvoodoo("controlpanel_write", "success_redirect", array("topic_url" => INDEX_URL . "?tid=$tid"));
 
