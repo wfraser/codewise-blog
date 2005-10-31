@@ -53,6 +53,9 @@ foreach($desc as $col)
         $sectionlist .= skinvoodoo("controlpanel_skin", "sectionlist_entry",   array("section" => $col['Field']));
 }
 
+if(isset($_POST['resize']))
+    $_POST['section_sel'] = $_POST['section']; // hack to get the section edit box to redisplay
+
 if(isset($_POST['section_sel']))
 {
     $q = $db->issue_query("SELECT ".$db->prepare_value($_POST['section_sel'], FALSE)." FROM skin WHERE blogid = '".BLOGID."'");
@@ -69,6 +72,8 @@ if(isset($_POST['section_sel']))
     $content = skinvoodoo("controlpanel_skin", "section_edit", array(
         "section_name" => $_POST['section_sel'],
         "using_master" => $using_master,
+        "rows" => $_POST['rows'] ? $_POST['rows'] : 30,
+        "cols" => $_POST['cols'] ? $_POST['cols'] : 80,
         "section_content" => str_replace(
             array("%{",         "\${"       ),
             array("&#x0025;{",  "&#x0024{"  ),
