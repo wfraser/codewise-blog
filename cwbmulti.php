@@ -138,7 +138,7 @@ $q = $db->issue_query("SELECT blogid,name,email,realname,birthday,location,inter
 $BLOGINFO = $db->fetch_row($q, 0, L1SQL_ASSOC);
 
 define("ADMIN_EMAIL", $BLOGINFO['email']);
-
+define("BLOG_TITLE", $BLOGINFO['title']);
 
 if($BLOGINFO['birthday'])
 {
