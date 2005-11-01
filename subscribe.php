@@ -35,16 +35,16 @@ function process_subscribe_form()
 
     $q = $db->issue_query("SELECT email FROM subscriptions WHERE email = " . $db->prepare_value($_POST['email']) . " AND blogid = '" . BLOGID . "'");
     if($db->num_rows[$q] > 0)
-        return skinvoodoo("error", "error", array("message" => "This email address is already subscribed to CodewiseBlog."));
+        return skinvoodoo("error", "error", array("message" => "This email address is already subscribed to " . BLOG_TITLE . "."));
 
     $data = array("blogid" => BLOGID, "email" => $_POST['email'], "password" => `uuidgen`);
 
     $db->insert("subscriptions", $data);
 
     if(EMAIL)
-        mail( ADMIN_EMAIL, "New CodewiseBlog Subscriber", $_POST['email'] . " has subscribed to CodewiseBlog.", "From: blog.codewise.org <nobody@codewise.org>");
+        mail( ADMIN_EMAIL, "New Blog Subscriber", $_POST['email'] . " has subscribed to your blog.", "From: " . BASE_URL . " <nobody@" . BASE_URL . ">");
 
-    return skinvoodoo("error", "notify", array("message" => "You have been successfully subscribed to CodewiseBlog.<br />"
+    return skinvoodoo("error", "notify", array("message" => "You have been successfully subscribed to " . BLOG_TITLE . ".<br />"
         . "You will be notified of future updates at the provided email address.<br />"
         . "Each email will contain a link which can be used to unsubscribe at any time.<br />"
         . "<b>Thanks!</b>"));
@@ -75,13 +75,16 @@ function do_unsubscribe()
 
     $q = $db->issue_query("DELETE FROM subscriptions WHERE email = " . $db->prepare_value($email) . " AND password = " . $db->prepare_value($password) . " AND blogid = '" . BLOGID . "' LIMIT 1");
 
+    if(EMAIL)
+        mail( ADMIN_EMAIL, "Blog Subscription Lost", $_POST['email'] . " has unsubscribed from your blog.", "From: " . BASE_URL . " <nobody@" . BASE_URL . ">");
+
     if($db->num_rows[$q] == 0)
         return skinvoodoo("error", "error", array("message" =>
               "Sorry, I was unable to unsubscribe you.<br />"
             . "You either specified an incorrect email or an incorrect password, or perhaps both.<br />"));
     else
         return skinvoodoo("error", "notify", array("message" =>
-            "You have been successfully unsubscribed from CodewiseBlog and will no longer recieve notification of future updates."));
+            "You have been successfully unsubscribed from " . BLOG_TITLE . " and will no longer recieve notification of future updates."));
 
 } // end of do_unsubscribe()
 
