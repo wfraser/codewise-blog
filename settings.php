@@ -1,5 +1,16 @@
 <?php
 
+die("<html>
+<head>
+<title>CodewiseBlog</title>
+</head>
+<body>
+CodewiseBlog has not yet been configured.<br />
+Either edit the settings.php file by hand and manually install the database,
+or use the included installer, <a href=\"install.php\">install.php</a>
+</body>
+</html>");
+
 define('FSPATH', '/var/www/htdocs/');
 define('CUSTOM_URL_ENABLED', TRUE);
 define('SUBDOMAIN_MODE', FALSE);
