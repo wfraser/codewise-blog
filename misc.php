@@ -256,7 +256,7 @@ function mail_db_error($error)
     $message .= "\n\n\$_SERVER:\n" . var_export($_SERVER, true) . "\n\n\$_GET:\n" . var_export($_GET, true) . "\n\n\$_POST:\n" . var_export($_POST, true);
 
     if(EMAIL)
-        $okay = mail(SQL_ADMIN_EMAIL, "CodewiseBlog Error Notice", $message, "From: blog.codewise.org <nobody@codewise.org>");
+        $okay = mail(SQL_ADMIN_EMAIL, "CodewiseBlog Error Notice", $message, "From: ".BASE_DOMAIN." <nobody@".BASE_DOMAIN.">");
 
     preg_match("/\A(.+)<br \/>\n(.+)<br \/>\n(.*<br \/>\n)*(.*)\Z/", $error, $matches);
     $errortype = $matches[1];

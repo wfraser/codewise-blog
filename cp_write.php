@@ -35,9 +35,10 @@ if(empty($_POST) || isset($_POST['resize']))
         array(
             "posturl" => INDEX_URL . "?controlpanel:write",
             "quicktags" => INDEX_URL . "?quicktags.js",
+            "autoresize" => INDEX_URL . "?autoresize.js",
             "rows" => $_POST['rows'] ? $_POST['rows'] : 25,
             "cols" => $_POST['cols'] ? $_POST['cols'] : 80,
-            "text" => "",
+            "text" => $_POST['text'] ? $_POST['text'] : "",
             "title" => "Title",
         )
     );
@@ -51,6 +52,7 @@ if(empty($_POST) || isset($_POST['resize']))
             array(
                 "posturl" => INDEX_URL . "?controlpanel:write",
                 "quicktags" => INDEX_URL . "?quicktags.js",
+                "autoresize" => INDEX_URL . "?autoresize.js",
                 "rows" => $_POST['rows'] ? $_POST['rows'] : 25,
                 "cols" => $_POST['cols'] ? $_POST['cols'] : 80,
                 "text" => $_POST['text'],
@@ -72,6 +74,7 @@ if(empty($_POST) || isset($_POST['resize']))
                 array(
                     "posturl" => INDEX_URL . "?controlpanel:write",
                     "quicktags" => INDEX_URL . "?quicktags.js",
+                    "autoresize" => INDEX_URL . "?autoresize.js",
                     "rows" => $_POST['rows'] ? $_POST['rows'] : 25,
                     "cols" => $_POST['cols'] ? $_POST['cols'] : 80,
                     "text" => $_POST['text'],
@@ -88,9 +91,36 @@ if(empty($_POST) || isset($_POST['resize']))
                 "text" => $_POST['text'],
             );
 
-            //$db->insert("topics", $data);
+            $db->insert("topics", $data);
 
-            //$tid = $db->fetch_var( $db->issue_query("SELECT tid FROM topics WHERE timestamp = " . $data['timestamp']) );
+            $tid = $db->fetch_var( $db->issue_query("SELECT tid FROM topics WHERE timestamp = " . $data['timestamp']) );
+
+            if(EMAIL)
+            {
+                $q = $db->issue_query("SELECT * FROM subscriptions WHERE blogid = '" . BLOGID . "'");
+                $rows = $db->fetch_all($q);
+
+                foreach($rows as $row)
+                {
+                    $email = $row['email'];
+                    $password = $row['password'];
+
+                    $message =
+"Hello,
+
+This is the " . $BLOGINFO['title'] . " subscription service letting you know that there has been a new blog entry posted, entitled \"" . $_POST['title'] . "
+You can view it here: " . INDEX_URL . "?tid=$tid
+
+Thanks for reading!
+
+--
+you may unsubscribe from these mailings by visiting this url:
+" . INDEX_URL . "?unsubscribe&email=$email&password=$password
+";
+
+                    mail($email, $BLOGINFO['title'] . " Subscription", $message, "From: blog.codewise.org <nobody@codewise.org>");
+                }
+            }
 
             $body = skinvoodoo("controlpanel_write", "success_redirect", array("topic_url" => INDEX_URL . "?tid=$tid"));
         }

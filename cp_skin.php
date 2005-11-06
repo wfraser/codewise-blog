@@ -42,6 +42,9 @@ if(isset($_POST['go_baby_go']))
 $q = $db->issue_query("DESCRIBE skin");
 $desc = $db->fetch_all($q, L1SQL_ASSOC);
 
+if(isset($_POST['resize']))
+    $_POST['section_sel'] = $_POST['section']; // hack to get the section edit box to redisplay
+
 $sectionlist = "";
 foreach($desc as $col)
 {
@@ -69,6 +72,9 @@ if(isset($_POST['section_sel']))
     $content = skinvoodoo("controlpanel_skin", "section_edit", array(
         "section_name" => $_POST['section_sel'],
         "using_master" => $using_master,
+        "autoresize" => INDEX_URL . "?autoresize.js",
+        "rows" => $_POST['rows'] ? $_POST['rows'] : 30,
+        "cols" => $_POST['cols'] ? $_POST['cols'] : 80,
         "section_content" => str_replace(
             array("%{",         "\${"       ),
             array("&#x0025;{",  "&#x0024{"  ),

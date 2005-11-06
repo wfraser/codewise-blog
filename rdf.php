@@ -61,7 +61,7 @@ if(isset($_GET['all_one_page']))
     $limit = "";
 else
     $limit = "LIMIT 10"; // rdf spec says it must be 10
-$q = $db->issue_query("SELECT tid,title,text,timestamp FROM topics WHERE blogid = '" . BLOGID . "' ORDER BY timestamp $limit");
+$q = $db->issue_query("SELECT tid,title,text,timestamp FROM topics WHERE blogid = '" . BLOGID . "' ORDER BY timestamp DESC $limit");
 $data = $db->fetch_all($q);
 
 foreach($data as $row)

@@ -45,6 +45,7 @@ table.skintable td td {
 </form>
 
 <!-- :cwb_start: section_edit -->
+<script type="text/javascript" src="${autoresize}"></script>
 <input type="hidden" name="section" value="${section_name}" />
 <!-- #cwb_if# ${using_master} -->
 <b>Using master skin</b>
@@ -53,7 +54,20 @@ table.skintable td td {
 <input type="submit" name="revert" value="Revert to Master" />
 <!-- #cwb_endif# -->
 <br /><br />
-<textarea name="section_content" rows="30" cols="80" style="font-family:monospace">${section_content}</textarea>
+<textarea name="section_content" rows="${rows}" cols="${cols}" id="canvas" style="font-family:monospace">${section_content}</textarea>
 <br /><br />
-<input type="submit" name="go_baby_go" value="Submit Changes" />
+<table style="border:none" width="100%">
+    <tr>
+        <td>
+            <input type="submit" name="go_baby_go" value="Submit Changes" />
+        </td>
+        <td align="right">
+            <input type="submit" name="resize" value="resize text area" />
+            <input type="text" size="3" name="cols" id="cols" value="${cols}" />
+            x
+            <input type="text" size="3" name="rows" id="rows" value="${rows}" />
+            <input type="button" value="auto resize" onclick="autoResize()" />
+        </td>
+    </tr>
+</table>
 <!-- :cwb_end: section_edit -->

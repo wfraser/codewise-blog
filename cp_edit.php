@@ -28,7 +28,7 @@
 
 $current = "edit";
 
-if(empty($_POST) || isset($_POST['resize']))
+if(empty($_POST))
 {
     $q = $db->issue_query("SELECT tid,title,timestamp FROM topics WHERE blogid = '" . BLOGID . "' ORDER BY tid DESC");
     $data = $db->fetch_all($q);
@@ -166,6 +166,7 @@ if(empty($_POST) || isset($_POST['resize']))
             "ampm_sel"   => $ampm_sel,
             "preview" => $preview,
             "quicktags" => INDEX_URL . "?quicktags.js",
+            "autoresize" => INDEX_URL . "?autoresize.js",
             "rows" => $_POST['rows'] ? $_POST['rows'] : 25,
             "cols" => $_POST['cols'] ? $_POST['cols'] : 80,
         )
