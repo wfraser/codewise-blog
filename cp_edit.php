@@ -166,6 +166,7 @@ if(empty($_POST))
             "ampm_sel"   => $ampm_sel,
             "preview" => $preview,
             "quicktags" => INDEX_URL . "?quicktags.js",
+            "autoresize" => INDEX_URL . "?autoresize.js",
             "rows" => $_POST['rows'] ? $_POST['rows'] : 25,
             "cols" => $_POST['cols'] ? $_POST['cols'] : 80,
         )
