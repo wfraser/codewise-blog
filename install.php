@@ -1,4 +1,3 @@
-<?php die("<html><body>The installer has been disabled.</body></html>"); ?>
 <?php
 
 /*
@@ -92,7 +91,9 @@ case 1:
         if(!is_dir($fspath)) {
             $perms = "<b>path does not exist</b>";
         } else {
-            $writable = is_writable($fspath . "/settings.php");
+            $writable = is_writable("$fspath/settings.php");
+            $writable_install = is_writable("$fspath/install.php");
+            $writable_htaccess = is_writable("$fspath/.htaccess");
         }
 
 ?>
@@ -117,6 +118,16 @@ case 1:
         <td>settings.php is writable?</td>
         <td><?=($writable ? "yes" : "no")?></td>
         <td>settings.php needs to be writable before we continue
+    </tr>
+    <tr>
+        <td>install.php is writable?</td>
+        <td><?=($writable_install ? "yes" : "no")?></td>
+        <td>install.php needs to be writable or the installer won't be able to disable itself when the install is done and you'll have to do so manually.</td>
+    </tr>
+    <tr>
+        <td>.htaccess is writable?</td>
+        <td><?=($writable_htaccess ? "yes" : "no")?></td>
+        <td>If you're using Apache, .htaccess needs to be writable or the installer won't be able to finish the installation and you'll have to edit the file manually.</td>
     </tr>
     </table>
 </td>
