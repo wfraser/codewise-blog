@@ -61,7 +61,7 @@ default:
 </tr>
 <tr>
 <td align="center">
-    <a href="?stage=1"><span style="font-size:x-large">Start Stage 1</span></a>
+    <a href="install.php?stage=1"><span style="font-size:x-large">Start Stage 1</span></a>
 </td>
 </tr>
 </table>
@@ -103,7 +103,7 @@ case 1:
 </head>
 <body>
 <h1 class="main-title">CodewiseBlog</h1>
-<form action="?stage=1" method="post">
+<form action="install.php?stage=1" method="post">
 <table style="border:none">
 <tr>
 <td>
@@ -186,7 +186,7 @@ define('SQL_ADMIN_EMAIL', '{$_POST['sql_admin_email']}');
 ";
         file_put_contents("settings.php", $file);
 
-        header("Location: ?stage=3");
+        header("Location: install.php?stage=3");
     } else {
 
 ?>
@@ -197,7 +197,7 @@ define('SQL_ADMIN_EMAIL', '{$_POST['sql_admin_email']}');
 </head>
 <body>
 <h1 class="main-title">CodewiseBlog</h1>
-<form action="?stage=2" method="post">
+<form action="install.php?stage=2" method="post">
 <table style="border:none">
 <tr>
 <td>
@@ -249,6 +249,7 @@ define('SQL_ADMIN_EMAIL', '{$_POST['sql_admin_email']}');
 case 3:
 
     require("settings.php");
+    require("file_put_contents.php");
 
     chdir(FSPATH);
 
@@ -293,7 +294,7 @@ $allowed_tags
 ";
         file_put_contents("settings.php", $file);
 
-        header("Location: ?stage=4");
+        header("Location: install.php?stage=4");
     } else {
 
         preg_match("/^(([^.]+)\\.)?([^.]+\\.[^.]+)$/", $_SERVER['HTTP_HOST'], $match);
@@ -311,7 +312,7 @@ $allowed_tags
 </head>
 <body onload="loadElements()">
 <h1 class="main-title">CodewiseBlog</h1>
-<form action="?stage=3" method="post">
+<form action="install.php?stage=3" method="post">
 <script type="text/javascript" language="JavaScript">
 var subdomainMode;
 var baseDomain;
@@ -559,7 +560,7 @@ Go back and change your username to something else.
         $db->insert("blogs", $user_blog);
         $db->insert("skin", array("blogid" => 2));
 
-        header("Location: ?stage=5");
+        header("Location: install.php?stage=5");
 
     } else {
 
@@ -571,7 +572,7 @@ Go back and change your username to something else.
 </head>
 <body>
 <h1 class="main-title">CodewiseBlog</h1>
-<form action="?stage=4" method="post">
+<form action="install.php?stage=4" method="post">
 <table style="border:none">
 <tr>
 <td>
@@ -662,6 +663,7 @@ Go back and change your username to something else.
 case 5:
 
     require("settings.php");
+    require("file_put_contents.php");
 
     chdir(FSPATH);
 
@@ -736,7 +738,7 @@ RewriteRule !(CHANGELOG|favicon\.ico|rdf\.php(/.*)?|stylesheet\.php|skin_importe
 </tr>
 <tr>
 <td align="center">
-    <form action="?stage=5" method="post">
+    <form action="install.php?stage=5" method="post">
     <input type="submit" name="submit" value="Disable Installer and Finish Installation" />
     </form>
 </td>
