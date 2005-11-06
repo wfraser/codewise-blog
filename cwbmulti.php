@@ -29,9 +29,9 @@ $starttime = (string) $sec + $usec;
 unset($sec, $usec);
 
 // define version string
-define("CWBVERSION","1.0.0-BETA-r2");
+define("CWBVERSION","1.0.0-RC1");
 define("CWBTYPE", "Multi-User");
-define("SETTINGS_FILE", "settings2.php");
+define("SETTINGS_FILE", "settings.php");
 
 // Unique ID for this request
 define("UNIQ", md5(uniqid(mt_rand(), true)));
