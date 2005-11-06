@@ -79,7 +79,7 @@ case 1:
 
         file_put_contents("settings.php", $file);
 
-        header("Location: ?stage=2");
+        header("Location: install.php?stage=2");
     } else {
 
         if(isset($_POST['fspath'])) {
