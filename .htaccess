@@ -1,1 +1,3 @@
-DirectoryIndex install.php
+Options +Indexes +FollowSymLinks
+RewriteEngine on
+RewriteRule !(CHANGELOG|favicon\.ico|rdf\.php(/.*)?|stylesheet\.php|skin_importer\.php|install\.php)$ cwbmulti.php
