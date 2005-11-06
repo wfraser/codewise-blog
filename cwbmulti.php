@@ -31,7 +31,7 @@ unset($sec, $usec);
 // define version string
 define("CWBVERSION","1.0.0-BETA-r2");
 define("CWBTYPE", "Multi-User");
-define("SETTINGS_FILE", "settings.php");
+define("SETTINGS_FILE", "settings2.php");
 
 // Unique ID for this request
 define("UNIQ", md5(uniqid(mt_rand(), true)));
@@ -123,10 +123,7 @@ if($who == "")
     } elseif(SUBDOMAIN_MODE) {
         define("INDEX_URL", "http://" . BLOGNAME . "." . BASE_DOMAIN . INSTALLED_PATH);
     } else {
-        if(DEFAULT_SUBDOMAIN == "")
-            define("INDEX_URL", "http://" . BASE_DOMAIN . INSTALLED_PATH . BLOGNAME);
-        else
-            define("INDEX_URL", "http://" . DEFAULT_SUBDOMAIN . "." . BASE_DOMAIN . INSTALLED_PATH . BLOGNAME);
+        define("INDEX_URL", "http://" . BASE_DOMAIN . INSTALLED_PATH . BLOGNAME);
     }
 }
 
@@ -192,6 +189,13 @@ if(!defined("NO_ACTION"))
     {
         header("Content-type: text/javascript");
         die(file_get_contents("cwb/quicktags.js"));
+    }
+
+    // autorResize() script from controlpanel pages
+    if(isset($_GET['autoresize_js']))
+    {
+        header("Content-type: text/javascript");
+        die(file_get_contents("cwb/autoresize.js"));
     }
 
     if(!is_numeric($_GET['page']))
