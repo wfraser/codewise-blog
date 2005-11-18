@@ -142,5 +142,57 @@ td {
     Will be processed as follows: first, the <code>${variable}</code> part is replaced with <code>"Blah"</code>. Next, the PHP code <code>strtolower("Blah") == "blah"</code> is evaluated, and returns true. Then the Voodoo parser uses the code between the If and Else macros.<br /><br />
     Due to the way in which the condition is evaluated, some PHP functions may not do what you want. For example, the <code>isset()</code> function is useless, because it only works with PHP variables, and Voodoo will replace the Voodoo variables with strings. Also, any modifications made to the variables are equally useless, because the changes will not be saved to the Voodoo variables. You are only operating on the expansions of those Voodoo variables.
 </div>
+
+<a name="VARS"></a>
+<h2>Global and Local Variables</h2>
+<div class="indent">
+    Variables come in two varieties: global and local. Global variables are available to all sections and subfunctions, all the time. Their form is
+    <div class="code">%{varname}</div>
+    Local variables are a different sort. Depending on what skin section and subfunction you are in, different variables are available. Their form is
+    <div class="code">${varname}</div>
+    These may be inserted anywhere in your Voodoo skin.
+</div>
+
+<a name="CALLS"></a>
+<h2>Subfunction Calls</h2>
+<div class="indent">
+    While subfunctions are primarily designed to be called by CodewiseBlog through the Voodoo parser, you can call them from within your skin by using subfunction call macros in the following form:
+    <div class="code">&lt;!-- *cwb_call* function_name arg1="value" arg2="${variable}" --></div>
+    The call consists of a subfunction name followed by a list of arguments and their variables. The arguments are made available to the subfunction as its local variables. The argument list may contain other Voodoo variables.
+</div>
+
+<a name="AUTHOR"></a>
+<h2>Author</h2>
+<div class="indent">
+    CodewiseBlog, the Voodoo Skin Engine, and this document were written by Bill R. Fraser. Email: bill.fraser<span style="display:none">anti-spam</span>@gmail.com
+</div>
+
+<a name="LICENSE"></a>
+<h2>License</h2>
+<div class="indent"><pre>
+CodewiseBlog is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+CodewiseBlog is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with CodewiseBlog; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+---
+
+This document copyright (c) 2005 Codewise.org
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.2
+or any later version published by the Free Software Foundation;
+with no Invariant Sections, no Front-Cover Texts, and no Back-Cover
+Texts.  A copy of the license is included in the /doc directory of the
+CodewiseBlog distribution under the filename "<a href="../gfdl.txt">gfdl.txt</a>".
+</pre></div>
 </body>
 </html>
