@@ -151,7 +151,7 @@ function process_reply_form($tid)
     if(EMAIL)
     {
         $message = $data['name'] . " has posted a comment on \"$topic_title\":\n" . INDEX_URL . "?tid={$data['tid']}&pid=$pid";
-        mail( ADMIN_EMAIL, "New CodewiseBlog Comment", $message, "From: blog.codewise.org <nobody@codewise.org>");
+        mail( ADMIN_EMAIL, "Blog Comment", $message, "From: ".BASE_DOMAIN." <nobody@".BASE_DOMAIN.">");
     }
 
     return skinvoodoo("error", "notify", array("message" => "Your comment has been successfully recorded.<br />"

@@ -56,3 +56,8 @@ Dev - July 25 to September 12, 2005
   - lots of fixes pertaining to the adherance to settings.php values and using the correct Blog Title
   - fixed bug in rdf.php, it now displays topics in correct order
   - use a request to INDEX_URL . "?autoresize_js" to use cwb/autoresize.js in the CP pages instead of each having duplicate autoresizer code
+
+1.0.0-RC2 - November 18, 2005
+  - miscellaneous fixes with the installer
+  - added to the Voodoo documentation
+  - some fixes to respect the settings.php and bloginfo variables more
