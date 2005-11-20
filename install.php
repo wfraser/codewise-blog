@@ -8,6 +8,24 @@
 ** Copyright (c) 2005 Codewise.org
 */
 
+/*
+** This file is part of CodewiseBlog
+**
+** CodewiseBlog is free software; you can redistribute it and/or modify
+** it under the terms of the GNU General Public License as published by
+** the Free Software Foundation; either version 2 of the License, or
+** (at your option) any later version.
+**
+** CodewiseBlog is distributed in the hope that it will be useful,
+** but WITHOUT ANY WARRANTY; without even the implied warranty of
+** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+** GNU General Public License for more details.
+**
+** You should have received a copy of the GNU General Public License
+** along with CodewiseBlog; if not, write to the Free Software
+** Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+*/
+
 switch($_GET['stage']) {
 
 default:
@@ -16,7 +34,7 @@ default:
 <html>
 <head>
 <title>CodewiseBlog Installer</title>
-<link rel="stylesheet" href="skin_blueEye/blueEye.css">
+<link rel="stylesheet" href="skin_blueEye/blueEye.css" />
 </head>
 <body>
 <h1 class="main-title">CodewiseBlog</h1>
@@ -100,7 +118,7 @@ case 1:
 <html>
 <head>
 <title>CodewiseBlog Installer</title>
-<link rel="stylesheet" href="skin_blueEye/blueEye.css">
+<link rel="stylesheet" href="skin_blueEye/blueEye.css" />
 </head>
 <body>
 <h1 class="main-title">CodewiseBlog</h1>
@@ -161,6 +179,41 @@ case 2:
 
         $db = new L1_MySQL($_POST['sql_host'], $_POST['sql_user'], $_POST['sql_pass'], $_POST['sql_db']);
 
+        $q = $db->issue_query("SHOW TABLES");
+        $tables = $db->fetch_column($q);
+
+        if(!isset($_GET['force']) && count($tables = array_intersect(array("blogs","replies","shoutbox","skin","subscriptions","topics"), $tables)) > 0)
+        {
+            foreach($_POST as $name => $value)
+            {
+                $hiddens .= "<input type=\"hidden\" name=\"$name\" value=\"$value\" />\n";
+            }
+
+            $table_list = "<code>" . implode("</code>, <code>", $tables) . "</code>";
+?>
+<html>
+<head>
+<title>CodewiseBlog Installer</title>
+<link rel="stylesheet" href="skin_blueEye/blueEye.css" />
+</head>
+<body>
+<h1 class="main-title">CodewiseBlog</h1>
+<form action="install.php?stage=2&amp;force" method="post">
+<?=$hiddens?>
+<div style="font-size:xx-large; color:red">WARNING:</div>
+<br />
+<b>There appears to be a CodewiseBlog installation already present in the specified database.<br />
+Continuing farther will irrevocably destroy this data!</b><br />
+<br />
+The following tables will be erased: <?=$table_list?><br />
+<br />
+<input type="submit" value="Continue and Destroy Data?" />
+</body>
+</html>
+<?php
+            exit;
+        }
+
         $sql = file_get_contents(FSPATH . "structure.sql");
         foreach(explode(";", $sql) as $statement)
         {
@@ -204,7 +257,7 @@ define('SQL_ADMIN_EMAIL', '{$_POST['sql_admin_email']}');
 <html>
 <head>
 <title>CodewiseBlog Installer</title>
-<link rel="stylesheet" href="skin_blueEye/blueEye.css">
+<link rel="stylesheet" href="skin_blueEye/blueEye.css" />
 </head>
 <body>
 <h1 class="main-title">CodewiseBlog</h1>
@@ -319,7 +372,7 @@ $allowed_tags
 <html>
 <head>
 <title>CodewiseBlog Installer</title>
-<link rel="stylesheet" href="skin_blueEye/blueEye.css">
+<link rel="stylesheet" href="skin_blueEye/blueEye.css" />
 </head>
 <body onload="loadElements()">
 <h1 class="main-title">CodewiseBlog</h1>
@@ -496,6 +549,7 @@ case 4:
             die("<html>
 <head>
 <title>CodewiseBlog Installer</title>
+<link rel=\"stylesheet\" href=\"skin_blueEye/blueEye.css\" />
 </head>
 <body>
 The following required fields were left empty.
@@ -509,6 +563,7 @@ You must go back and fill them in before installation can continue.
             die("<html>
 <head>
 <title>CodewiseBlog Installer</title>
+<link rel=\"stylesheet\" href=\"skin_blueEye/blueEye.css\" />
 </head>
 <body>
 Your username may only contain lower-case letters, numbers, and dashes.
@@ -521,6 +576,7 @@ Your username may only contain lower-case letters, numbers, and dashes.
             die("<html>
 <head>
 <title>CodewiseBlog Installer</title>
+<link rel=\"stylesheet\" href=\"skin_blueEye/blueEye.css\" />
 </head>
 <body>
 Sorry, the username 'root' is reserved for the CodewiseBlog system.
@@ -579,7 +635,7 @@ Go back and change your username to something else.
 <html>
 <head>
 <title>CodewiseBlog Installer</title>
-<link rel="stylesheet" href="skin_blueEye/blueEye.css">
+<link rel="stylesheet" href="skin_blueEye/blueEye.css" />
 </head>
 <body>
 <h1 class="main-title">CodewiseBlog</h1>
@@ -693,7 +749,7 @@ RewriteRule !(CHANGELOG|favicon\.ico|rdf\.php(/.*)?|stylesheet\.php|skin_importe
 <html>
 <head>
 <title>CodewiseBlog Installer</title>
-<link rel="stylesheet" href="skin_blueEye/blueEye.css">
+<link rel="stylesheet" href="skin_blueEye/blueEye.css" />
 </head>
 <body>
 <h1 class="main-title">CodewiseBlog</h1>
@@ -710,7 +766,7 @@ RewriteRule !(CHANGELOG|favicon\.ico|rdf\.php(/.*)?|stylesheet\.php|skin_importe
 <html>
 <head>
 <title>CodewiseBlog Installer</title>
-<link rel="stylesheet" href="skin_blueEye/blueEye.css">
+<link rel="stylesheet" href="skin_blueEye/blueEye.css" />
 </head>
 <body>
 <h1 class="main-title">CodewiseBlog</h1>
