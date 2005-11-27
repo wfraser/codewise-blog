@@ -52,6 +52,7 @@ if(BLOGID !== 1)
             "default_subdomain" => DEFAULT_SUBDOMAIN,
             "topics_per_page" => TOPICS_PER_PAGE,
             "posts_per_page" => POSTS_PER_PAGE,
+            "shouts_per_page" => SHOUTS_PER_PAGE,
             "date_format" => DATE_FORMAT,
             "anonymous_name" => ANONYMOUS_NAME,
             "email" => EMAIL,
@@ -131,6 +132,14 @@ if(BLOGID !== 1)
         $file);
     if($file != $filenew)
         $applied[] = "POSTS_PER_PAGE";
+    $file = $filenew;
+
+    $filenew = preg_replace(
+        "/(?<=\\s)define\\(\\s*(['\"])((?-i)SHOUTS_PER_PAGE)\\1,\\s*(['\"])((?-i)" . str_replace("/", "\\/", quotemeta(SHOUTS_PER_PAGE)) . ")\\3\\s*\\);/is",
+        "define('SHOUTS_PER_PAGE', '" . $_POST['shouts_per_page'] . "');",
+        $file);
+    if($file != $filenew)
+        $applied[] = "SHOUTS_PER_PAGE";
     $file = $filenew;
 
     $filenew = preg_replace(
