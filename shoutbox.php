@@ -30,9 +30,9 @@ function shoutbox()
 {
     global $db;
 
-    $q = $db->issue_query("SELECT * FROM shoutbox WHERE blogid = '" . BLOGID . "' ORDER BY timestamp ASC LIMIT 10");
-
+    $q = $db->issue_query("SELECT * FROM shoutbox WHERE blogid = '" . BLOGID . "' ORDER BY timestamp DESC LIMIT ".SHOUTS_PER_PAGE);
     $data = $db->fetch_all($q, L1SQL_ASSOC);
+    $data = array_reverse($data);
 
     $contents = "";
     for($i = 0; $row = $data[$i]; $i++)
