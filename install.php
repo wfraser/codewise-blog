@@ -349,6 +349,7 @@ define('INSTALLED_PATH', '{$_POST['installed_path']}');
 define('CUSTOM_URL_ENABLED', {$_POST['custom_url_enabled']});
 define('TOPICS_PER_PAGE', '{$_POST['topics_per_page']}');
 define('POSTS_PER_PAGE', '{$_POST['posts_per_page']}');
+define('SHOUTS_PER_PAGE', '{$_POST['shouts_per_page']}');
 define('DATE_FORMAT', '{$_POST['date_format']}');
 define('ANONYMOUS_NAME', '{$_POST['anonymous_name']}');
 
@@ -462,6 +463,11 @@ function dataChanged()
         <td>Comments Per Page:</td>
         <td><input type="text" size="3" name="posts_per_page" value="10" /></td>
         <td>How many comments will be displayed on one page.</td>
+    </tr>
+    <tr>
+        <td>Shoutbox Entries Per Page:</td>
+        <td><input type="text" size="3" name="shouts_per_page" value="10" /></td>
+        <td>The shoutbox will only show this many shouts at a time.</td>
     </tr>
     <tr>
         <td>Date Format:</td>
