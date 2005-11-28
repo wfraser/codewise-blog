@@ -3,8 +3,10 @@
 die("<html>
 <head>
 <title>CodewiseBlog</title>
+<link rel=\"stylesheet\" href=\"skin_blueEye/blueEye.css\" />
 </head>
 <body>
+<h1 class=\"main-title\">CodewiseBlog</h1>
 CodewiseBlog has not yet been configured.<br />
 Either edit the settings.php file by hand and manually install the database,
 or use the included installer, <a href=\"install.php\">install.php</a>
@@ -19,6 +21,7 @@ define('INSTALLED_PATH', '/');
 define('DEFAULT_SUBDOMAIN', 'www');
 define('TOPICS_PER_PAGE', '5');
 define('POSTS_PER_PAGE', '10');
+define('SHOUTS_PER_PAGE', '10');
 define('DATE_FORMAT', 'F jS, Y \a\t g:i A');
 define('ANONYMOUS_NAME', 'Anonymous');
 define('EMAIL', TRUE);

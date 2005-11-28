@@ -29,7 +29,7 @@ $starttime = (string) $sec + $usec;
 unset($sec, $usec);
 
 // define version string
-define("CWBVERSION","1.0.0-RC2");
+define("CWBVERSION","1.0.0-RC3");
 define("CWBTYPE", "Multi-User");
 define("SETTINGS_FILE", "settings.php");
 
@@ -170,8 +170,8 @@ if(!defined("NO_ACTION"))
     {
         if(preg_match("/^controlpanel:?/", $key))
         {
-            $out = controlpanel();
-            die(str_replace("%{runtime}", runtime(), $out));
+            echo controlpanel();
+            exit;
         }
     }
 
