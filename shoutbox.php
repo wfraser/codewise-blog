@@ -70,9 +70,13 @@ function shoutbox_process()
         $name = ANONYMOUS_NAME;
 
     if($_POST['link'] == "http://" || $_POST['link'] == "")
+    {
         $link = null;
-    else
+    } elseif(strpos($_POST['link'], "http://")) {
+        $link = "http://".$_POST['link'];
+    } else {
         $link = $_POST['link'];
+    }
 
     $filter = in_text_filter($_POST['text']);
 
