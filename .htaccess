@@ -1,3 +1,5 @@
 Options +Indexes +FollowSymLinks
 RewriteEngine on
 RewriteRule !((CHANGELOG|favicon\.ico|rdf\.php(/.*)?|stylesheet\.php|skin_importer\.php|install\.php|skin_blueEye/blueEye\.css)$|doc) cwbmulti.php
+php_flag magic_quotes_gpc off
+
