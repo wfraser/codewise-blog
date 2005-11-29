@@ -61,3 +61,10 @@ Dev - July 25 to September 12, 2005
   - miscellaneous fixes with the installer
   - added to the Voodoo documentation
   - some fixes to respect the settings.php and bloginfo variables more
+
+1.0.0-RC3 - November 28, 2005
+  - installer checks whether it will overwrite database tables and ask for confirmation
+  - xhtml fixes in installer
+  - correctly display most recent X shoutbox posts, where X is SHOUTS_PER_PAGE in settings.php
+  - control panel and installer updated to use SHOUTS_PER_PAGE
+  - shoutbox makes sure links start with "http://"
