@@ -1,28 +1,30 @@
 <?php
 
 /*
-** L1 MySQL Driver version 1.6.3
-** for CodewiseBlog Multi-User
+** L1 MySQL Driver version 2.0.0
+** L1 SQL version 2.0
+**
+** http://projects.codewise.org/l1_sql/
 **
 ** by Bill R. Fraser <bill.fraser@gmail.com>
-** Copyright (c) 2004 - 2005 Codewise.org
+** Copyright (c) 2004 - 2005
 */
 
 /*
-** This file is part of CodewiseBlog
+** This file is part of L1 SQL
 **
-** CodewiseBlog is free software; you can redistribute it and/or modify
+** L1 SQL is free software; you can redistribute it and/or modify
 ** it under the terms of the GNU General Public License as published by
 ** the Free Software Foundation; either version 2 of the License, or
 ** (at your option) any later version.
 **
-** CodewiseBlog is distributed in the hope that it will be useful,
+** L1 SQL is distributed in the hope that it will be useful,
 ** but WITHOUT ANY WARRANTY; without even the implied warranty of
 ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ** GNU General Public License for more details.
 **
 ** You should have received a copy of the GNU General Public License
-** along with CodewiseBlog; if not, write to the Free Software
+** along with L1 SQL; if not, write to the Free Software
 ** Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
@@ -30,7 +32,8 @@ if(!defined("L1SQL_ASSOC")) define("L1SQL_ASSOC",1);
 if(!defined("L1SQL_NUM"))   define("L1SQL_NUM",  2);
 if(!defined("L1SQL_BOTH"))  define("L1SQL_BOTH", 3);
 
-if(!class_exists("L1_MySQL")) { class L1_MySQL
+if(!class_exists("L1_MySQL")) {
+class L1_MySQL
 {
     var $set = false; //true if connected and database set
 
@@ -58,14 +61,28 @@ if(!class_exists("L1_MySQL")) { class L1_MySQL
     */
     function version()
     {
-        return("1.6.4");
+        return("2.0.0");
     }
 
+    /*
+    ** Return L1 SQL API version
+    */
+    function apiversion()
+    {
+        return("2.0");
+    }
+
+    /*
+    ** For getting member variable values
+    */
     function get($var)
     {
         return($this->$var);
     }
 
+    /*
+    ** For setting member variable values
+    */
     function set($var,$value)
     {
         $this->$var = $value;
@@ -78,6 +95,13 @@ if(!class_exists("L1_MySQL")) { class L1_MySQL
     ** Backslashes single slashes and adds single slashes around values.
     ** eg: "O'Reilly's" => "'O\'Reilly\'s'"
     ** Also converts php null value to "null"
+    **
+    ** If data is an array (must be associative), the keys are treated as
+    ** column names and the values are treated as SQL values and both are
+    ** escaped as such.
+    **
+    ** The $use_slashes argument dictates whether to enclose values in single
+    ** slashes.
     */
     function prepare_value($data, $use_slashes = TRUE)
     {
@@ -672,7 +696,6 @@ default:
     ** Disconnect from database
     ** and optionally reset the class
     */
-/* #666# LINE OF THE BEAST... }:-(< ######################################### */
     function disconnect($reset = false)
     {
         if(!@mysql_get_server_info($this->session))
