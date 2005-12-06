@@ -26,6 +26,14 @@
 ** Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+define("CWB_COPYRIGHT",
+"<a href=\"http://gna.org/projects/codewiseblog\">CodewiseBlog</a> &copy; 2005 "
+. "<a href=\"http://www.codewise.org/~netmanw00t/\">Bill Fraser</a> / "
+. "<a href=\"http://www.codewise.org/\">Codewise.org</a>.<br />"
+. "All textual content is the property of its author.<br />"
+. "CodewiseBlog is free software under the <a href=\"COPYING\">GNU General Public License</a>"
+);
+
 /*
 ** Skin Voodoo
 **
@@ -187,7 +195,7 @@ function voodoo($skin, $args = array(), $skin_section = "", $expand = TRUE)
             "runtime" => "'%{".UNIQ ."runtime}'", // <---- these will be replaced at the very end of execution
             "titletag" => "'%{".UNIQ."titletag}'", // <-/
             "versionfooter" => "versionfooter()",
-            "copyright" => "'CodewiseBlog &copy; <a href=\"http://www.codewise.org/~netmanw00t/\">Bill Fraser</a>.<br />All textual content is the property of its author.'",
+            "copyright" => "CWB_COPYRIGHT",
             "notify" => "\$GLOBALS['NOTIFY']",
             "cwb_version" => "CWBVERSION",
             "cwb_type" => "CWBTYPE",
