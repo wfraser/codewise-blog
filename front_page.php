@@ -26,19 +26,22 @@
 ** Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+$q = $db->issue_query("SELECT title FROM blogs WHERE blogid = '1'");
+$title = $db->fetch_var($q);
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
     <head>
         <title>CodewiseBlog</title>
-        <link rel="stylesheet" href="http://www.codewise.org/blueEye.css" />
+        <link rel="stylesheet" href="stylesheet.php" />
     </head>
     <body>
 
         <table style="border:none;width:100%;">
             <tr>
                 <td style="text-align:center">
-                    <a href="<?php echo INDEX_URL; ?>"><span class="main-title">CodewiseBlog</span></a><br />
+                    <a href="<?php echo INDEX_URL; ?>"><span class="main-title"><?php echo $title; ?></span></a><br />
                     <i>A better place to blog.</i>
                 </td>
                 <td style="width:100%;text-align:right;font-size:small">
@@ -60,7 +63,7 @@
                                     <tr><td><b>Blogs on this site:</b></td></tr>
 <?php
 
-$q = $db->issue_query("SELECT * FROM blogs WHERE blogid != '1' ORDER BY blogid ASC");
+$q = $db->issue_query("SELECT name,realname,title FROM blogs WHERE blogid != '1' ORDER BY blogid ASC");
 $data = $db->fetch_all($q, L1SQL_ASSOC, "name");
 
 foreach($data as $blogname => $blog)
@@ -89,7 +92,9 @@ foreach($data as $blogname => $blog)
                                     <tr><td><a href="<?php echo $link; ?>"><?php echo $blog['title']; ?></a><br />
                                             <span style="font-size:smaller">by <?php echo $name; ?></span></td></tr>
 <?php
-}
+
+} // foreach($data as $blogname => $blog)
+
 ?>
                                     <tr><td style="padding:5px"></td></tr>
                                 </table>
@@ -110,6 +115,7 @@ foreach($data as $blogname => $blog)
                 </td>
                 <td class="blogbody">
 
+<?php /*
                     <div style="background-color: yellow"><div style="border: 5px dashed red"><div style="background-color:white; padding:10px">
                         <b style="font-size: xx-large">CodewiseBlog Multi-User</b><br />
                         <br />
@@ -118,6 +124,78 @@ foreach($data as $blogname => $blog)
                         "Let's get this baby out the door!"<br />
                         &nbsp;&nbsp;&nbsp;&nbsp;-NMW
                     </div></div></div>
+*/ ?>
+
+<?php
+
+    $q = $db->issue_query("SELECT tid,blogid,title,timestamp,text FROM topics ORDER BY timestamp DESC LIMIT 5");
+    $data = $db->fetch_all($q, L1SQL_ASSOC, "");
+
+    foreach($data as $topic)
+    {
+        $q = $db->issue_query("SELECT name,realname,photo,title FROM blogs WHERE blogid = " . $db->prepare_value($topic['blogid']));
+        $blog = $db->fetch_row($q);
+
+        $q = $db->issue_query("SELECT COUNT(*) FROM replies WHERE blogid = " . $db->prepare_value($topic['blogid']) . " AND tid = " . $db->prepare_value($topic['tid']));
+        $num_replies = $db->fetch_var($q);
+
+        if($blog['photo'] === NULL)
+            $blog['photo'] = "";
+
+        if($blog['realname'] !== NULL)
+        {
+            $name = $blog['realname'];
+        } else {
+            $name = $blog['name'];
+        }
+
+        if(SUBDOMAIN_MODE)
+        {
+            $url = "http://{$blog['name']}." . BASE_DOMAIN . INSTALLED_PATH;
+        } else {
+            $url = "http://" . (DEFAULT_SUBDOMAIN == "" ? "" : DEFAULT_SUBDOMAIN . ".") . BASE_DOMAIN . INSTALLED_PATH . $blog['name'];
+        }
+
+        $text = output_topic_text(text_clip($topic['text'], 1000, " &hellip;"));
+?>
+
+<table style="border:none; width:100%">
+<tr>
+<td>
+    <table style="padding: 0px; border: 1px solid #ddd; width: 100%">
+        <tr>
+            <td style="padding-left: 3px; width: 1px">
+                <img src="<?php echo $blog['photo']; ?>" alt="<?php echo $blog['name']; ?>" height="75" />
+            </td>
+            <td style="padding: 5px">
+                <a href="<?php echo $url; ?>"><b><?php echo $blog['title']; ?></b></a> by <?php echo $name; ?>
+                <br />
+                <a href="<?php echo $url . "?tid=" . $topic['tid']; ?>"><?php echo $topic['title']; ?></a> :: <?php echo $num_replies; ?> comments
+                <br />
+                <?php echo date(DATE_FORMAT, $topic['timestamp']); ?>
+            </td>
+        </tr>
+    </table>
+</td>
+</tr>
+<tr>
+<td>
+    <div class="topicbody" style="border-bottom: none">
+        <?php echo $text; ?>
+    </div>
+<?php /* this is a cheap (but effective!) way of closing any tags left open by text_clip() */ ?>
+    <div class="topicbody" style="border-top: none">
+        <a href="<?php echo "$url?tid={$topic['tid']}"; ?>"><b>read the whole post</b></a>
+    </div>
+</td>
+</tr>
+</table>
+<br />
+<?php
+
+    } // foreach($data as $topic)
+
+?>
 
                 </td>
             </tr>
@@ -125,13 +203,11 @@ foreach($data as $blogname => $blog)
         <br />
         <table style="border:none;width:100%">
             <tr>
-                <td style="width:50%;font-size:small">
+                <td style="width:50%;font-size:small;vertical-align:top">
                     <?php echo querycount(); ?> database queries. Page generated in <?php echo runtime(); ?> milliseconds.<br />
-
-                    <br />
                     <?php echo versionfooter(); ?>
                 </td>
-                <td style="width:50%;font-size:small;text-align:right;padding-right:1em">
+                <td style="width:50%;font-size:small;text-align:right;padding-right:1em;vertical-align:top">
                     <?php echo voodoo("%{copyright}", array(), "front_page"); ?>
                 </td>
                 <td>
