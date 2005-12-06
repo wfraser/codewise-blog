@@ -300,4 +300,49 @@ function ordinal($n)
         return "{$n}th";
 }
 
+/*
+** This function will clip text as close to (without going over) the specified
+** character limit as possible without messing up html or breaking words. IT
+** MAY, HOWEVER, LEAVE TAGS OPEN, so be careful.
+*/
+function text_clip($text, $limit = 500, $append = " ...")
+{
+    if(strlen($text) <= $limit)
+    {
+        return($text);
+    } else {
+        $content = "";
+        $parts = preg_split("/(<[^>]+>)/",$text,-1,PREG_SPLIT_DELIM_CAPTURE);
+        foreach($parts as $part)
+        {
+            if(strlen($content) + strlen($part) <= $limit - strlen($append))
+            {
+                $content .= $part;
+                continue;
+            } else {
+                if(substr($part,0,1) == "<") // html tag part
+                {
+                    $content .= $append;
+                    break;
+                } else { // text part
+                    $words = preg_split("/( )/",$part,-1,PREG_SPLIT_DELIM_CAPTURE);
+                    foreach($words as $word)
+                    {
+                        if(strlen($content) + strlen($word) <= $limit - strlen($append))
+                        {
+                            $content .= $word;
+                            continue;
+                        } else {
+                            $content .= $append;
+                            break 2;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return($content);
+}
+
 ?>
