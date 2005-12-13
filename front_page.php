@@ -205,7 +205,7 @@ foreach($data as $blogname => $blog)
             <tr>
                 <td style="width:50%;font-size:small;vertical-align:top">
                     <?php echo querycount(); ?> database queries. Page generated in <?php echo runtime(); ?> milliseconds.<br />
-                    <?php echo versionfooter(); ?>
+                    <?php echo skinvoodoo("main", "versionfooter"); ?>
                 </td>
                 <td style="width:50%;font-size:small;text-align:right;padding-right:1em;vertical-align:top">
                     <?php echo voodoo("%{copyright}", array(), "front_page"); ?>
