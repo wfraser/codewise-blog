@@ -48,16 +48,6 @@ function runtime()
     return number_format(($endtime - $starttime) * 1e3, 0);
 }
 
-function versionfooter()
-{
-    //return id_footer("CodewiseBlog version <a href=\"changelog.php\" style=\"color:#aaa;text-decoration:underline\" title=\"" . iso8601_date(filemtime("index.php")) . "\">" . CWBVERSION . "</a>");
-
-    $sig = trim($_SERVER['SERVER_SIGNATURE']);
-    $sig = str_replace("<address>", "<br /><i>", str_replace("</address>", "</i><br />", $sig));
-
-    return skinvoodoo("main", "versionfooter", array("mtime" => iso8601_date(filemtime("cwbmulti.php")), "sig" => $sig, "hostname" => "delta-zero"));
-}
-
 /*
 ** Return the ISO8601 date ( 2004-02-12T15:19:21+00:00 ) of a UNIX timestamp
 */
