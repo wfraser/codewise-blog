@@ -73,12 +73,11 @@
 <br />
 <table style="border:none;width:100%">
     <tr>
-    <td style="width:50%;font-size:small">
+    <td style="width:50%;font-size:small;vertical-align:top">
         %{querycount} database queries. Page generated in %{runtime} milliseconds.<br />
-        <br />
-        %{versionfooter}
+        <!-- *cwb_call* versionfooter -->
     </td>
-    <td style="width:50%;font-size:small;text-align:right;padding-right:1em">
+    <td style="width:50%;font-size:small;text-align:right;padding-right:1em;vertical-align:top">
         %{copyright}
     </td>
     <td>
@@ -99,3 +98,4 @@
 </table>
 </body>
 </html>
+<!-- :cwb_start: versionfooter -->Powered by: CodewiseBlog %{cwb_type} <a href="CHANGELOG" style="color:#aaa;text-decoration:underline">v%{cwb_version}</a><!-- :cwb_end: versionfooter -->
