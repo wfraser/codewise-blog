@@ -231,10 +231,12 @@ if(!defined("NO_ACTION"))
 
     $out = str_replace("<!-- #CWB_BODY# -->", $body, $out);
 
+    $db->disconnect();
+
     if($TITLE == "")
         $TITLE = $BLOGINFO['title'];
     $out = str_replace("%{".UNIQ."titletag}", $TITLE, $out);
-
+    $out = str_replace("%{".UNIQ."querycount}", querycount(), $out);
     $out = str_replace("%{".UNIQ."runtime}", runtime(), $out);
 
     echo $out;
