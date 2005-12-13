@@ -28,7 +28,7 @@
 
 $current = "settings";
 
-if(BLOGID !== 1)
+if(BLOGID != 1)
 {
     $body = skinvoodoo("error","error",array("message"=>"You do not have permission to access this area of the control panel."));
 } elseif(empty($_POST)) {
