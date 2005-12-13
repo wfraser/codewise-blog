@@ -71,7 +71,8 @@ function controlpanel()
         require("cp_skin.php");
     } else {
         $current = "home";
-        $body = "Welcome to the CodewiseBlog control panel.<br />Powered by CodewiseBlog ".CWBVERSION;
+        $body = "<div align=\"center\">Welcome to the CodewiseBlog control panel.<br />"
+          . skinvoodoo("controlpanel", "versionfooter", array()) . "</div>";
     }
 
     $args = array
@@ -90,6 +91,7 @@ function controlpanel()
 
     $out = str_replace("<!-- #CWB_CP_BODY# -->", $body, $out);
     $out = str_replace("%{".UNIQ."titletag}", $BLOGINFO['title'] . " :: Control Panel", $out);
+    $out = str_replace("%{".UNIQ."querycount}", querycount(), $out);
     $out = str_replace("%{".UNIQ."runtime}", runtime(), $out);
 
     return $out;
