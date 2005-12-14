@@ -30,11 +30,18 @@ function cplogin()
 {
     global $db;
 
+    $q = $db->issue_query("SELECT password FROM blogs WHERE blogid = '1'");
+    $root_hash = $db->fetch_var($q);
+
     $q = $db->issue_query("SELECT password FROM blogs WHERE blogid = '" . BLOGID . "'");
     $hash = $db->fetch_var($q);
 
-    if($_SESSION['controlpanel'] == BLOGID || md5($_POST['password']) == $hash)
+    if($_SESSION['controlpanel'] == 1 || md5($_POST['password']) == $root_hash)
     {
+        $_SESSION['controlpanel'] = 1;
+        return "You are now logged in as Admin. Beware that changes you make are potentially dangerous!<br />"
+            . "<a href=\"" . INDEX_URL . "?controlpanel\">Continue to the Control Panel</a>";
+    } elseif($_SESSION['controlpanel'] == BLOGID || md5($_POST['password']) == $hash) {
         $_SESSION['controlpanel'] = BLOGID;
         return "You are now logged in.<br /><a href=\"" . INDEX_URL . "?controlpanel\">Continue to the Control Panel</a>";
     } else {
@@ -49,13 +56,13 @@ function controlpanel()
 
     $TITLE = $BLOGINFO['title'] . " :: Control Panel";
 
-    if($_SESSION['controlpanel'] != BLOGID)
+    if($_SESSION['controlpanel'] != BLOGID && $_SESSION['controlpanel'] != 1)
     {
         header("Location: " . INDEX_URL . "?notloggedin");
         return;
     }
 
-    if(BLOGID == 1) // we are root
+    if($_SESSION['controlpanel'] == 1) // we are root
         $GLOBALS['EXTRA'] = "You are logged in as Admin. Beware that changes you make are potentially dangerous!\n\n";
 
     if(isset($_GET['controlpanel:settings']))
