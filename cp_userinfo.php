@@ -50,14 +50,14 @@ if($_POST)
 
         $data = array(
             "email" => $_POST['email'],
-            "realname" => $_POST['realname'] == "" ? NULL : $_POST['realname'],
+            "realname" => $_POST['realname'] == "" ? NULL : htmlspecialchars($_POST['realname']),
             "birthday" => $_POST['birthday'] == "" ? NULL : $_POST['birthday'],
-            "location" => $_POST['location'] == "" ? NULL : $_POST['location'],
+            "location" => $_POST['location'] == "" ? NULL : htmlspecialchars($_POST['location']),
             "interests" => $_POST['interests'] == "" ? NULL : $_POST['interests'],
             "links" => $_POST['links'] == "" ? NULL : $_POST['links'],
-            "photo" => $_POST['photo'] == "" ? NULL : $_POST['photo'],
-            "homepage" => $_POST['homepage'] == "" ? NULL : $_POST['homepage'],
-            "title" => $_POST['title'] == "" ? "CodewiseBlog" : str_replace(" ", "&nbsp;", $_POST['title']),
+            "photo" => $_POST['photo'] == "" ? NULL : htmlspecialchars($_POST['photo']),
+            "homepage" => $_POST['homepage'] == "" ? NULL : htmlspecialchars($_POST['homepage']),
+            "title" => $_POST['title'] == "" ? "CodewiseBlog" : str_replace(" ", "&nbsp;", htmlspecialchars($_POST['title'])),
             "custom_url" => $_POST['custom_url'] == "" ? NULL : $_POST['custom_url'],
         );
 
