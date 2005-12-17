@@ -42,7 +42,7 @@ $title = $db->fetch_var($q);
             <tr>
                 <td style="text-align:center">
                     <a href="<?php echo INDEX_URL; ?>"><span class="main-title"><?php echo $title; ?></span></a><br />
-                    <i>A better place to blog.</i>
+                    <i>A better place to write.</i>
                 </td>
                 <td style="width:100%;text-align:right;font-size:small">
 <?php echo fortune(); ?>
