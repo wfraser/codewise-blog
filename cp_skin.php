@@ -69,6 +69,10 @@ if(isset($_POST['section_sel']))
         $using_master = FALSE;
     }
 
+    // special case when using the root controlpanel
+    if(BLOGID == 1)
+        $using_master = TRUE;
+
     $content = skinvoodoo("controlpanel_skin", "section_edit", array(
         "section_name" => $_POST['section_sel'],
         "using_master" => $using_master,
