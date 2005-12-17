@@ -156,7 +156,14 @@ foreach($data as $blogname => $blog)
             $url = "http://" . (DEFAULT_SUBDOMAIN == "" ? "" : DEFAULT_SUBDOMAIN . ".") . BASE_DOMAIN . INSTALLED_PATH . $blog['name'];
         }
 
-        $text = output_topic_text(text_clip($topic['text'], 1000, " &hellip;"));
+        $filtered_text = in_text_filter($topic['text']);
+
+        if(is_array($filtered_text))
+        {
+            $filtered_text = $filtered_text[0];
+        }
+
+        $text = output_topic_text(text_clip($filtered_text, 1000, " &hellip;"));
 ?>
 
 <table style="border:none; width:100%">
