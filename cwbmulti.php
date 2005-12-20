@@ -159,6 +159,8 @@ $BLOGINFO['links'] = nl2br($BLOGINFO['links']);
 $BLOGINFO['version'] = CWBVERSION;
 $BLOGINFO['anonymous_name'] = ANONYMOUS_NAME;
 
+$BLOGINFO['multiuser_root'] = "http://" . DEFAULT_SUBDOMAIN . BASE_DOMAIN . INSTALLED_PATH;
+
 if(!defined("NO_ACTION"))
 {
     /*
