@@ -1,0 +1,997 @@
+<html>
+<head>
+<title>Voodoo Skin Engine Documentation</title>
+<style type="text/css">
+div.indent {
+    padding-left: 3em;
+    padding-bottom: 1em;
+}
+
+div.indent-nobottom {
+    padding-left: 3em;
+}
+
+div.code {
+    padding-left: 3em;
+/*    padding-bottom: 1em; */
+    padding-top: .5em;
+    padding-bottom: .5em;
+    font-family: Courier;
+    font-weight: bold;
+}
+
+td {
+    padding: 5px;
+}
+</style>
+</head>
+<body>
+
+<h1>Local Variable Reference</h1>
+
+<a href="#css">css</a><br />
+<a href="#main">main</a><br />
+<a href="#postcalendar">postcalendar</a><br />
+<a href="#loginform">loginform</a><br />
+<a href="#welcomeback">welcomeback</a><br />
+<a href="#topic">topic</a><br />
+<a href="#controlpanel">controlpanel</a><br />
+<a href="#replyform">replyform</a><br />
+<a href="#pagelink">pagelink</a><br />
+<a href="#post">post</a><br />
+<a href="#subscribeform">subscribeform</a><br />
+<a href="#error">error</a><br />
+<a href="#shoutbox">shoutbox</a><br />
+<a href="#controlpanel_write">controlpanel_write</a><br />
+<a href="#controlpanel_settings">controlpanel_settings</a><br />
+<a href="#controlpanel_edit">controlpanel_edit</a><br />
+<a href="#controlpanel_userinfo">controlpanel_userinfo</a><br />
+<a href="#controlpanel_skin">controlpanel_skin</a><br />
+
+
+<a href="#AUTHOR">Author</a><br />
+<a href="#LICENSE">License</a><br />
+
+<hr />
+
+<a name="css"></a>
+<h2>css</h2>
+<div class="indent">
+Main subsection:<br />
+<i>there are no local variables</i>
+<br /><br />
+</div>
+
+<a name="main"></a>
+<h2>main</h2>
+<div class="indent">
+Main subsection:<br />
+<i>there are no local variables</i>
+<br /><br />
+For the versionfooter subsection:<br />
+<i>there are no local variables</i>
+<br /><br />
+</div>
+
+<a name="postcalendar"></a>
+<h2>postcalendar</h2>
+<div class="indent">
+Main subsection:<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${contents}</td>
+<td>CWB-generated HTML to be put in</td>
+</tr>
+</table><br /><br />
+For the monthrow subsection:<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${url}</td>
+<td>link to display the month's posts</td>
+</tr>
+<tr>
+<td>${monthname}</td>
+<td>name of the month</td>
+</tr>
+<tr>
+<td>${year}</td>
+<td>year, 4 digits</td>
+</tr>
+</table><br /><br />
+For the latestmonth subsection:<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${contents}</td>
+<td>CWB-generated HTML for the current month</td>
+</tr>
+</table><br /><br />
+For the topiclink subsection:<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${url}</td>
+<td>URL link to the post</td>
+</tr>
+<tr>
+<td>${title}</td>
+<td>post title</td>
+</tr>
+</table><br /><br />
+For the nextpage subsection:<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${url}</td>
+<td>link to the next page</td>
+</tr>
+</table><br /><br />
+</div>
+
+<a name="loginform"></a>
+<h2>loginform</h2>
+<div class="indent">
+Main subsection:<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${url}</td>
+<td>URL to post the login details at</td>
+</tr>
+</table><br /><br />
+</div>
+
+<a name="welcomeback"></a>
+<h2>welcomeback</h2>
+<div class="indent">
+Main subsection:<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${contents}</td>
+<td>filled with a call to the <span class="code">name</span> subsection if user's name is known, otherwise filled with a call to the <span class="code">noname</code> subsection.</td>
+</tr>
+<tr>
+<td>${url}</td>
+<td>the URL to delete session information</td>
+</tr>
+</table><br /><br />
+For the name subsection:<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${name}</td>
+<td>the known name of the visitor</td>
+</tr>
+</table><br /><br />
+For the noname subsection:<br />
+<i>there are no local variables</i>
+<br /><br />
+</div>
+
+<a name="topic"></a>
+<h2>topic</h2>
+<div class="indent">
+Main subsection:<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${text}</td>
+<td>complete processed text of the post</td>
+</tr>
+</table><br /><br />
+For the topicheader subsection:<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${date}</td>
+<td>formatted timestamp for when the post was posted</td>
+</tr>
+<tr>
+<td>${url_showtopic}</td>
+<td>URL of the post</td>
+</tr>
+<tr>
+<td>${title}</td>
+<td>the post's title</td>
+</tr>
+</table><br /><br />
+For the topicfooter subsection:<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${num_comments}</td>
+<td>number of comments on the post</td>
+</tr>
+<tr>
+<td>${url_showcomments}</td>
+<td>URL to show the comments</td>
+</tr>
+<tr>
+<td>${url_addcomment}</td>
+<td>URL to display the form to add a comment</td>
+</tr>
+</table><br /><br />
+For the topicfooter_addcomment subsection:<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${url_addcomment}</td>
+<td>URL to display the form to add a comment</td>
+</tr>
+</table><br /><br />
+For the start_comments subsection:<br />
+<i>there are no local variables</i>
+<br /><br />
+For the last_comments subsection:<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${num}</td>
+<td>the number of comments being displayed at a time</td>
+</tr>
+</table><br /><br />
+</div>
+
+<a name="controlpanel"></a>
+<h2>controlpanel</h2>
+<div class="indent">
+Main subsection:<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${root}</td>
+<td>true if user is root</td>
+</tr>
+<tr>
+<td>${current}</td>
+<td>set to the name of the current controlpanel page</td>
+</tr>
+<tr>
+<td>${cpurl}</td>
+<td>URL to the controlpanel main page</td>
+</tr>
+<tr>
+<td>${url_settings}</td>
+<td>URL to the Settings control panel page</td>
+</tr>
+<tr>
+<td>${url_write}</td>
+<td>URL to the Write control panel page</td>
+</tr>
+<tr>
+<td>${url_edit}</td>
+<td>URL to the Edit control panel page</td>
+</tr>
+<tr>
+<td>${url_userinfo}</td>
+<td>URL to the User Info control panel page</td>
+</tr>
+<tr>
+<td>${url_skin}</td>
+<td>URL to the Skin Editor control panel page</td>
+</tr>
+</table><br /><br />
+For the div subsection:<br />
+<i>there are no local variables</i>
+<br /><br />
+For the versionfooter subsection:<br />
+<i>there are no local variables</i>
+<br /><br />
+</div>
+
+<a name="replyform"></a>
+<h2>replyform</h2>
+<div class="indent">
+Main subsection:<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${form_url}</td>
+<td>URL the form is to be POSTed to</td>
+</tr>
+<tr>
+<td>${name}</td>
+<td>poster's name</td>
+</tr>
+<tr>
+<td>${tripcode}</td>
+<td>poster's tripcode</td>
+</tr>
+<tr>
+<td>${tripcode_help_link}</td>
+<td>link to some informative text about tripcodes</td>
+</tr>
+<tr>
+<td>${link}</td>
+<td>poster's link</td>
+</tr>
+<tr>
+<td>${text}</td>
+<td>text of the comment</td>
+</tr>
+<tr>
+<td>${text_filter_msg}</td>
+<td>messages from the HTML filter</td>
+</tr>
+<tr>
+<td>${allowed_tags}</td>
+<td>list of allowed HTML tags</td>
+</tr>
+</table><br /><br />
+</div>
+
+<a name="pagelink"></a>
+<h2>pagelink</h2>
+<div class="indent">
+Main subsection:<br />
+<i>there are no local variables</i>
+<br /><br />
+For the pagelink subsection:<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${url}</td>
+<td>URL to display the page</td>
+</tr>
+<tr>
+<td>${pageno}</td>
+<td>page number</td>
+</tr>
+</table><br /><br />
+For the currpage subsection:<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${pageno}</td>
+<td>page number</td>
+</tr>
+</table><br /><br />
+For the allonepage_link subsection:<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${url}</td>
+<td>URL to display all one page</td>
+</tr>
+</table><br /><br />
+For the allonepage_current subsection:<br />
+<i>there are no local variables</i>
+<br /><br />
+</div>
+
+<a name="post"></a>
+<h2>post</h2>
+<div class="indent">
+Main subsection:<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${special_anchor}</td>
+<td>a special additional anchor to use for the post</td>
+</tr>
+<tr>
+<td>${pid}</td>
+<td>post ID</td>
+</tr>
+<tr>
+<td>${highlight}</td>
+<td>True if the post should be highlighted</td>
+</tr>
+<tr>
+<td>${name}</td>
+<td>name of the poster</td>
+</tr>
+<tr>
+<td>${tripcode}</td>
+<td>poster's tripcode</td>
+</tr>
+<tr>
+<td>${date}</td>
+<td>date posted</td>
+</tr>
+<tr>
+<td>${url_post}</td>
+<td>URL of the specific post</td>
+</tr>
+<tr>
+<td>${url_reply}</td>
+<td>URL to open the reply form with a reply to the current post</td>
+</tr>
+<tr>
+<td>${text}</td>
+<td>text of the post</td>
+</tr>
+</table><br /><br />
+</div>
+
+<a name="subscribeform"></a>
+<h2>subscribeform</h2>
+<div class="indent">
+Main subsection:<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${url}</td>
+<td>URL the form is POSTed to</td>
+</tr>
+</table><br /><br />
+</div>
+
+<a name="error"></a>
+<h2>error</h2>
+<div class="indent">
+Main subsection:<br />
+<i>there are no local variables</i>
+<br /><br />
+For the error subsection:<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${message}</td>
+<td>message text</td>
+</tr>
+</table><br /><br />
+For the notify subsection:<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${message}</td>
+<td>message text</td>
+</tr>
+</table><br /><br />
+</div>
+
+<a name="shoutbox"></a>
+<h2>shoutbox</h2>
+<div class="indent">
+Main subsection:<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${contents}</td>
+<td>all the shoutbox posts</td>
+</tr>
+<tr>
+<td>${posturl}</td>
+<td>URL the form is POSTed to</td>
+</tr>
+<tr>
+<td>${name}</td>
+<td>poster's name</td>
+</tr>
+<tr>
+<td>${link}</td>
+<td>poster's link</td>
+</tr>
+</table><br /><br />
+For the row_even subsection:<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${link}</td>
+<td>poster's link</td>
+</tr>
+<tr>
+<td>${name}</td>
+<td>poster's name</td>
+</tr>
+<tr>
+<td>${text}</td>
+<td>text of the post</td>
+</tr>
+<tr>
+<td>${date}</td>
+<td>date posted</td>
+</tr>
+</table><br /><br />
+For the row_odd subsection:<br />
+same as the row_even subsection<br /><br />
+For the nothing subsection:<br />
+<i>there are no local variables</i>
+<br /><br />
+</div>
+
+<a name="controlpanel_write"></a>
+<h2>controlpanel_write</h2>
+<div class="indent">
+Main subsection:<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${posturl}</td>
+<td>URL the form is POSTed to</td>
+</tr>
+<tr>
+<td>${autoresize}</td>
+<td>URL of the autoresize javascript file</td>
+</tr>
+<tr>
+<td>${quicktags}</td>
+<td>URL of the quicktags javascript file</td>
+</tr>
+<tr>
+<td>${title}</td>
+<td>title of the topic</td>
+</tr>
+<tr>
+<td>${rows}</td>
+<td>number of rows in the text box</td>
+</tr>
+<tr>
+<td>${cols}</td>
+<td>number of columns in the text box</td>
+</tr>
+<tr>
+<td>${text}</td>
+<td>topic text</td>
+</tr>
+</table><br /><br />
+For the success_redirect subsection:<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${topic_url}</td>
+<td>URL of the newly posted topic</td>
+</tr>
+</table><br /><br />
+For the preview_topic subsection:<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${text}</td>
+<td>text of the topic</td>
+</tr>
+</table><br /><br />
+</div>
+
+<a name="controlpanel_settings"></a>
+<h2>controlpanel_settings</h2>
+<div class="indent">
+Main subsection:<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${posturl}</td>
+<td>URL the form is POSTed to</td>
+</tr>
+<tr>
+<td>${fspath}</td>
+<td>the value of the FSPATH config setting</td>
+</tr>
+<tr>
+<td>${sql_admin_email}</td>
+<td>the value of the SQL_ADMIN_EMAIL config setting</td>
+</tr>
+<tr>
+<td>${custom_url_enabled}</td>
+<td>the value of the CUSTOM_URL_ENABLED config setting</td>
+</tr>
+<tr>
+<td>${email}</td>
+<td>the value of the EMAIL config setting</td>
+</tr>
+<tr>
+<td>${sql_host}</td>
+<td>the value of the SQL_HOST config setting</td>
+</tr>
+<tr>
+<td>${sql_user}</td>
+<td>the value of the SQL_USER config setting</td>
+</tr>
+<tr>
+<td>${sql_pass}</td>
+<td>the value of the SQL_PASS config setting</td>
+</tr>
+<tr>
+<td>${sql_db}</td>
+<td>the value of the SQL_DB config setting</td>
+</tr>
+<tr>
+<td>${sample_url}</td>
+<td>sample user's URL using the given settings</td>
+</tr>
+<tr>
+<td>${main_url}</td>
+<td>the main CodewiseBlog URL using the given settings</td>
+</tr>
+<tr>
+<td>${subdomain_mode}</td>
+<td>the value of the SUBDOMAIN_MODE config setting</td>
+</tr>
+<tr>
+<td>${base_domain}</td>
+<td>the value of the BASE_DOMAIN config setting</td>
+</tr>
+<tr>
+<td>${installed_path}</td>
+<td>the value of the INSTALLED_PATH config setting</td>
+</tr>
+<tr>
+<td>${default_subdomain}</td>
+<td>the value of the DEFAULT_SUBDOMAIN config setting</td>
+</tr>
+<tr>
+<td>${topics_per_page}</td>
+<td>the value of the TOPICS_PER_PAGE config setting</td>
+</tr>
+<tr>
+<td>${posts_per_page}</td>
+<td>the value of the POSTS_PER_PAGE config setting</td>
+</tr>
+<tr>
+<td>${shouts_per_page}</td>
+<td>the value of the SHOUTS_PER_PAGE config setting</td>
+</tr>
+<tr>
+<td>${date_format}</td>
+<td>the value of the DATE_FORMAT config setting</td>
+</tr>
+<tr>
+<td>${anonymous_name}</td>
+<td>the value of the ANONYMOUS_NAME config setting</td>
+</tr>
+<tr>
+<td>${allowed_tags}</td>
+<td>the value of the $ALLOWED_TAGS config setting</td>
+</tr>
+</table><br /><br />
+</div>
+
+<a name="controlpanel_edit"></a>
+<h2>controlpanel_edit</h2>
+<div class="indent">
+Main subsection:<br />
+<i>there are no local variables</i>
+<br /><br />
+For the showselect subsection:<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${posturl}</td>
+<td>URL the form is POSTed to</td>
+</tr>
+<tr>
+<td>${options}</td>
+<td>list of topics (for use with a &lt;select&gt; tag)</td>
+</tr>
+</table><br /><br />
+For the editform subsection:<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${posturl}</td>
+<td>URL the form is POSTed to</td>
+</tr>
+<tr>
+<td>${title}</td>
+<td>title of the topic</td>
+</tr>
+<tr>
+<td>${month_sel}</td>
+<td>the &lt;select&gt; tag for choosing the month</td>
+</tr>
+<tr>
+<td>${date_sel}</td>
+<td>the &lt;select&gt; tag for choosing the date</td>
+</tr>
+<tr>
+<td>${year_sel}</td>
+<td>the &lt;select&gt; tag for choosing the year</td>
+</tr>
+<tr>
+<td>${hour_sel}</td>
+<td>the &lt;select&gt; tag for choosing the hour</td>
+</tr>
+<tr>
+<td>${minute_sel}</td>
+<td>the &lt;select&gt; tag for choosing the minute</td>
+</tr>
+<tr>
+<td>${second_sel}</td>
+<td>the &lt;select&gt; tag for choosing the second</td>
+</tr>
+<tr>
+<td>${ampm_sel}</td>
+<td>the &lt;select&gt; tag for choosing between AM and PM</td>
+</tr>
+<tr>
+<td>${preview}</td>
+<td>fully formatted post text preview</td>
+</tr>
+<tr>
+<td>${autoresize}</td>
+<td>URL of the autoresize javascript file</td>
+</tr>
+<tr>
+<td>${quicktags}</td>
+<td>URL of the quicktags javascript file</td>
+</tr>
+<tr>
+<td>${rows}</td>
+<td>number of rows for the textbox</td>
+</tr>
+<tr>
+<td>${cols}</td>
+<td>number of columns for the textbox</td>
+</tr>
+<tr>
+<td>${text}</td>
+<td>the text of the topic</td>
+</tr>
+<tr>
+<td>${tid}</td>
+<td>topic ID</td>
+</tr>
+</table><br /><br />
+For the success_redirect subsection:<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${topic_url}</td>
+<td>URL for the edited topic</td>
+</tr>
+</table><br /><br />
+For the delete_ask subsection:<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${posturl}</td>
+<td>URL the form is POSTed to</td>
+</tr>
+<tr>
+<td>${tid}</td>
+<td>topic ID</td>
+</tr>
+</table><br /><br />
+For the delete_successful subsection:<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${num_comments}</td>
+<td>number of comments the topic previously had</td>
+</tr>
+</table><br /><br />
+</div>
+
+<a name="controlpanel_userinfo"></a>
+<h2>controlpanel_userinfo</h2>
+<div class="indent">
+Main subsection:<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${posturl}</td>
+<td>URL the form is POSTed to</td>
+</tr>
+<tr>
+<td>${email}</td>
+<td>user's email address</td>
+</tr>
+<tr>
+<td>${realname}</td>
+<td>user's real name</td>
+</tr>
+<tr>
+<td>${birthday}</td>
+<td>user's birthday</td>
+</tr>
+<tr>
+<td>${location}</td>
+<td>user's location</td>
+</tr>
+<tr>
+<td>${interests}</td>
+<td>user's interests (may contain HTML)</td>
+</tr>
+<tr>
+<td>${links}</td>
+<td>user's links (may contain HTML)</td>
+</tr>
+<tr>
+<td>${photo}</td>
+<td>URL of the user's photo or avatar</td>
+</tr>
+<tr>
+<td>${homepage}</td>
+<td>URL of the user's homepage</td>
+</tr>
+<tr>
+<td>${title}</td>
+<td>title of the user's blog</td>
+</tr>
+<tr>
+<td>${custom_url}</td>
+<td>custom URL the blog appears at</td>
+</tr>
+</table><br /><br />
+</div>
+
+<a name="controlpanel_skin"></a>
+<h2>controlpanel_skin</h2>
+<div class="indent">
+Main subsection:<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${posturl}</td>
+<td>URL the form is POSTed to</td>
+</tr>
+<tr>
+<td>${sectionlist}</td>
+<td>the list of skin sections as a row of buttons</td>
+</tr>
+<tr>
+<td>${varlist}</td>
+<td>currently, nothing (FIXME)</td>
+</tr>
+<tr>
+<td>${content}</td>
+<td>the skin section's text (HTML escaped)</td>
+</tr>
+<tr>
+<td>${section_name}</td>
+<td>name of the currently viewed skin section. FALSE if none is being viewed.</td>
+</tr>
+</table><br /><br />
+For the sectionlist_entry subsection:<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${section}</td>
+<td>name of the skin section</td>
+</tr>
+</table><br /><br />
+For the sectionlist_current subsection:<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${section}</td>
+<td>name of the skin section</td>
+</tr>
+</table><br /><br />
+For the section_edit subsection:<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${autoresize}</td>
+<td>URL of the autoresize javascript file</td>
+</tr>
+<tr>
+<td>${section_name}</td>
+<td>name of the section</td>
+</tr>
+<tr>
+<td>${using_master}</td>
+<td>TRUE if the master skin is being used for this section</td>
+</tr>
+<tr>
+<td>${rows}</td>
+<td>number of rows in the textbox</td>
+</tr>
+<tr>
+<td>${cols}</td>
+<td>number of columns in the textbox</td>
+</tr>
+<tr>
+<td>${section_content}</td>
+<td>full text of the skin section (HTML escaped)</td>
+</tr>
+</table><br /><br />
+</div>
+
+
+
+<a name="AUTHOR"></a>
+<h2>Author</h2>
+<div class="indent">
+    CodewiseBlog, the Voodoo Skin Engine, and this document were written by Bill R. Fraser. Email: bill.fraser<span style="display:none">anti-spam</span>@gmail.com
+</div>
+
+<a name="LICENSE"></a>
+<h2>License</h2>
+<div class="indent"><pre>
+CodewiseBlog is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+CodewiseBlog is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with CodewiseBlog; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+---
+
+This document copyright (c) 2005 Codewise.org
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.2
+or any later version published by the Free Software Foundation;
+with no Invariant Sections, no Front-Cover Texts, and no Back-Cover
+Texts.  A copy of the license is included in the /doc directory of the
+CodewiseBlog distribution under the filename "<a href="../gfdl.txt">gfdl.txt</a>".
+</pre></div>
+</body>
+</html>
