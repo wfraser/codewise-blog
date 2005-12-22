@@ -84,6 +84,8 @@ if(isset($_POST['section_sel']))
             array("&#x0025;{",  "&#x0024{"  ),
             htmlspecialchars($skin)),
     ));
+
+    $varlist = "<iframe src=\"http://" .  DEFAULT_SUBDOMAIN . BASE_DOMAIN . INSTALLED_PATH . "doc/voodoo/localvars.html#". $_POST['section_sel'] . "\" height=\"100%\" width=\"300\" />";
 }
 
 $body = skinvoodoo("controlpanel_skin", "", array(
@@ -91,6 +93,7 @@ $body = skinvoodoo("controlpanel_skin", "", array(
     "sectionlist" => $sectionlist,
     "varlist" => $varlist,
     "content" => $content,
+    "section_name" => isset($_POST['section_sel']) ? $_POST['section_sel'] : FALSE,
 ));
 
 ?>
