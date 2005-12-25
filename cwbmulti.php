@@ -29,7 +29,7 @@ $starttime = (string) $sec + $usec;
 unset($sec, $usec);
 
 // define version string
-define("CWBVERSION","1.0.0-RC3");
+define("CWBVERSION","1.0.0");
 define("CWBTYPE", "Multi-User");
 define("SETTINGS_FILE", "settings.php");
 
