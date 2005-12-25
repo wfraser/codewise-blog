@@ -26,6 +26,14 @@
 ** Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+define("CWB_COPYRIGHT",
+"<a href=\"http://gna.org/projects/codewiseblog\">CodewiseBlog</a> &copy; 2005 "
+. "<a href=\"http://www.codewise.org/~netmanw00t/\">Bill Fraser</a> / "
+. "<a href=\"http://www.codewise.org/\">Codewise.org</a>.<br />"
+. "All textual content is the property of its author.<br />"
+. "CodewiseBlog is free software under the <a href=\"COPYING\">GNU General Public License</a>"
+);
+
 /*
 ** Skin Voodoo
 **
@@ -59,7 +67,7 @@ function skinvoodoo($skin_section, $subcall = "", $args = array())
         $SKIN_CACHE[$skin_section] = $skin;
     }
 
-    //$skin = file_get_contents(FSPATH . "/skin_blueEye/$skin_section.html");
+//    $skin = file_get_contents(FSPATH . "/skin_blueEye/$skin_section.html");
 
     preg_match_all("/<\\!-- :cwb_start: ([^\s]+) -->(.*)<\\!-- :cwb_end: \\1 -->/Us", $skin, $matches, PREG_SET_ORDER);
 
@@ -183,11 +191,10 @@ function voodoo($skin, $args = array(), $skin_section = "", $expand = TRUE)
             "loginform" => "loginform()",
             "shoutbox" => "shoutbox()",
             "statistics" => "statistics()",
-            "querycount" => "querycount()",
-            "runtime" => "'%{".UNIQ ."runtime}'", // <---- these will be replaced at the very end of execution
-            "titletag" => "'%{".UNIQ."titletag}'", // <-/
-            "versionfooter" => "versionfooter()",
-            "copyright" => "'CodewiseBlog &copy; <a href=\"http://www.codewise.org/~netmanw00t/\">Bill Fraser</a>.<br />All textual content is the property of its author.'",
+            "querycount" => "'%{".UNIQ."querycount}'",// <--,
+            "runtime" => "'%{".UNIQ ."runtime}'", // <------|- these will be replaced at the very end of execution
+            "titletag" => "'%{".UNIQ."titletag}'", // <-----'
+            "copyright" => "CWB_COPYRIGHT",
             "notify" => "\$GLOBALS['NOTIFY']",
             "cwb_version" => "CWBVERSION",
             "cwb_type" => "CWBTYPE",

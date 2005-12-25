@@ -74,6 +74,11 @@ function autoResize(internal)
             canvas.cols--;
             canvas.rows--;
 
+            if(canvas.rows < 25)
+                canvas.rows = 25;
+            if(canvas.cols < 80)
+                canvas.cols = 80;
+
             cols.value = canvas.cols;
             rows.value = canvas.rows;
 

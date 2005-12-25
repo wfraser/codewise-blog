@@ -114,6 +114,8 @@ function process_reply_form($tid)
 
     if($link == "http://")
         $link = null;
+    if(strpos($link, "http://") !== 0)
+        $link = "http://" . $link;
 
     $_SESSION['postername'] = $name;
     $_SESSION['posterlink'] = $link;

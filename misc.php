@@ -48,16 +48,6 @@ function runtime()
     return number_format(($endtime - $starttime) * 1e3, 0);
 }
 
-function versionfooter()
-{
-    //return id_footer("CodewiseBlog version <a href=\"changelog.php\" style=\"color:#aaa;text-decoration:underline\" title=\"" . iso8601_date(filemtime("index.php")) . "\">" . CWBVERSION . "</a>");
-
-    $sig = trim($_SERVER['SERVER_SIGNATURE']);
-    $sig = str_replace("<address>", "<br /><i>", str_replace("</address>", "</i><br />", $sig));
-
-    return skinvoodoo("main", "versionfooter", array("mtime" => iso8601_date(filemtime("cwbmulti.php")), "sig" => $sig, "hostname" => "delta-zero"));
-}
-
 /*
 ** Return the ISO8601 date ( 2004-02-12T15:19:21+00:00 ) of a UNIX timestamp
 */
@@ -298,6 +288,51 @@ function ordinal($n)
         return "{$n}rd";
     else
         return "{$n}th";
+}
+
+/*
+** This function will clip text as close to (without going over) the specified
+** character limit as possible without messing up html or breaking words. IT
+** MAY, HOWEVER, LEAVE TAGS OPEN, so be careful.
+*/
+function text_clip($text, $limit = 500, $append = " ...")
+{
+    if(strlen($text) <= $limit)
+    {
+        return($text);
+    } else {
+        $content = "";
+        $parts = preg_split("/(<[^>]+>)/",$text,-1,PREG_SPLIT_DELIM_CAPTURE);
+        foreach($parts as $part)
+        {
+            if(strlen($content) + strlen($part) <= $limit - strlen($append))
+            {
+                $content .= $part;
+                continue;
+            } else {
+                if(substr($part,0,1) == "<") // html tag part
+                {
+                    $content .= $append;
+                    break;
+                } else { // text part
+                    $words = preg_split("/( )/",$part,-1,PREG_SPLIT_DELIM_CAPTURE);
+                    foreach($words as $word)
+                    {
+                        if(strlen($content) + strlen($word) <= $limit - strlen($append))
+                        {
+                            $content .= $word;
+                            continue;
+                        } else {
+                            $content .= $append;
+                            break 2;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return($content);
 }
 
 ?>

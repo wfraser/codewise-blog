@@ -69,6 +69,10 @@ if(isset($_POST['section_sel']))
         $using_master = FALSE;
     }
 
+    // special case when using the root controlpanel
+    if(BLOGID == 1)
+        $using_master = TRUE;
+
     $content = skinvoodoo("controlpanel_skin", "section_edit", array(
         "section_name" => $_POST['section_sel'],
         "using_master" => $using_master,
@@ -80,6 +84,8 @@ if(isset($_POST['section_sel']))
             array("&#x0025;{",  "&#x0024{"  ),
             htmlspecialchars($skin)),
     ));
+
+    $varlist = "<iframe src=\"http://" .  DEFAULT_SUBDOMAIN . BASE_DOMAIN . INSTALLED_PATH . "doc/voodoo/localvars.html#". $_POST['section_sel'] . "\" height=\"100%\" width=\"300\" /></iframe>";
 }
 
 $body = skinvoodoo("controlpanel_skin", "", array(
@@ -87,6 +93,7 @@ $body = skinvoodoo("controlpanel_skin", "", array(
     "sectionlist" => $sectionlist,
     "varlist" => $varlist,
     "content" => $content,
+    "section_name" => isset($_POST['section_sel']) ? $_POST['section_sel'] : FALSE,
 ));
 
 ?>

@@ -29,7 +29,7 @@ $starttime = (string) $sec + $usec;
 unset($sec, $usec);
 
 // define version string
-define("CWBVERSION","1.0.0-RC3");
+define("CWBVERSION","1.0.0");
 define("CWBTYPE", "Multi-User");
 define("SETTINGS_FILE", "settings.php");
 
@@ -159,6 +159,8 @@ $BLOGINFO['links'] = nl2br($BLOGINFO['links']);
 $BLOGINFO['version'] = CWBVERSION;
 $BLOGINFO['anonymous_name'] = ANONYMOUS_NAME;
 
+$BLOGINFO['multiuser_root'] = "http://" . DEFAULT_SUBDOMAIN . BASE_DOMAIN . INSTALLED_PATH;
+
 if(!defined("NO_ACTION"))
 {
     /*
@@ -231,10 +233,12 @@ if(!defined("NO_ACTION"))
 
     $out = str_replace("<!-- #CWB_BODY# -->", $body, $out);
 
+    $db->disconnect();
+
     if($TITLE == "")
         $TITLE = $BLOGINFO['title'];
     $out = str_replace("%{".UNIQ."titletag}", $TITLE, $out);
-
+    $out = str_replace("%{".UNIQ."querycount}", querycount(), $out);
     $out = str_replace("%{".UNIQ."runtime}", runtime(), $out);
 
     echo $out;

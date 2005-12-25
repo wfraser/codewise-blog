@@ -5,13 +5,6 @@
 <tr><td><input type="submit" name="section_sel" value="${section}" disabled="disabled" /></td></tr>
 <!-- :cwb_end: sectionlist_current -->
 
-<!-- :cwb_start: varlist_entry -->
-<tr>
-<td>${varname}</td>
-<td><blockquote>${vardesc}</td>
-</tr>
-<!-- :cwb_end: varlist_entry -->
-
 <form action="${posturl}" method="post">
 <style type="text/css">
 table.skintable {
@@ -33,13 +26,22 @@ table.skintable td td {
     ${sectionlist}
     </table>
     <br />
-    <table>
-    ${varlist}
-    </table>
 </td>
 <td style="vertical-align:top">
     ${content}
 </td>
+<!-- #cwb_if# ${section_name} -->
+<td style="height:100%">
+    <table style="height:100%">
+        <tr><td>
+            Variable Reference:
+        </td></tr>
+        <tr><td style="height:100%">
+            ${varlist}
+        </td></tr>
+    </table>
+</td>
+<!-- #cwb_endif# -->
 </tr>
 </table>
 </form>

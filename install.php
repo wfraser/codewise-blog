@@ -111,7 +111,7 @@ case 1:
         } else {
             $writable = is_writable("$fspath/settings.php");
             $writable_install = is_writable("$fspath/install.php");
-            $writable_htaccess = is_writable("$fspath/.htaccess");
+            // $writable_htaccess = is_writable("$fspath/.htaccess");
         }
 
 ?>
@@ -142,11 +142,12 @@ case 1:
         <td><?=($writable_install ? "yes" : "no")?></td>
         <td>install.php needs to be writable or the installer won't be able to disable itself when the install is done and you'll have to do so manually.</td>
     </tr>
+<?php /*
     <tr>
         <td>.htaccess is writable?</td>
         <td><?=($writable_htaccess ? "yes" : "no")?></td>
         <td>If you're using Apache, .htaccess needs to be writable or the installer won't be able to finish the installation and you'll have to edit the file manually.</td>
-    </tr>
+    </tr> */ ?>
     </table>
 </td>
 </tr>
@@ -745,11 +746,14 @@ case 5:
         $file = "<?php die(\"<html><body>The installer has been disabled.</body></html>\"); ?>\n" . file_get_contents("install.php");
         file_put_contents("install.php", $file);
 
-        $htaccess = 
+        /*
+        $htaccess =
 "Options +Indexes +FollowSymLinks
 RewriteEngine on
-RewriteRule !(CHANGELOG|favicon\.ico|rdf\.php(/.*)?|stylesheet\.php|skin_importer\.php|install\.php)$ cwbmulti.php";
+RewriteRule !(CHANGELOG|COPYING|favicon\.ico|rdf\.php(/.*)?|stylesheet\.php|skin_importer\.php|install\.php)$ cwbmulti.php
+php_flag magic_quotes_gpc off";
         file_put_contents(".htaccess", $htaccess);
+        */
 
 ?>
 <html>
