@@ -68,3 +68,16 @@ Dev - July 25 to September 12, 2005
   - correctly display most recent X shoutbox posts, where X is SHOUTS_PER_PAGE in settings.php
   - control panel and installer updated to use SHOUTS_PER_PAGE
   - shoutbox makes sure links start with "http://"
+
+1.0.0 - December 25, 2005
+  - removed versionfooter() from misc.php, and removed dependancy on it from skinvoodoo.php
+  - made %{querycount} evaluated at the end of execution just like %{runtime} and %{titletag}
+  - replaced the %{versionfooter} macro in the main and controlpanel sections with a subsection call
+  - admins can use the root password to log in to any user's controlpanel (much easier than editing the database by hand)
+  - use htmlspecialchars() on some user info fields before putting them in the database
+  - took the W3C icons out of the master skin
+  - added 'Master Skin' page to the root control panel
+  - run front page post text through in_text_filter() to remove all possibly nefarious HTML
+  - added %{multiuser_root}, which is the URL of the frontpage
+  - added a spiffy 'CWB' icon that appears in the footer where the W3C icons used to be
+  - added Voodoo skin reference
