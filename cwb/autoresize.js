@@ -24,6 +24,7 @@ function getScrollY()
 
 function autoResize(internal)
 {
+    // this script causes an infinite loop in Konqueror
     if(navigator.appName == "Konqueror")
     {
         alert("this feature does not work under Konqueror");
@@ -37,6 +38,11 @@ function autoResize(internal)
     ** Step 4: step back one x and y.
     ** Step 5: done!
     */
+
+    // hide the preview first
+    var preview = document.getElementById("preview");
+    if(preview)
+        preview.style.display = "none";
 
     var canvas = document.getElementById("canvas");
     var cols = document.getElementById("cols");
@@ -82,6 +88,15 @@ function autoResize(internal)
             cols.value = canvas.cols;
             rows.value = canvas.rows;
 
+            // unhide the preview
+            //document.getElementById("preview").style.display = "";
+            if(preview)
+                preview.style.display = "";
+
+            // scroll to the bottom
+            window.scrollTo(1e6,1e6);
+
+            // all done :)
             return;
         }
     }
