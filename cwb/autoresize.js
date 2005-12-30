@@ -32,7 +32,7 @@ function autoResize(internal)
     }
 
     /*
-    ** Step 1: resize to 0,0
+    ** Step 1: resize to 1,1
     ** Step 2: read scrollbar info (use this as the limit)
     ** Step 3: (for x and y) expand until scrollbar info is greater than limit
     ** Step 4: step back one x and y.
@@ -48,8 +48,8 @@ function autoResize(internal)
     var cols = document.getElementById("cols");
     var rows = document.getElementById("rows");
 
-    canvas.cols = 0;
-    canvas.rows = 0;
+    canvas.cols = 1;
+    canvas.rows = 1;
 
     window.scrollTo(1e6, 1e6); // that should be high enough ;)
 
