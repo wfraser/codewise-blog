@@ -1,4 +1,4 @@
 Options +Indexes +FollowSymLinks
 RewriteEngine on
-RewriteRule !((CHANGELOG|COPYING|favicon\.ico|rdf\.php(/.*)?|stylesheet\.php|skin_importer\.php|install\.php|skin_blueEye/blueEye\.css|cwb\.jpg|cwb-black\.jpg)$|doc) cwbmulti.php
+RewriteRule !((CHANGELOG|COPYING|TERMS|favicon\.ico|rdf\.php(/.*)?|stylesheet\.php|skin_importer\.php|install\.php|skin_blueEye/blueEye\.css|cwb\.jpg|cwb-black\.jpg|cwb\.png)$|doc) cwbmulti.php
 php_flag magic_quotes_gpc off
