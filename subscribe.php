@@ -42,7 +42,7 @@ function process_subscribe_form()
     $db->insert("subscriptions", $data);
 
     if(EMAIL)
-        mail( ADMIN_EMAIL, "New Blog Subscriber", $_POST['email'] . " has subscribed to your blog.", "From: " . BASE_URL . " <nobody@" . BASE_URL . ">");
+        mail( ADMIN_EMAIL, "New Blog Subscriber", $_POST['email'] . " has subscribed to your blog.", "From: " . BASE_DOMAIN . " <nobody@" . BASE_DOMAIN . ">");
 
     return skinvoodoo("error", "notify", array("message" => "You have been successfully subscribed to " . BLOG_TITLE . ".<br />"
         . "You will be notified of future updates at the provided email address.<br />"
