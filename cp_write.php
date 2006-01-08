@@ -125,6 +125,9 @@ you may unsubscribe from these mailings by visiting this url:
             if($_POST['weblogs.com'] == "checked")
             {
                 global $BLOGINFO;
+
+                file_get_contents("http://rpc.weblogs.com/pingSiteForm?name=".$BLOGINFO['title']."&url=".INDEX_URL".&changesURL=".INDEX_URL."/rdf.php");
+/*
                 require(FSPATH . "/xmlrpc.inc");
                 $client = new xmlrpc_client("/RPC2", "rpc.weblogs.com", 80);
                 $msg = new xmlrpcmsg(
@@ -142,6 +145,7 @@ you may unsubscribe from these mailings by visiting this url:
                     $rmsg = $resp->value();
                     //oo
                 }
+*/
             }
 
             $body = skinvoodoo("controlpanel_write", "success_redirect", array("topic_url" => INDEX_URL . "?tid=$tid"));
