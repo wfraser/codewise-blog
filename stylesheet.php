@@ -28,15 +28,31 @@
 
 header("Content-type: text/css");
 
-require("settings.php");
+require("settings2.php");
 require("l1_mysql.php");
 
 $db = new L1_MySQL(SQL_HOST, SQL_USER, SQL_PASS, SQL_DB);
 
-$q = $db->issue_query("SELECT css FROM skin WHERE blogid = " . $db->prepare_value($_GET['id']));
+$url_parts = parse_url($_SERVER['HTTP_REFERER']);
+parse_str($url_parts['query'], $vars = array());
+
+if(isset($vars['skinid']) && $db->num_rows[ $db->issue_query("SELECT skinid FROM skins WHERE skinid = ".$db->prepare_value($vars['skinid'])) ] > 0)
+{
+    $skinid = $db->prepare_value($vars['skinid'], FALSE);
+} elseif( $db->num_rows[ $q = $db->issue_query("SELECT skinid FROM blogs WHERE blogid = ".$db->prepare_value($_GET['id'])) ] > 0 ) {
+    $skinid = $db->fetch_var($q);
+} else {
+    $skinid = "00000000000000000000000000000000";
+}
+
+$q = $db->issue_query("SELECT css FROM skins WHERE skinid = '$skinid'");
 
 if($db->num_rows[$q] == 0 || ($text = $db->fetch_var($q)) === NULL)
-    $text = $db->fetch_var($db->issue_query("SELECT css FROM skin WHERE blogid = '1'"));
+    $text = $db->fetch_var($db->issue_query("SELECT css FROM skins WHERE skinid = '00000000000000000000000000000000'"));
+
+// optimize by removing all unnecessary text
+$text = preg_replace('/\/\*.*\*\//Us', " ", $text);
+$text = preg_replace('/\s+/', " ", $text);
 
 echo $text;
 
