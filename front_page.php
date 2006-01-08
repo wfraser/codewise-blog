@@ -33,7 +33,7 @@ $title = $db->fetch_var($q);
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
     <head>
-        <title>CodewiseBlog</title>
+        <title><?php echo SITE_TITLE; ?></title>
         <link rel="stylesheet" href="stylesheet.php" />
     </head>
     <body>
@@ -114,17 +114,6 @@ foreach($data as $blogname => $blog)
 
                 </td>
                 <td class="blogbody">
-
-<?php /*
-                    <div style="background-color: yellow"><div style="border: 5px dashed red"><div style="background-color:white; padding:10px">
-                        <b style="font-size: xx-large">CodewiseBlog Multi-User</b><br />
-                        <br />
-                        <b>v1.0.0-BETA</b><br />
-                        <br />
-                        "Let's get this baby out the door!"<br />
-                        &nbsp;&nbsp;&nbsp;&nbsp;-NMW
-                    </div></div></div>
-*/ ?>
 
 <?php
 
