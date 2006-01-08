@@ -118,7 +118,29 @@ you may unsubscribe from these mailings by visiting this url:
 " . INDEX_URL . "?unsubscribe&email=$email&password=$password
 ";
 
-                    mail($email, html_entity_decode($BLOGINFO['title']) . " Subscription", $message, "From: blog.codewise.org <nobody@codewise.org>");
+                    mail($email, html_entity_decode($BLOGINFO['title']) . " Subscription", $message, "From: ".DEFAULT_SUBDOMAIN.BASE_DOMAIN." <nobody@".BASE_DOMAIN.">");
+                }
+            }
+
+            if($_POST['weblogs.com'] == "checked")
+            {
+                global $BLOGINFO;
+                require(FSPATH . "/xmlrpc.inc");
+                $client = new xmlrpc_client("/RPC2", "rpc.weblogs.com", 80);
+                $msg = new xmlrpcmsg(
+                    "weblogUpdates.extendedPing", array(
+                        new xmlrpcval($BLOGINFO['title'], "string"),
+                        new xmlrpcval(INDEX_URL, "string"),
+                        new xmlrpcval(INDEX_URL, "string"),
+                        new xmlrpcval(INDEX_URL . "/rdf.php", "string")
+                ));
+                $resp = $client->send($msg, 10);
+                if($resp->faultCode != 0)
+                {
+                    $GLOBALS['NOTIFY'] = "weblogs.com ping failed";
+                } else {
+                    $rmsg = $resp->value();
+                    //oo
                 }
             }
 
