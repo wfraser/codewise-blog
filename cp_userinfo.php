@@ -46,6 +46,8 @@ if($_POST)
         }
     } elseif($_POST['email'] == "") {
         $GLOBALS['NOTIFY'] = "Email address must not be empty";
+    } elseif($_POST['title'] == "") {
+        $GLOBALS['NOTIFY'] = "Site Title must not be empty";
     } else {
 
         $data = array(
@@ -57,7 +59,7 @@ if($_POST)
             "links" => $_POST['links'] == "" ? NULL : $_POST['links'],
             "photo" => $_POST['photo'] == "" ? NULL : htmlspecialchars($_POST['photo']),
             "homepage" => $_POST['homepage'] == "" ? NULL : htmlspecialchars($_POST['homepage']),
-            "title" => $_POST['title'] == "" ? "CodewiseBlog" : str_replace(" ", "&nbsp;", htmlspecialchars($_POST['title'])),
+            "title" => $_POST['title'] == str_replace(" ", "&nbsp;", htmlspecialchars($_POST['title'])),
             "custom_url" => $_POST['custom_url'] == "" ? NULL : $_POST['custom_url'],
         );
 
