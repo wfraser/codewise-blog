@@ -340,6 +340,9 @@ case 3:
         }
         $allowed_tags .= ");";
 
+        foreach($_POST as $name=>$value)
+            $_POST[$name] = str_replace("'", "\\'", $value);
+
         $file = file_get_contents("settings.php");
         $file = substr($file, 0, -4);
         $file .=
@@ -353,6 +356,8 @@ define('POSTS_PER_PAGE', '{$_POST['posts_per_page']}');
 define('SHOUTS_PER_PAGE', '{$_POST['shouts_per_page']}');
 define('DATE_FORMAT', '{$_POST['date_format']}');
 define('ANONYMOUS_NAME', '{$_POST['anonymous_name']}');
+define('SITE_TITLE', '{$_POST['site_title']}');
+define('SITE_MOTTO', '{$_POST['site_motto']}');
 
 $allowed_tags
 
@@ -454,6 +459,16 @@ function dataChanged()
         <td><hr /></td>
         <td><hr /></td>
         <td><hr /></td>
+    </tr>
+    <tr>
+        <td>Site Title:</td>
+        <td><input type="text" size="25" name="site_title" value="CodewiseBlog" /></td>
+        <td>The name of your site.</td>
+    </tr>
+    <tr>
+        <td>Site Motto:</td>
+        <td><input type="text" size="25" name="site_motto" value="A Better Place to Write" /></td>
+        <td>Some tagline text to display along with the title.</td>
     </tr>
     <tr>
         <td>Blog Posts Per Page:</td>

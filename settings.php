@@ -30,6 +30,9 @@ define('SQL_HOST', 'localhost');
 define('SQL_USER', 'sql_username');
 define('SQL_PASS', 'sql_password');
 define('SQL_DB', 'sql_database');
+define('SITE_TITLE', 'CodewiseBlog');
+define('SITE_MOTTO', 'A better place to write.');
+
 
 $ALLOWED_TAGS = array
 (
