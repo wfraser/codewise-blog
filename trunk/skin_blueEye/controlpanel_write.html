@@ -1,0 +1,56 @@
+<form action="${posturl}" method="post">
+<script type="text/javascript" src="${autoresize}"></script>
+<script type="text/javascript" src="${quicktags}"></script>
+<table>
+    <tr>
+        <td>
+            <table style="border:none">
+                <tr>
+                    <td><input type="text" size="20" name="title" value="${title}" /></td>
+                    <td><script type="text/javascript">edToolbar();</script></td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <textarea name="text" id="canvas" rows="${rows}" cols="${cols}">${text}</textarea>
+            <script type="text/javascript">var edCanvas = document.getElementById('canvas');</script>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <table style="border:none" width="100%">
+                <tr>
+                    <td align="left">
+                        <input type="submit" value="preview" name="preview" />
+                    </td>
+                    <td align="center">
+                        <input type="submit" value="post" />
+                        Ping weblogs.com? <input type="checkbox" name="weblogs.com">
+                    </td>
+                    <td align="right">
+                        <input type="submit" name="resize" value="resize text area" />
+                        <input type="text" size="3" name="cols" id="cols" value="${cols}" />
+                        x
+                        <input type="text" size="3" name="rows" id="rows" value="${rows}" />
+                        <input type="button" value="auto resize" onclick="autoResize()" />
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+</form>
+<!-- :cwb_start: success_redirect -->
+Your post has been recorded.<br />
+You can view it <a href="${topic_url}">here</a><br />
+Alternatively, you can go <a href="%{ucp_link}">back to the Control Panel</a>
+<!-- :cwb_end: success_redirect -->
+<!-- :cwb_start: preview_topic -->
+<br />
+<div class="topicpreview" id="preview">
+${text}
+</div>
+<br />
+<!-- :cwb_end: preview_topic -->

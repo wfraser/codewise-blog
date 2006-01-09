@@ -1,0 +1,145 @@
+<form action="${posturl}" method="post">
+<style type="text/css">
+.settingstable td {
+    padding: 5px;
+    text-align: left;
+}
+</style>
+<table class="settingstable">
+    <tr>
+        <td>Version:</td>
+        <td>%{cwb_version}</td>
+    </tr>
+    <tr>
+        <td>Type:</td>
+        <td>%{cwb_type}</td>
+    </tr>
+    <tr>
+        <td>Filesystem Path:</td>
+        <td><input size="40" type="text" name="fspath" value="${fspath}" /></td>
+    </tr>
+    <tr><td><hr /></td><td><hr /></td></tr>
+    <tr>
+        <td>Admin Email:</td>
+        <td><input size="25" type="text" name="sql_admin_email" value="${sql_admin_email}" /></td>
+        <td>SQL errors will get emailed to this address</td>
+    </tr>
+    <tr>
+        <td>Enable custom urls for users:</td>
+        <td>
+            <select name="custom_url_enabled">
+<!-- #cwb_if# ${custom_url_enabled} -->
+                <option value="TRUE" selected="selected">Enabled</option>
+                <option value="FALSE">Disabled</option>
+<!-- #cwb_else# -->
+                <option value="FALSE" selected="selected">Disabled</option>
+                <option value="TRUE">Enabled</option>
+<!-- #cwb_endif# -->
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td>Enable email to subscribed addresses:</td>
+        <td>
+            <select name="email">
+<!-- #cwb_if# ${email} -->
+                <option value="TRUE" selected="selected">Enabled</option>
+                <option value="FALSE">Disabled</option>
+<!-- #cwb_else# -->
+                <option value="FALSE" selected="selected">Disabled</option>
+                <option value="TRUE">Enabled</option>
+<!-- #cwb_endif# -->
+            </select>
+        </td>
+        <td>Only disable this for debugging</td>
+    </tr>
+    <tr><td><hr /></td><td><hr /></td></tr>
+    <tr>
+        <td>SQL Hostname:</td>
+        <td><input size="25" type="text" name="sql_host" value="${sql_host}" /></td>
+    </tr>
+    <tr>
+        <td>SQL Username:</td>
+        <td><input size="25" type="text" name="sql_user" value="${sql_user}" /></td>
+    </tr>
+    <tr>
+        <td>SQL Password:</td>
+        <td><input type="25" type="text" name="sql_pass" value="${sql_pass}" /></td>
+    </tr>
+    <tr>
+        <td>SQL Database:</td>
+        <td><input type="25" type="text" name="sql_db" value="${sql_db}" /></td>
+    </tr>
+    <tr><td><hr /></td><td><hr /></td></tr>
+    <tr>
+        <td>Sample User's URL:</td>
+        <td>${sample_url}</td>
+    </tr>
+    <tr>
+        <td>Main URL:</td>
+        <td>${main_url}</td>
+    </tr>
+    <tr>
+        <td>Username as subdomain:</td>
+        <td>
+            <select name="subdomain_mode">
+<!-- #cwb_if# ${subdomain_mode} -->
+                <option value="TRUE" selected="selected">Enabled</option>
+                <option value="FALSE">Disabled</option>
+<!-- #cwb_else# -->
+                <option value="FALSE" selected="selected">Disabled</option>
+                <option value="TRUE">Enabled</option>
+<!-- #cwb_endif# -->
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td>Base Domain:</td>
+        <td><input type="text" size="25" name="base_domain" value="${base_domain}" /></td>
+    </tr>
+    <tr>
+        <td>URL Path</td>
+        <td><input type="text" size="25" name="installed_path" value="${installed_path}" /></td>
+    </tr>
+    <tr>
+        <td>Default Subdomain</td>
+        <td><input type="text" size="25" name="default_subdomain" value="${default_subdomain}" /></td>
+        <td>(Leave empty to always use Base Domain)</td>
+    </tr>
+    <tr><td><hr /></td><td><hr /></td></tr>
+    <tr>
+        <td>Site Title:</td>
+        <td><input type="text" size="25" name="site_title" value="${site_title}" /></td>
+    </tr>
+    <tr>
+        <td>Site Motto:</td>
+        <td><input type="text" size="25" name="site_motto" value="${site_motto}" /></td>
+    </tr>
+    <tr>
+        <td>Blog Entries Per Page:</td>
+        <td><input type="text" size="10" name="topics_per_page" value="${topics_per_page}" /></td>
+    </tr>
+    <tr>
+        <td>Comments Per Page:</td>
+        <td><input type="text" size="10" name="posts_per_page" value="${posts_per_page}" /></td>
+    </tr>
+    <tr>
+        <td>Shoutbox Entries Per Page:</td>
+        <td><input type="text" size="10" name="shouts_per_page" value="${shouts_per_page}" /></td>
+    </tr>
+    <tr>
+        <td>Date Format:</td>
+        <td><input type="text" size="20" name="date_format" value="${date_format}" /></td>
+        <td>(See <a href="http://www.php.net/date#AEN25648" target="_blank">php.net/date</a> for the format)</a></td>
+    </tr>
+    <tr>
+        <td>Anonymous Name:</td>
+        <td><input type="text" size="20" name="anonymous_name" value="${anonymous_name}" /></td>
+    </tr>
+    <tr>
+        <td>Allowed Tags and Attributes:</td>
+        <td><textarea name="allowed_tags" rows="25" cols="50">${allowed_tags}</textarea></td>
+    </tr>
+</table>
+<input type="submit" value="submit" />
+</form>
