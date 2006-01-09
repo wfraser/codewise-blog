@@ -2,6 +2,11 @@
 <head>
 <title>Voodoo Skin Engine Documentation</title>
 <style type="text/css">
+body {
+    background: white;
+    color: black;
+}
+
 div.indent {
     padding-left: 3em;
     padding-bottom: 1em;
@@ -22,6 +27,11 @@ div.code {
 
 td {
     padding: 5px;
+    border-bottom: 1px solid #777;
+}
+
+th {
+    border-bottom: 1px solid #777;
 }
 </style>
 </head>
@@ -29,6 +39,7 @@ td {
 
 <h1>Local Variable Reference</h1>
 
+<a href="#description">description</a><br />
 <a href="#css">css</a><br />
 <a href="#main">main</a><br />
 <a href="#postcalendar">postcalendar</a><br />
@@ -47,12 +58,22 @@ td {
 <a href="#controlpanel_edit">controlpanel_edit</a><br />
 <a href="#controlpanel_userinfo">controlpanel_userinfo</a><br />
 <a href="#controlpanel_skin">controlpanel_skin</a><br />
-
+<a href="#controlpanel_adduser">controlpanel_adduser</a><br />
+<a href="#controlpanel_skin_multi">controlpanel_skin_multi</a><br />
 
 <a href="#AUTHOR">Author</a><br />
 <a href="#LICENSE">License</a><br />
 
 <hr />
+
+<a name="description"></a>
+<h2>description</h2>
+<div class="indent">
+<h3>Main subsection:</h3>
+This is just a simple text field for describing the skin. It never gets used for any other purpose.<br />
+<i>there are no local variables</i>
+<br /><br />
+</div>
 
 <a name="css"></a>
 <h2>css</h2>
@@ -571,7 +592,7 @@ Even numbered rows<br />
 </table><br /><br />
 <h3>The row_odd subsection:</h3>
 Odd numbered rows<br />
-same as the row_even subsection<br /><br />
+<i>same as the row_even subsection</i><br /><br />
 <h3>The nothing subsection:</h3>
 Used when there are no shouts to display<br />
 <i>there are no local variables</i>
@@ -644,7 +665,7 @@ Container for the preview text of the post<br />
 <h2>controlpanel_settings</h2>
 <div class="indent">
 <h3>Main subsection:</h3>
-The Settings page of the control panel<br />
+The Settings page of the control panel. Only accessible to administrators.<br />
 <table>
 <tr>
 <th>Variable</th>
@@ -1005,6 +1026,171 @@ Contains the textbox and other items for editing a skin section<br />
 <tr>
 <td>${section_content}</td>
 <td>full text of the skin section (HTML escaped)</td>
+</tr>
+</table><br /><br />
+</div>
+
+<a name="controlpanel_adduser"></a>
+<h2>controlpanel_adduser</h2>
+<div class="indent">
+<h3>Main subsection:</h3>
+The Add User page of the control panel. Only accessible to administrators.<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${posturl}</td>
+<td>The URL the form gets POSTed to</td>
+</tr>
+<tr>
+<td>${blogid}</td>
+<td>The Blog ID the new member will have</td>
+</tr>
+</table><br /><br />
+</div>
+
+<a name="controlpanel_skin_multi"></a>
+<h2>controlpanel_skin_multi</h2>
+<div class="indent">
+<h3>Main subsection:</h3>
+The Skin Editor page of the control panel. Shown once a skin has been selected from the skin_select subsection.<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${posturl}</td>
+<td>The URL the form gets POSTed to</td>
+</tr>
+<tr>
+<td>${skinid}</td>
+<td>The Skin ID of the currently shown skin</td>
+</tr>
+<tr>
+<td>${sectionlist}</td>
+<td>the list of skin sections as a row of buttons</td>
+</tr>
+<tr>
+<td>${content}</td>
+<td>the skin section's text (HTML escaped)</td>
+</tr>
+<tr>
+<td>${section_name}</td>
+<td>name of the currently viewed skin section. FALSE if none is being viewed.</td>
+</tr>
+<tr>
+<td>${varlist}</td>
+<td>an &lt;iframe&gt; with this document in it, scrolled to the appropriate section</td>
+</tr>
+</table><br /><br />
+<h3>The sectionlist_entry subsection</h3>
+An entry in the list of sections.<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${section}</td>
+<td>the name of the section</td>
+</tr>
+</table><br /><br />
+<h3>The sectionlist_current subsection</h3>
+The entry in the list of sections for the currently viewed section.<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${section}</td>
+<td>the name of the section</td>
+</tr>
+</table><br /><br />
+<h3>The section_edit subsection</h3>
+Contains the text box for editing the skin section, etc.<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${autoresize}</td>
+<td>URL of the autoresize javascript file</td>
+</tr>
+<tr>
+<td>${section_name}</td>
+<td>name of the section being edited</td>
+</tr>
+<tr>
+<td>${using_master}</td>
+<td>TRUE if the master skin is being used for this section</td>
+</tr>
+<tr>
+<td>${rows}</td>
+<td>number of rows in the textbox</td>
+</tr>
+<tr>
+<td>${cols}</td>
+<td>number of columns in the textbox</td>
+</tr>
+<tr>
+<td>${section_content}</td>
+<td>full text of the skin section (HTML escaped)</td>
+</tr>
+</table><br /><br />
+<h3>The skin_select subsection</h3>
+Lets user select a saved skin for editing<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${posturl}</td>
+<td>the URL the form is POSTed to</td>
+</tr>
+<tr>
+<td>${savedskins}</td>
+<td>CWB-generated list of saved skins</td>
+</tr>
+<tr>
+</table><br /><br />
+<h3>The saved_skinids_entry subsection</h3>
+An entry in the list of saved skins<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${skinid}</td>
+<td>the Skin ID to select</td>
+</tr>
+<tr>
+<td>${name}</td>
+<td>the name of the corresponding skin</td>
+</tr>
+</table><br /><br />
+<h3>The saved_skinids_current subsection</h3>
+The currently used skin in the list of saved skins.<br />
+<i>same as saved_skinids_entry</i><br /><br />
+<h3>The skin_name subsection</h3>
+Allows user to edit the skin name when the description page is shown<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${name}</td>
+<td>The current name of the skin</td>
+</tr>
+</table><br /><br />
+<h3>The skin_owner subsection</h3>
+Allows administrators to change the skin's owner when the description page is shown<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${owner}</td>
+<td>the Blog ID of the skin's current owner</td>
 </tr>
 </table><br /><br />
 </div>
