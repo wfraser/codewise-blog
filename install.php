@@ -183,7 +183,7 @@ case 2:
         $q = $db->issue_query("SHOW TABLES");
         $tables = $db->fetch_column($q);
 
-        if(!isset($_GET['force']) && count($tables = array_intersect(array("blogs","replies","shoutbox","skin","subscriptions","topics"), $tables)) > 0)
+        if(!isset($_GET['force']) && count($tables = array_intersect(array("blogs","replies","shoutbox","skins","subscriptions","topics"), $tables)) > 0)
         {
             foreach($_POST as $name => $value)
             {
@@ -222,7 +222,33 @@ The following tables will be erased: <?=$table_list?><br />
             $db->issue_query($statement);
         }
 
-        $db->insert("skin", array("blogid" => "1"));
+$desc = <<<EOF
+CodewiseBlog Default Skin
+for CodewiseBlog Multi-User
+
+by Bill R. Fraser <bill.fraser@gmail.com>
+Copyright (c) 2005 Codewise.org
+
+---
+
+This skin is part of CodewiseBlog
+
+CodewiseBlog is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+CodewiseBlog is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with CodewiseBlog; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+EOF;
+
+        $db->insert("skins", array("skinid" => "00000000000000000000000000000000", "blogid" => 1, "name" => "CodewiseBlog Default Skin", "description" => $desc));
 
         $dir = opendir(FSPATH . "skin_blueEye");
         while($file = readdir($dir)) {
@@ -234,8 +260,8 @@ The following tables will be erased: <?=$table_list?><br />
             } else {
                 $section = preg_replace("/\\.html$/", "", $file);
             }
-            $db->issue_query("ALTER TABLE skin ADD ".$db->prepare_value($section,FALSE)." TEXT");
-            $db->update("skin", array($section => $cont), array("blogid" => 1));
+            $db->issue_query("ALTER TABLE skins ADD ".$db->prepare_value($section,FALSE)." TEXT");
+            $db->update("skins", array($section => $cont), array("skinid" => "000000000000000000000000000000"));
         }
 
         $file = file_get_contents("settings.php");
@@ -498,7 +524,8 @@ function dataChanged()
     <tr>
         <td>HTML Tags Allowed In Comments:</td>
         <td><textarea name="allowed_tags" rows="25" cols="50"><b>:
-<i>: 
+<i>:
+<u>: 
 <p>: 
 <br>: 
 <a>: href, name
@@ -626,6 +653,7 @@ Go back and change your username to something else.
             "password"   => md5($_POST['password']),
             "joindate"   => 0,
             "custom_url" => NULL,
+            "blogid"     => "00000000000000000000000000000000",
         );
 
         $user_blog = array(
@@ -643,11 +671,11 @@ Go back and change your username to something else.
             "password"   => md5($_POST['password']),
             "joindate"   => time(),
             "custom_url" => NULL,
+            "blogid"     => "00000000000000000000000000000000",
         );
 
         $db->insert("blogs", $root_blog);
         $db->insert("blogs", $user_blog);
-        $db->insert("skin", array("blogid" => 2));
 
         header("Location: install.php?stage=5");
 
