@@ -261,7 +261,7 @@ EOF;
                 $section = preg_replace("/\\.html$/", "", $file);
             }
             $db->issue_query("ALTER TABLE skins ADD ".$db->prepare_value($section,FALSE)." TEXT");
-            $db->update("skins", array($section => $cont), array("skinid" => "000000000000000000000000000000"));
+            $db->update("skins", array($section => $cont), array("skinid" => "00000000000000000000000000000000"));
         }
 
         $file = file_get_contents("settings.php");
