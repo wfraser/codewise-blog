@@ -1,0 +1,75 @@
+<!-- :cwb_start: sectionlist_entry -->
+<tr><td><input type="submit" name="section_sel" value="${section}" /></td></tr>
+<!-- :cwb_end: sectionlist_entry -->
+<!-- :cwb_start: sectionlist_current -->
+<tr><td><input type="submit" name="section_sel" value="${section}" disabled="disabled" /></td></tr>
+<!-- :cwb_end: sectionlist_current -->
+
+<form action="${posturl}" method="post">
+<style type="text/css">
+table.skintable {
+    border:none;
+}
+
+table.skintable td {
+    padding: 10px;
+}
+
+table.skintable td td {
+    padding: 0px;
+}
+</style>
+<table class="skintable">
+<tr>
+<td style="vertical-align:top">
+    <table>
+    ${sectionlist}
+    </table>
+    <br />
+</td>
+<td style="vertical-align:top">
+    ${content}
+</td>
+<!-- #cwb_if# ${section_name} -->
+<td style="height:100%">
+    <table style="height:100%">
+        <tr><td>
+            Variable Reference:
+        </td></tr>
+        <tr><td style="height:100%">
+            ${varlist}
+        </td></tr>
+    </table>
+</td>
+<!-- #cwb_endif# -->
+</tr>
+</table>
+</form>
+
+<!-- :cwb_start: section_edit -->
+<script type="text/javascript" src="${autoresize}"></script>
+<input type="hidden" name="section" value="${section_name}" />
+<!-- #cwb_if# ${using_master} -->
+<b>Using master skin</b>
+</b>
+<!-- #cwb_else# -->
+<input type="submit" name="revert" value="Revert to Master" />
+<!-- #cwb_endif# -->
+<br /><br />
+<textarea name="section_content" rows="${rows}" cols="${cols}" id="canvas" style="font-family:monospace">${section_content}</textarea>
+<br /><br />
+<table style="border:none" width="100%">
+    <tr>
+        <td>
+            <input type="submit" name="go_baby_go" value="Submit Changes" />
+        </td>
+        <td align="right">
+            <input type="submit" name="resize" value="resize text area" />
+            <input type="text" size="3" name="cols" id="cols" value="${cols}" />
+            x
+            <input type="text" size="3" name="rows" id="rows" value="${rows}" />
+            <input type="button" value="auto resize" onclick="autoResize()" />
+        </td>
+    </tr>
+</table>
+<!-- :cwb_end: section_edit -->

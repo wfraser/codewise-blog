@@ -1,0 +1,86 @@
+<!-- :cwb_start: showselect -->
+<form action="${posturl}" method="post">
+<table>
+    <tr>
+        <td>Select topic to edit:</td>
+        <td>
+            <select name="tid" width="50">
+${options}
+            </select>
+        </td>
+        <td><input type="submit" value="Edit" /></td>
+    </tr>
+</table>
+</form>
+<!-- :cwb_end: showselect -->
+<!-- :cwb_start: editform -->
+<form action="${posturl}" method="post">
+<table>
+    <tr>
+        <td>Title:</td>
+        <td><input type="text" size="50" name="title" value="${title}" /></td>
+    </tr>
+    <tr>
+        <td>Timestamp:</td>
+        <td>${month_sel} ${date_sel} ${year_sel} at ${hour_sel}:${minute_sel}:${second_sel} ${ampm_sel}</td>
+    </tr>
+</table>
+${preview}
+<script type="text/javascript" src="${autoresize}"></script>
+<script type="text/javascript" src="${quicktags}"></script>
+<table>
+    <tr>
+        <td>
+            <script type="text/javascript">edToolbar();</script>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <textarea name="text" id="canvas" rows="${rows}" cols="${cols}">${text}</textarea>
+            <script type="text/javascript">var edCanvas = document.getElementById('canvas');</script>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <table style="border:none" width="100%">
+                <tr>
+                    <td>
+                        <input type="submit" value="Save Changes" name="do_edit" />
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="submit" value="Preview" name="preview" />
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="submit" value="Delete" name="delete" />
+                    </td>
+                    <td align="right">
+                        <input type="submit" name="resize" value="resize text area" />
+                        <input type="text" size="3" name="cols" id="cols" value="${cols}" />
+                        x
+                        <input type="text" size="3" name="rows" id="rows" value="${rows}" />
+                        <input type="button" value="auto resize" onclick="autoResize()" />
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+<input type="hidden" name="tid" value="${tid}" />
+<!-- :cwb_end: editform -->
+<!-- :cwb_start: success_redirect -->
+Your post has been recorded.<br />
+You can view it <a href="${topic_url}">here</a><br />
+Alternatively, you can go <a href="%{ucp_link}">back to the Control Panel</a>
+<!-- :cwb_end: success_redirect -->
+<!-- :cwb_start: delete_ask -->
+<form action="${posturl}" method="post">
+<input type="hidden" name="tid" value="${tid}" />
+<input type="hidden" name="delete" value="anything" />
+<div class="error">
+ARE YOU SURE YOU WANT TO DELETE THAT??<br /><br />
+<input type="submit" name="REALLY_FREAKING_SURE" value="REALLY SURE!" />
+</div>
+</form>
+<!-- :cwb_end: delete_ask -->
+<!-- :cwb_start: delete_successful -->
+Your post and its ${num_comments} comments been deleted.<br />
+<a href="%{ucp_link}">Back to the Control Panel</a>
+<!-- :cwb_end: delete_successful -->
