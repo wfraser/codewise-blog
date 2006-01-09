@@ -126,7 +126,7 @@ you may unsubscribe from these mailings by visiting this url:
             {
                 global $BLOGINFO;
 
-                file_get_contents("http://rpc.weblogs.com/pingSiteForm?name=".$BLOGINFO['title']."&url=".INDEX_URL".&changesURL=".INDEX_URL."/rdf.php");
+                file_get_contents("http://rpc.weblogs.com/pingSiteForm?name=".$BLOGINFO['title']."&url=".INDEX_URL.".&changesURL=".INDEX_URL."/rdf.php");
 /*
                 require(FSPATH . "/xmlrpc.inc");
                 $client = new xmlrpc_client("/RPC2", "rpc.weblogs.com", 80);
