@@ -14,6 +14,7 @@ CREATE TABLE blogs (
   password varchar(32) NOT NULL default '',
   joindate int(10) NOT NULL default '0',
   custom_url varchar(128) default NULL,
+  skinid varchar(32) NOT NULL default '00000000000000000000000000000000',
   UNIQUE KEY blogid (blogid,name)
 ) TYPE=MyISAM;
 
@@ -42,10 +43,14 @@ CREATE TABLE shoutbox (
   UNIQUE KEY timestamp (timestamp)
 ) TYPE=MyISAM;
 
-DROP TABLE IF EXISTS skin;
-CREATE TABLE skin (
-  blogid int(8) unsigned NOT NULL default '0',
-  UNIQUE KEY blogid (blogid)
+DROP TABLE IF EXISTS skins;
+CREATE TABLE skins (
+  skinid varchar(32) NOT NULL default '',
+  blogid int(5) unsigned NOT NULL default '0',
+  name text NOT NULL,
+  description text NOT NULL,
+  UNIQUE KEY skinid (skinid),
+  KEY blogid (blogid)
 ) TYPE=MyISAM;
 
 DROP TABLE IF EXISTS subscriptions;
