@@ -22,10 +22,12 @@
         <td>
             <table style="border:none" width="100%">
                 <tr>
-                    <td>
-                        <input type="submit" value="submit" />
-                        &nbsp;&nbsp;&nbsp;&nbsp;
+                    <td align="left">
                         <input type="submit" value="preview" name="preview" />
+                    </td>
+                    <td align="center">
+                        <input type="submit" value="post" />
+                        Ping weblogs.com? <input type="checkbox" name="weblogs.com">
                     </td>
                     <td align="right">
                         <input type="submit" name="resize" value="resize text area" />
@@ -47,7 +49,7 @@ Alternatively, you can go <a href="%{ucp_link}">back to the Control Panel</a>
 <!-- :cwb_end: success_redirect -->
 <!-- :cwb_start: preview_topic -->
 <br />
-<div class="topicpreview">
+<div class="topicpreview" id="preview">
 ${text}
 </div>
 <br />

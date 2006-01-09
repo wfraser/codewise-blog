@@ -50,6 +50,8 @@ if(BLOGID != 1)
             "base_domain" => BASE_DOMAIN,
             "installed_path" => INSTALLED_PATH,
             "default_subdomain" => DEFAULT_SUBDOMAIN,
+            "site_title" => SITE_TITLE,
+            "site_motto" => SITE_MOTTO,
             "topics_per_page" => TOPICS_PER_PAGE,
             "posts_per_page" => POSTS_PER_PAGE,
             "shouts_per_page" => SHOUTS_PER_PAGE,
@@ -116,6 +118,22 @@ if(BLOGID != 1)
         $file);
     if($file != $filenew)
         $applied[] = "DEFAULT_SUBDOMAIN";
+    $file = $filenew;
+
+    $filenew = preg_replace(
+        "/(?<=\\s)define\\(\\s*(['\"])((?-i)SITE_TITLE)\\1,\\s*(['\"])((?-i)" . str_replace("/", "\\/", quotemeta(SITE_TITLE)) . ")\\3\\s*\\);/is",
+        "define('SITE_TITLE', '" . $_POST['site_title'] . "');",
+        $file);
+    if($file != $filenew)
+        $applied[] = "TOPICS_PER_PAGE";
+    $file = $filenew;
+
+    $filenew = preg_replace(
+        "/(?<=\\s)define\\(\\s*(['\"])((?-i)SITE_MOTTO)\\1,\\s*(['\"])((?-i)" . str_replace("/", "\\/", quotemeta(SITE_MOTTO)) . ")\\3\\s*\\);/is",
+        "define('SITE_MOTTO', '" . $_POST['site_motto'] . "');",
+        $file);
+    if($file != $filenew)
+        $applied[] = "SITE_MOTTO";
     $file = $filenew;
 
     $filenew = preg_replace(

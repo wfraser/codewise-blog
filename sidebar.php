@@ -41,8 +41,6 @@ function welcomeback()
         }
         return skinvoodoo("welcomeback", "", array("contents" => $contents, "url" => INDEX_URL . "?delsession"));
     } else {
-        // this'll get displayed on top of everything in the main pane.
-        $BLOGINFO['extra'] = "You seem to be new here.<br />Would you like to read the <a href=\"" . INDEX_URL . "?tid=1\">CodewiseBlog introduction</a>?\n";
         $_SESSION['beenhere'] = TRUE;
     }
 }

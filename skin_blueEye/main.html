@@ -26,7 +26,7 @@ function hidebio()
     <tr>
         <td style="text-align:center">
             <a href="%{index_url}"><span class="main-title">%{title}</span></a><br />
-            <i>by %{realname} / <!-- #cwb_if# %{homepage} --><a href="%{homepage}">%{name}</a><!-- #cwb_else# -->%{name}<!-- #cwb_endif# --></i>
+            <i>by <!-- #cwb_if# %{realname} -->%{realname} / <!-- #cwb_endif# --><!-- #cwb_if# %{homepage} --><a href="%{homepage}">%{name}</a><!-- #cwb_else# -->%{name}<!-- #cwb_endif# --></i>
         </td>
         <td style="width:100%;text-align:right;font-size:small">
 %{fortune}
@@ -104,7 +104,7 @@ function hidebio()
         %{copyright}
     </td>
     <td>
-        <a href="%{multiuser_root}"><img src="cwb.jpg" alt="CWB" style="border:none" width="108" height="58" /></a>
+        <a href="%{multiuser_root}"><img src="cwb.png" alt="CWB" style="border:none" /></a>
     </td>
     </tr>
 </table>

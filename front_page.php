@@ -26,14 +26,11 @@
 ** Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-$q = $db->issue_query("SELECT title FROM blogs WHERE blogid = '1'");
-$title = $db->fetch_var($q);
-
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
     <head>
-        <title>CodewiseBlog</title>
+        <title><?php echo SITE_TITLE; ?></title>
         <link rel="stylesheet" href="stylesheet.php" />
     </head>
     <body>
@@ -41,8 +38,8 @@ $title = $db->fetch_var($q);
         <table style="border:none;width:100%;">
             <tr>
                 <td style="text-align:center">
-                    <a href="<?php echo INDEX_URL; ?>"><span class="main-title"><?php echo $title; ?></span></a><br />
-                    <i>A better place to write.</i>
+                    <a href="<?php echo INDEX_URL; ?>"><span class="main-title"><?php echo SITE_TITLE ?></span></a><br />
+                    <i><?php echo SITE_MOTTO; ?></i>
                 </td>
                 <td style="width:100%;text-align:right;font-size:small">
 <?php echo fortune(); ?>
@@ -114,17 +111,6 @@ foreach($data as $blogname => $blog)
 
                 </td>
                 <td class="blogbody">
-
-<?php /*
-                    <div style="background-color: yellow"><div style="border: 5px dashed red"><div style="background-color:white; padding:10px">
-                        <b style="font-size: xx-large">CodewiseBlog Multi-User</b><br />
-                        <br />
-                        <b>v1.0.0-BETA</b><br />
-                        <br />
-                        "Let's get this baby out the door!"<br />
-                        &nbsp;&nbsp;&nbsp;&nbsp;-NMW
-                    </div></div></div>
-*/ ?>
 
 <?php
 

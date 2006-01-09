@@ -62,9 +62,6 @@ function controlpanel()
         return;
     }
 
-    if($_SESSION['controlpanel'] == 1) // we are root
-        $GLOBALS['EXTRA'] = "You are logged in as Admin. Beware that changes you make are potentially dangerous!\n\n";
-
     if(isset($_GET['controlpanel:settings']))
     {
         require("cp_settings.php");
@@ -75,7 +72,9 @@ function controlpanel()
     } elseif(isset($_GET['controlpanel:userinfo'])) {
         require("cp_userinfo.php");
     } elseif(isset($_GET['controlpanel:skin'])) {
-        require("cp_skin.php");
+        require("cp_skin_multi.php");
+    } elseif(isset($_GET['controlpanel:adduser'])) {
+        require("cp_adduser.php");
     } else {
         $current = "home";
         $body = "<div align=\"center\">Welcome to the CodewiseBlog control panel.<br />"
@@ -92,6 +91,7 @@ function controlpanel()
         "url_edit"     => INDEX_URL . "?controlpanel:edit",
         "url_userinfo" => INDEX_URL . "?controlpanel:userinfo",
         "url_skin"     => INDEX_URL . "?controlpanel:skin",
+        "url_adduser"  => INDEX_URL . "?controlpanel:adduser",
     );
 
     $out = skinvoodoo("controlpanel", "", $args);

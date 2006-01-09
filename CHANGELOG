@@ -81,3 +81,11 @@ Dev - July 25 to September 12, 2005
   - added %{multiuser_root}, which is the URL of the frontpage
   - added a spiffy 'CWB' icon that appears in the footer where the W3C icons used to be
   - added Voodoo skin reference
+
+1.1.0 - January 8, 2005
+  - BIG: Added multi-skin system
+  - misc. improvements with autoresizer
+  - new control panel page for admins to let them add new users
+  - added SITE_TITLE and SITE_MOTTO config constants
+  - added option to ping weblogs.com upon writing a new post
+  - new semitransparent CWB icon

@@ -24,6 +24,7 @@ function getScrollY()
 
 function autoResize(internal)
 {
+    // this script causes an infinite loop in Konqueror
     if(navigator.appName == "Konqueror")
     {
         alert("this feature does not work under Konqueror");
@@ -31,19 +32,24 @@ function autoResize(internal)
     }
 
     /*
-    ** Step 1: resize to 0,0
+    ** Step 1: resize to 1,1
     ** Step 2: read scrollbar info (use this as the limit)
     ** Step 3: (for x and y) expand until scrollbar info is greater than limit
     ** Step 4: step back one x and y.
     ** Step 5: done!
     */
 
+    // hide the preview first
+    var preview = document.getElementById("preview");
+    if(preview)
+        preview.style.display = "none";
+
     var canvas = document.getElementById("canvas");
     var cols = document.getElementById("cols");
     var rows = document.getElementById("rows");
 
-    canvas.cols = 0;
-    canvas.rows = 0;
+    canvas.cols = 1;
+    canvas.rows = 1;
 
     window.scrollTo(1e6, 1e6); // that should be high enough ;)
 
@@ -82,6 +88,15 @@ function autoResize(internal)
             cols.value = canvas.cols;
             rows.value = canvas.rows;
 
+            // unhide the preview
+            //document.getElementById("preview").style.display = "";
+            if(preview)
+                preview.style.display = "";
+
+            // scroll to the bottom
+            window.scrollTo(1e6,1e6);
+
+            // all done :)
             return;
         }
     }

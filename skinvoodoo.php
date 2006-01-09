@@ -54,20 +54,21 @@ function skinvoodoo($skin_section, $subcall = "", $args = array())
     {
         $skin = $SKIN_CACHE[$skin_section];
     } else {
-        $q = $db->issue_query("SELECT $skin_section FROM skin WHERE blogid = '" . BLOGID . "'");
+
+        $q = $db->issue_query("SELECT $skin_section FROM skins WHERE skinid = '".SKINID."'");
         $skin = $db->fetch_var($q);
 
-        // if the user's skin is NULL, use the master skin
-        if($skin == NULL)
+        // if the user's skin is NULL, use master skin
+        if($skin === NULL)
         {
-            $q = $db->issue_query("SELECT $skin_section FROM skin WHERE blogid = '1'");
+            $q = $db->issue_query("SELECT $skin_section FROM skins WHERE skinid = '00000000000000000000000000000000'");
             $skin = $db->fetch_var($q);
         }
 
         $SKIN_CACHE[$skin_section] = $skin;
     }
 
-//    $skin = file_get_contents(FSPATH . "/skin_blueEye/$skin_section.html");
+    //$skin = file_get_contents(FSPATH . "/skin_blueEye/$skin_section.html");
 
     preg_match_all("/<\\!-- :cwb_start: ([^\s]+) -->(.*)<\\!-- :cwb_end: \\1 -->/Us", $skin, $matches, PREG_SET_ORDER);
 
@@ -198,6 +199,8 @@ function voodoo($skin, $args = array(), $skin_section = "", $expand = TRUE)
             "notify" => "\$GLOBALS['NOTIFY']",
             "cwb_version" => "CWBVERSION",
             "cwb_type" => "CWBTYPE",
+            "site_title" => "SITE_TITLE",
+            "site_motto" => "SITE_MOTTO",
         );
 
         $new = "";

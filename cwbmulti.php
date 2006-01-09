@@ -29,7 +29,7 @@ $starttime = (string) $sec + $usec;
 unset($sec, $usec);
 
 // define version string
-define("CWBVERSION","1.0.0");
+define("CWBVERSION","1.1.0");
 define("CWBTYPE", "Multi-User");
 define("SETTINGS_FILE", "settings.php");
 
@@ -106,16 +106,25 @@ if($who == "")
 {
     define("BLOGID", 1);
     define("BLOGNAME", "");
+    define("SKINID", "00000000000000000000000000000000");
     if(DEFAULT_SUBDOMAIN == "")
         define("INDEX_URL", "http://" . BASE_DOMAIN . INSTALLED_PATH);
     else
         define("INDEX_URL", "http://" . DEFAULT_SUBDOMAIN . "." . BASE_DOMAIN . INSTALLED_PATH);
 } elseif(!isset($blogdata[$who])) {
-    die( "<html><head><title>CodewiseBlog :: Invalid User</title><link rel=\"stylesheet\" href=\"stylesheet.php?id=1\" /></head>"
+    die( "<html><head><title>".SITE_TITLE." :: Invalid User</title><link rel=\"stylesheet\" href=\"stylesheet.php?id=1\" /></head>"
        . "<body><b>Invalid User \"$who\"</b><br /><br /><a href=\"http://" . DEFAULT_SUBDOMAIN . BASE_DOMAIN . INSTALLED_PATH . "\">...go back</a></body></html>" );
 } else {
     define("BLOGID", $blogdata[$who]['blogid']);
     define("BLOGNAME", $who);
+
+    if(isset($_GET['skinid'])
+        && $db->num_rows[ $db->issue_query("SELECT skinid FROM skins WHERE skinid = ".$db->prepare_value($_GET['skinid'])) ] > 0)
+    {
+        define("SKINID", $db->prepare_value($_GET['skinid'], FALSE));
+    } else {
+        define("SKINID", $db->fetch_var($db->issue_query("SELECT skinid FROM blogs WHERE blogid = '".BLOGID."'")));
+    }
 
     if($blogdata[$who]['custom_url'] != NULL && CUSTOM_URL_ENABLED)
     {
@@ -152,7 +161,13 @@ $BLOGINFO['index_url'] = INDEX_URL;
 $BLOGINFO['ucp_url'] = INDEX_URL . "?controlpanel";
 if(!SUBDOMAIN_MODE) $BLOGINFO['rdf_url'] = "rdf.php/" . BLOGNAME;
 else                $BLOGINFO['rdf_url'] = "rdf.php";
-$BLOGINFO['css_url'] = "stylesheet.php?id=" . BLOGID;
+
+if(isset($_GET['master_skin']))
+{
+    $BLOGINFO['css_url'] = "stylesheet.php";
+} else {
+    $BLOGINFO['css_url'] = "stylesheet.php?id=" . BLOGID;
+}
 
 $BLOGINFO['interests'] = nl2br($BLOGINFO['interests']);
 $BLOGINFO['links'] = nl2br($BLOGINFO['links']);
@@ -180,10 +195,8 @@ if(!defined("NO_ACTION"))
     // special front page
     if(BLOGID == 1 && !isset($_GET['login'])) // allow admin controlpanel login from front page
     {
-        ob_start();
         require("front_page.php");
-        $main = ob_get_clean();
-        die($main);
+        exit;
     }
 
     // QuickTags for controlpanel:write page
@@ -193,7 +206,7 @@ if(!defined("NO_ACTION"))
         die(file_get_contents("cwb/quicktags.js"));
     }
 
-    // autorResize() script from controlpanel pages
+    // autoResize() script from controlpanel pages
     if(isset($_GET['autoresize_js']))
     {
         header("Content-type: text/javascript");
