@@ -142,10 +142,6 @@ default:                $contents = NULL;
             }
             $db->update("skins", array($_POST['section'] => $_POST['section_content']), array("skinid" => $_POST['skinid']));
 
-            // update the Single-Skin if we're saving the current
-            if(SKINID == $_POST['skinid'] && $_POST['section'] != "description")
-                $db->update("skin", array($_POST['section'] => $_POST['section_content']), array("blogid" => BLOGID));
-
             $GLOBALS['NOTIFY'] .= "Skin saved";
         } elseif(isset($_POST['revert'])) {
             $db->update("skins", array($_POST['section'] => NULL), array("skinid" => $_POST['skinid']));
@@ -155,11 +151,6 @@ default:                $contents = NULL;
         if(isset($_POST['use']))
         {
             $db->update("blogs", array("skinid" => $_POST['skinid']), array("blogid" => BLOGID));
-
-            // update the Single-Skin
-            $row = $db->fetch_row($db->issue_query("SELECT * FROM skins WHERE skinid = ".$db->prepare_value($_POST['skinid'])), 0, L1SQL_ASSOC);
-            unset($row['skinid'], $row['blogid'], $row['name'], $row['description']);
-            $db->update("skin", $row, array("blogid" => BLOGID));
 
             $body = skinvoodoo("error", "notify", array("message" => "Now using the selected skin."));
             return;
