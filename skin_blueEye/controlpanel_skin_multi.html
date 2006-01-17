@@ -120,11 +120,14 @@ ${saved_skinids}
 </form>
 <!-- :cwb_end: skin_select -->
 <!-- :cwb_start: saved_skinids_entry -->
-<option value="${skinid}">${name}</option>
+<option value="${skinid}">    ${name}</option>
 <!-- :cwb_end: saved_skinids_entry -->
 <!-- :cwb_start: saved_skinids_current -->
-<option style="font-weight:bold" value="${skinid}">${name}</option>
+<option style="font-weight:bold" selected="selected" value="${skinid}">    ${name}</option>
 <!-- :cwb_end: saved_skinids_current -->
+<!-- :cwb_start: saved_skinids_separator -->
+<option disabled="disabled">${text}</option>
+<!-- :cwb_end: saved_skinids_separator -->
 <!-- :cwb_start: skin_name -->
 <b>Skin Name:</b> <input type="text" name="skin_name" size="63" value="${name}" />
 <!-- :cwb_end: skin_name -->
