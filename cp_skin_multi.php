@@ -40,11 +40,11 @@ if(isset($_POST['skinid']))
 
     if(isset($_POST['delete'])) {
 
-        // for users, don't actually delete, just disown (to root). Only root can actually delete.
+        // for users, don't actually delete, just disown (to blogid 0). Only root can actually delete.
         if(BLOGID != 1)
         {
             $name = $db->fetch_var($db->issue_query("SELECT name FROM skins WHERE skinid = ".$db->prepare_value($_POST['skinid'])));
-            $db->update("skins", array("blogid" => 1, "name" => $name . " (deleted by ".BLOGID.")"), array("skinid" => $_POST['skinid']));
+            $db->update("skins", array("blogid" => 0, "name" => $name . " (deleted by ".BLOGID.")"), array("skinid" => $_POST['skinid']));
             $body = "<p>Your skin has been deleted. If this is in error, copy down the Skin ID below and contact an administrator."
                 . "They can recover your skin.<br /><br />Skin ID: <b>{$_POST['skinid']}</b>";
         } else {
@@ -64,13 +64,16 @@ if(isset($_POST['skinid']))
            IF:
                 not owner
             and not root
-            and not just using master
+            and not just USEing a builtin skin
 
             or  copying
 
                 copy skin
         */
-        if($owner != BLOGID && BLOGID != 1 && !(isset($_POST['use']) && $_POST['skinid'] == "00000000000000000000000000000000") || isset($_POST['copy']))
+        if($owner != BLOGID
+        && BLOGID != 1
+        && !(isset($_POST['use']) && $owner == 1 )
+        || isset($_POST['copy']))
         {
             // pull skin from DB
             $q = $db->issue_query("SELECT * FROM skins WHERE skinid = ".$db->prepare_value($_POST['skinid']));
@@ -79,6 +82,10 @@ if(isset($_POST['skinid']))
             // generate a new skinid and change ownership
             $skin['skinid'] = md5(uniqid(mt_rand(), TRUE));
             $skin['blogid'] = BLOGID;
+
+            // make sure the skinid isn't a dupe (unlikely, but possible)
+            while($db->num_rows[ $db->issue_query("SELECT skinid FROM skins WHERE skinid = '".$skin['skinid']."'") ] > 0)
+                $skin['skinid'] = md5(uniqid(mt_rand(), TRUE));
 
             // copying the master skin is a special case
             if($_POST['skinid'] == "00000000000000000000000000000000")
@@ -110,6 +117,10 @@ default:                $contents = NULL;
                     $new_skin[$section] = $contents;
                 }
                 $skin = $new_skin;
+            } elseif($owner == 1) {
+                /* copying builtin skins don't need all the above modifications,
+                ** just appending [copy] to the end is enough */
+                $skin['name'] .= " [copy]";
             }
 
             // make sure no two skins with the same owner have the same name
@@ -171,6 +182,15 @@ default:                $contents = NULL;
         $sectionlist = "";
         foreach($desc as $col)
         {
+            if(BLOGID != 1)
+            {
+                if(strpos($col['Field'], "controlpanel") === 0
+                || $col['Field'] == "register")
+                {
+                    continue;
+                }
+            }
+
             switch($col['Field'])
             {
 case "skinid":
@@ -247,19 +267,66 @@ default:
 
 } else {
 
-    // get the skinid and name of all the skins owned by the user and of the master skin
-    $q = $db->issue_query("SELECT skinid, name FROM skins WHERE blogid = '".BLOGID."' OR skinid = '00000000000000000000000000000000'");
-    $skins = $db->fetch_all($q, L1SQL_ASSOC);
-
-    // one blank entry
-    $skinids = skinvoodoo("controlpanel_skin_multi", "saved_skinids_entry", array("skinid" => "", "name" => ""));
-
-    foreach($skins as $skin)
+    if(BLOGID != 1)
     {
-        if(SKINID == $skin['skinid'])
-            $skinids .= skinvoodoo("controlpanel_skin_multi", "saved_skinids_current", array("skinid" => $skin['skinid'], "name" => $skin['name']));
-        else
+        // get the skinid and name of all the builtin skins (those owned by root)
+        $q = $db->issue_query("SELECT skinid, name FROM skins WHERE blogid = '1'");
+        $root_skins = $db->fetch_all($q, L1SQL_ASSOC);
+
+        // get the skinid and name of all the skins owned by the user
+        $q = $db->issue_query("SELECT skinid, name FROM skins WHERE blogid = '".BLOGID."'");
+        $user_skins = $db->fetch_all($q, L1SQL_ASSOC);
+
+        // one blank entry
+        //$skinids = skinvoodoo("controlpanel_skin_multi", "saved_skinids_separator", array("text" => ""));
+
+        // separator
+        $skinids .= skinvoodoo("controlpanel_skin_multi", "saved_skinids_separator", array("text" => "Built-In Skins:"));
+
+        foreach($root_skins as $skin)
+        {
+            if(SKINID == $skin['skinid'])
+                $skinids .= skinvoodoo("controlpanel_skin_multi", "saved_skinids_current", array("skinid" => $skin['skinid'], "name" => $skin['name']));
+            else
+                $skinids .= skinvoodoo("controlpanel_skin_multi", "saved_skinids_entry", array("skinid" => $skin['skinid'], "name" => $skin['name']));
+        }
+
+        // separator
+        $skinids .= skinvoodoo("controlpanel_skin_multi", "saved_skinids_separator", array("text" => "Your Skins:"));
+
+        foreach($user_skins as $skin)
+        {
+            if(SKINID == $skin['skinid'])
+                $skinids .= skinvoodoo("controlpanel_skin_multi", "saved_skinids_current", array("skinid" => $skin['skinid'], "name" => $skin['name']));
+            else
+                $skinids .= skinvoodoo("controlpanel_skin_multi", "saved_skinids_entry", array("skinid" => $skin['skinid'], "name" => $skin['name']));
+        }
+
+    } else {
+        // get the skins from BLOGID 1 (builtin skins)
+        $q = $db->issue_query("SELECT skinid, name FROM skins WHERE blogid = '1'");
+        $builtin_skins = $db->fetch_all($q, L1SQL_ASSOC);
+
+        // get the skins from BLOGID 0 (disowned skins)
+        $q = $db->issue_query("SELECT skinid, name FROM skins WHERE blogid = '0'");
+        $disowned_skins = $db->fetch_all($q, L1SQL_ASSOC);
+
+        // one blank entry
+        //$skinids = skinvoodoo("controlpanel_skin_multi", "saved_skinids_separator", array("text" => ""));
+
+        $skinids .= skinvoodoo("controlpanel_skin_multi", "saved_skinids_separator", array("text" => "Built-In Skins:"));
+
+        foreach($builtin_skins as $skin)
+        {
             $skinids .= skinvoodoo("controlpanel_skin_multi", "saved_skinids_entry", array("skinid" => $skin['skinid'], "name" => $skin['name']));
+        }
+
+        $skinids .= skinvoodoo("controlpanel_skin_multi", "saved_skinids_separator", array("text" => "Disowned Skins:"));
+
+        foreach($disowned_skins as $skin)
+        {
+            $skinids .= skinvoodoo("controlpanel_skin_multi", "saved_skinids_entry", array("skinid" => $skin['skinid'], "name" => $skin['name']));
+        }
     }
 
     $body = skinvoodoo("controlpanel_skin_multi", "skin_select", array(
