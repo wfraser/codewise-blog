@@ -79,13 +79,14 @@ if(isset($_POST['skinid']))
             $q = $db->issue_query("SELECT * FROM skins WHERE skinid = ".$db->prepare_value($_POST['skinid']));
             $skin = $db->fetch_row($q, 0, L1SQL_ASSOC);
 
-            // generate a new skinid and change ownership
-            $skin['skinid'] = md5(uniqid(mt_rand(), TRUE));
+            // change ownership
             $skin['blogid'] = BLOGID;
 
-            // make sure the skinid isn't a dupe (unlikely, but possible)
-            while($db->num_rows[ $db->issue_query("SELECT skinid FROM skins WHERE skinid = '".$skin['skinid']."'") ] > 0)
+            do {
+                // generate a new skinid
                 $skin['skinid'] = md5(uniqid(mt_rand(), TRUE));
+            // make sure the skinid isn't a dupe (unlikely, but possible)
+            } while($db->num_rows[ $db->issue_query("SELECT skinid FROM skins WHERE skinid = '".$skin['skinid']."'") ] > 0);
 
             // copying the master skin is a special case
             if($_POST['skinid'] == "00000000000000000000000000000000")
