@@ -114,7 +114,7 @@ function process_reply_form($tid)
 
     if($link == "http://")
         $link = null;
-    if(strpos($link, "http://") !== 0)
+    elseif(strpos($link, "http://") !== 0)
         $link = "http://" . $link;
 
     $_SESSION['postername'] = $name;
@@ -123,6 +123,12 @@ function process_reply_form($tid)
 
     if(empty($name))
         $name = ANONYMOUS_NAME;
+
+    $ip = $_SERVER['REMOTE_ADDR'];
+
+    // make sure we get the client's IP if we're using mod_rewrite to proxy the request
+    if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+        $ip .= "::".$_SERVER['HTTP_X_FORWARDED_FOR'];
 
     $data = array
     (
@@ -133,7 +139,7 @@ function process_reply_form($tid)
         "timestamp" => $timestamp,
         "link" => $link,
         "text" => $text,
-        "extra" => "ip: " . $_SERVER['REMOTE_ADDR'] . "\nuseragent: " . $_SERVER['HTTP_USER_AGENT'] . "\n",
+        "extra" => "ip: $ip\nuseragent: " . $_SERVER['HTTP_USER_AGENT'] . "\n",
     );
 
     if(empty($text))
