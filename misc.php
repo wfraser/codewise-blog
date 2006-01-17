@@ -5,7 +5,7 @@
 ** for CodewiseBlog Multi-User
 **
 ** by Bill R. Fraser <bill.fraser@gmail.com>
-** Copyright (c) 2005 Codewise.org
+** Copyright (c) 2004-2006 Codewise.org
 */
 
 /*
@@ -196,11 +196,6 @@ function tripcode($input)
     if($input === null || $input === "" || $input === false)
         return(null);
 
-    /*
-    ** since this algorithm could be easily brute-forced, we'll obfuscate it in
-    ** a non-obvious and server-dependent way.
-    */
-    //$input .= "%".$_ENV['HOST']."%";
     $md5 = md5($input);
 
     $values = array();

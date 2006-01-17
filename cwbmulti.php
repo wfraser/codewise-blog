@@ -4,7 +4,7 @@
 ** CodewiseBlog Multi-User
 **
 ** by Bill R. Fraser <bill.fraser@gmail.com>
-** Copyright (c) 2005 Codewise.org
+** Copyright (c) 2005-2006 Codewise.org
 */
 
 /*
@@ -29,9 +29,9 @@ $starttime = (string) $sec + $usec;
 unset($sec, $usec);
 
 // define version string
-define("CWBVERSION","1.1.0");
+define("CWBVERSION","1.1.1-DEV");
 define("CWBTYPE", "Multi-User");
-define("SETTINGS_FILE", "settings.php");
+define("SETTINGS_FILE", "settings2.php");
 
 // Unique ID for this request
 define("UNIQ", md5(uniqid(mt_rand(), true)));
@@ -190,6 +190,12 @@ if(!defined("NO_ACTION"))
             echo controlpanel();
             exit;
         }
+    }
+
+    if(isset($_GET['register']))
+    {
+        require("register.php");
+        exit;
     }
 
     // special front page
