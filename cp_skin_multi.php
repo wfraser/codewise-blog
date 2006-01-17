@@ -5,7 +5,7 @@
 ** for CodewiseBlog Multi-User
 **
 ** by Bill R. Fraser <bill.fraser@gmail.com>
-** Copyright (c) 2005 Codewise.org
+** Copyright (c) 2005-2006 Codewise.org
 */
 
 /*
@@ -40,7 +40,8 @@ if(isset($_POST['skinid']))
 
     if(isset($_POST['delete'])) {
 
-        // for users, don't actually delete, just disown (to blogid 0). Only root can actually delete.
+        /* for users, don't actually delete, just disown (to blogid 0).
+        ** Only root can actually delete. */
         if(BLOGID != 1)
         {
             $name = $db->fetch_var($db->issue_query("SELECT name FROM skins WHERE skinid = ".$db->prepare_value($_POST['skinid'])));
@@ -136,7 +137,8 @@ default:                $contents = NULL;
             // Edit the copy
             $_POST['skinid'] = $skin['skinid'];
 
-            // if the user did not explicitly request this, tell them about the copy procedure
+            /* if the user did not explicitly request this, tell them about the
+            ** copy procedure */
             if(!isset($_POST['copy']))
                 $GLOBALS['NOTIFY'] .= "You cannot edit someone else's skin, so a copy has been made.<br />";
         }
@@ -183,6 +185,8 @@ default:                $contents = NULL;
         $sectionlist = "";
         foreach($desc as $col)
         {
+            /* for non-root users, don't display the controlpanel and
+            ** registration sections. */
             if(BLOGID != 1)
             {
                 if(strpos($col['Field'], "controlpanel") === 0
@@ -194,9 +198,9 @@ default:                $contents = NULL;
 
             switch($col['Field'])
             {
-case "skinid":
-case "blogid":
-case "name":
+case "skinid":  // skinid gets displayed at the top of every section's page
+case "blogid":  // <- these don't get an entry in the section list, but instead
+case "name":    // <- get lumped together on the with the 'description' section.
                 continue;
 case $_POST['section_sel']:
                 $sectionlist .= skinvoodoo("controlpanel_skin_multi", "sectionlist_current", array("section" => $col['Field']));
@@ -219,10 +223,8 @@ default:
             $using_master = FALSE;
         }
 
-        //if(BLOGID == 1)
-        //    $using_master = TRUE;
-
-        // in the master skin, the section is always the master, not when it is NULL like for other skins
+        /* in the master skin, the section is always the master, not when it is
+        ** NULL like for other skins */
         if($_POST['skinid'] == "00000000000000000000000000000000")
             $using_master = TRUE;
 
@@ -252,16 +254,21 @@ default:
                 htmlspecialchars($skin)),
         ));
 
-        // <iframe> containing the local variable reference, scrolled to the appropriate section
-        $varlist = "<iframe src=\"http://" .  DEFAULT_SUBDOMAIN . BASE_DOMAIN . INSTALLED_PATH . "doc/voodoo/localvars.html#". $_POST['section_sel'] . "\" height=\"100%\" width=\"300\" /></iframe>";
+        /* <iframe> containing the local variable reference, scrolled to the
+        ** appropriate section */
+        $documentation = "<iframe src=\"http://"
+        . DEFAULT_SUBDOMAIN . BASE_DOMAIN . INSTALLED_PATH
+        . "doc/voodoo/localvars.html#{$_POST['section_sel']}\" height=\"100%\" width=\"300\" /></iframe>";
 
         $body = skinvoodoo("controlpanel_skin_multi", "", array(
             "posturl" => INDEX_URL . "?controlpanel:skin",
             "sectionlist" => $sectionlist,
-            "varlist" => $varlist,
+            "varlist" => $documentation,
             "content" => $content,
             "skinid"  => $_POST['skinid'],
-            "section_name" => isset($_POST['section_sel']) ? $_POST['section_sel'] : FALSE,
+            "section_name" => isset($_POST['section_sel'])
+                ? $_POST['section_sel']
+                : FALSE,
         ));
 
     }
@@ -270,7 +277,8 @@ default:
 
     if(BLOGID != 1)
     {
-        // get the skinid and name of all the builtin skins (those owned by root)
+        /* get the skinid and name of all the builtin skins (those owned by
+        ** root) */
         $q = $db->issue_query("SELECT skinid, name FROM skins WHERE blogid = '1'");
         $root_skins = $db->fetch_all($q, L1SQL_ASSOC);
 
@@ -278,11 +286,12 @@ default:
         $q = $db->issue_query("SELECT skinid, name FROM skins WHERE blogid = '".BLOGID."'");
         $user_skins = $db->fetch_all($q, L1SQL_ASSOC);
 
-        // one blank entry
-        //$skinids = skinvoodoo("controlpanel_skin_multi", "saved_skinids_separator", array("text" => ""));
-
         // separator
-        $skinids .= skinvoodoo("controlpanel_skin_multi", "saved_skinids_separator", array("text" => "Built-In Skins:"));
+        $skinids .= skinvoodoo(
+            "controlpanel_skin_multi",
+            "saved_skinids_separator",
+            array("text" => "Built-In Skins:")
+        );
 
         foreach($root_skins as $skin)
         {
@@ -311,9 +320,6 @@ default:
         // get the skins from BLOGID 0 (disowned skins)
         $q = $db->issue_query("SELECT skinid, name FROM skins WHERE blogid = '0'");
         $disowned_skins = $db->fetch_all($q, L1SQL_ASSOC);
-
-        // one blank entry
-        //$skinids = skinvoodoo("controlpanel_skin_multi", "saved_skinids_separator", array("text" => ""));
 
         $skinids .= skinvoodoo("controlpanel_skin_multi", "saved_skinids_separator", array("text" => "Built-In Skins:"));
 
