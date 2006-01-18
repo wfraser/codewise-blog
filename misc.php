@@ -80,9 +80,6 @@ function textprocess($text)
 
     $text = str_replace("\n", "<br />", str_replace("\r", "", $text));
 
-    $text = preg_replace("/(f)uck/i", "\\1%&amp;#", $text);
-    $text = preg_replace("/(s)hit/i", "\\1%&amp;#", $text);
-
     return $text;
 } // end of textprocess
 
