@@ -81,8 +81,8 @@ function postcalendar()
                 if($row['extra'] == "HIDE")
                     continue;
 
-                if(strlen($title) > 20)
-                    $title = substr($title, 0, 20) . "...";
+                if(strlen($title) > 25)
+                    $title = substr($title, 0, 22) . "...";
 
                 $currentmonth .= skinvoodoo("postcalendar", "topiclink", array("url" => INDEX_URL . "?tid=$tid", "title" => $title));
             }
