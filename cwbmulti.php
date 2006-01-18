@@ -29,8 +29,6 @@ $starttime = (string) $sec + $usec;
 unset($sec, $usec);
 
 // define version string
-define("CWBVERSION","1.1.1-DEV");
-define("CWBTYPE", "Multi-User");
 define("SETTINGS_FILE", "settings2.php");
 
 // Unique ID for this request
@@ -39,6 +37,9 @@ define("UNIQ", md5(uniqid(mt_rand(), true)));
 require(SETTINGS_FILE);
 
 chdir(FSPATH);
+
+// define version strings
+require("version.php");
 
 /*
 ** Set up environment
@@ -190,12 +191,6 @@ if(!defined("NO_ACTION"))
             echo controlpanel();
             exit;
         }
-    }
-
-    if(isset($_GET['register']))
-    {
-        require("register.php");
-        exit;
     }
 
     // special front page
