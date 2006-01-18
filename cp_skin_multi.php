@@ -38,6 +38,27 @@ if(isset($_POST['skinid']))
         return;
     }
 
+    // export skin as VoodooArchive XML file
+    if(isset($_POST['export']))
+    {
+        require("skin_exporter_xml.php");
+
+        // generate XML. Only export full skin if user is root.
+        $xml = skin_exporter_xml($_POST['skinid'], BLOGID == 1);
+
+        // grab name
+        $q = $db->issue_query("SELECT name FROM skins WHERE skinid = ".$db->prepare_value($_POST['skinid']));
+        $name = $db->fetch_var($q);
+
+        /* force 'Save As' dialog. Propose filename as [skin name].cwb.xml with
+        ** non-windows-suitable characters and spaces replaced with
+        ** underscores. */
+        header("Content-Type: text/xml");
+        header("Content-Disposition: attachment; filename=".str_replace(array(" ","/","?","<",">","\\",":","*","|","\"","^"), "_", $name).".cwb.xml");
+        echo $xml;
+        exit;
+    }
+
     if(isset($_POST['delete'])) {
 
         /* for users, don't actually delete, just disown (to blogid 0).
@@ -273,6 +294,34 @@ default:
 
     }
 
+// Import uploaded VoodooArchive XML file
+} elseif(isset($_POST['import'])) {
+
+    require("skin_importer_xml.php");
+
+    if(!is_uploaded_file($_FILES['xmlfile']['tmp_name']))
+    {
+        $body = skinvoodoo("error", "error", array("message" => "Bogus upload file"));
+        return;
+    }
+
+    $xml = file_get_contents($_FILES['xmlfile']['tmp_name']);
+    unlink($_FILES['xmlfile']['tmp_name']);
+
+    if(!preg_match("/[a-f0-9]{32}/", $ret = skin_importer_xml($xml)))
+    {
+        $body  = skinvoodoo("error", "error", array("message" => "Skin import failed: ".htmlspecialchars($ret)));
+        return;
+    } else {
+        //$body = "<b>Skin import successful.</b><br />New skin id: $ret";
+        $body = skinvoodoo("controlpanel_skin_multi", "import_successful", array(
+            "posturl" => INDEX_URL . "?controlpanel:skin",
+            "newskinid" => $ret,
+        ));
+
+        return;
+    }
+
 } else {
 
     if(BLOGID != 1)
@@ -339,6 +388,7 @@ default:
     $body = skinvoodoo("controlpanel_skin_multi", "skin_select", array(
         "posturl" => INDEX_URL . "?controlpanel:skin",
         "saved_skinids" => $skinids,
+        "max_file_size" => str_replace("M", "000000", str_replace("K", "000", ini_get("upload_max_filesize"))),
     ));
 
 }
