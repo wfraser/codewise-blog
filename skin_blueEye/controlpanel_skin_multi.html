@@ -114,7 +114,23 @@ ${saved_skinids}
             <input type="submit" name="use" value="Use Skin" />
             &nbsp;&nbsp;&nbsp;
             <input type="submit" name="delete" value="Delete Skin" />
+            &nbsp;&nbsp;&nbsp;
+            <input type="submit" name="export" value="Export" />
         </td>
+    </tr>
+</table>
+</form>
+<br />
+<form action="${posturl}" method="post" enctype="multipart/form-data">
+<input type="hidden" name="MAX_FILE_SIZE" value="${max_file_size}" />
+<table align="center">
+    <tr>
+        <td>Upload and import an exported skin:</td>
+        <td><input type="file" name="xmlfile" size="50" /></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td><input type="submit" name="import" value="Import Skin" /></td>
     </tr>
 </table>
 </form>
@@ -134,3 +150,11 @@ ${saved_skinids}
 <!-- :cwb_start: skin_owner -->
 <br /><b>Skin Owner:</b> <input type="text" name="skin_owner" size="10" value="${owner}" />
 <!-- :cwb_end: skin_owner -->
+<!-- :cwb_start: import_successful -->
+<form action="${posturl}" method="post">
+<input type="hidden" name="skinid" value="${newskinid}" />
+<b>Skin import successful.</b><br />
+New skin id: ${newskinid}<br />
+<input type="submit" value="Edit Skin" />&nbsp;<input type="submit" name="use" value="Use Skin" />
+</form>
+<!-- :cwb_end: import_successful -->
