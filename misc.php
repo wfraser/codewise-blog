@@ -111,7 +111,7 @@ function in_text_filter($text, $text_filter_msg = "")
             else
                 $attrib_cont = $attrib_match[2];
 
-            if(!in_array(strtolower($attrib_name), $ALLOWED_TAGS[strtolower($tag_name)]))
+            if(!@in_array(strtolower($attrib_name), $ALLOWED_TAGS[strtolower($tag_name)]))
             {
                 $new_text = str_replace($full_tag, str_replace($full_attrib, "", $full_tag), $new_text);
                 $text_filter_msg .= "Removed illegal <code>&lt;$tag_name&gt;</code> attribute <code>$attrib_name</code><br />";
