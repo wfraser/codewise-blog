@@ -200,18 +200,27 @@ if(!defined("NO_ACTION"))
         exit;
     }
 
+    if(isset($_GET['util_js']))
+    {
+        header("Content-Type: text/javascript");
+        readfile("cwb/util.js");
+        exit;
+    }
+
     // QuickTags for controlpanel:write page
     if(isset($_GET['quicktags_js']))
     {
-        header("Content-type: text/javascript");
-        die(file_get_contents("cwb/quicktags.js"));
+        header("Content-Type: text/javascript");
+        readfile("cwb/quicktags.js");
+        exit;
     }
 
     // autoResize() script from controlpanel pages
     if(isset($_GET['autoresize_js']))
     {
-        header("Content-type: text/javascript");
-        die(file_get_contents("cwb/autoresize.js"));
+        header("Content-Type: text/javascript");
+        readfile("cwb/autoresize.js");
+        exit;
     }
 
     if(!is_numeric($_GET['page']))
