@@ -51,7 +51,26 @@
     <tr>
         <td>Custom URL:</td>
         <td><input type="text" size="25" name="custom_url" value="${custom_url}" /></td>
-        <td><a href="http://example.com/nothereyet">See Info</a></td>
+        <td>
+            <a href="javascript:show('customurl')" id="showcustomurl">See Info</a>
+            <div id="customurl" class="floatingpopup" style="display:none;left:50%;">
+                <div class="floatingpopup_titlebar">
+                    <span class="floatingpopup_title">Custom URL</span>
+                    <span class="floatingpopup_closebox">
+                        <a href="javascript:hide('customurl')">(close)</a>
+                    </span>
+                </div>
+                <div class="floatingpopup_text">
+                    The Custom URL setting allows you to set up your own domain
+                    name and have CodewiseBlog use it. The domain must be
+                    properly configured to forward all requests to this site,
+                    otherwise all CodewiseBlog links will be broken.<br /><br />
+                    If you don't know what this means, this setting is not for
+                    you.
+                </div>
+            </div>
+            <div id="hidecustomurl" />
+        </td>
     </tr>
     <tr>
         <td>-&gt;</td>

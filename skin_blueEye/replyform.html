@@ -8,7 +8,21 @@
 
     <tr>
     <td>Tripcode:</td>
-    <td><input type="text" name="tripcode" value="${tripcode}" /> (optional) <a href="${tripcode_help_link}" target="_blank"><i>What's a tripcode?</i></a></td>
+    <td><input type="text" name="tripcode" value="${tripcode}" /> (optional) <a href="javascript:show('tripmsg')" id="showtripmsg"><i>What's a tripcode?</i></a>
+        <div id="tripmsg" class="floatingpopup" style="display:none">
+            <div class="floatingpopup_titlebar">
+                <span class="floatingpopup_title">Tripcodes</span>
+                <span class="floatingpopup_closebox">
+                    <a href="javascript:hide('tripmsg')">(close)</a>
+                </span>
+            </div>
+            <div class="floatingpopup_text">
+                A tripcode is some secret text you can enter that gets converted into a unique string of characters displayed after your name when you post a comment.
+                If you use the tripcode consistently, it can be used to positively verify that you are who you say you are.
+            </div>
+        </div>
+        <div id="hidetripmsg" />
+    </td>
     </tr>
 
     <tr>
