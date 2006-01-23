@@ -29,7 +29,7 @@ $starttime = (string) $sec + $usec;
 unset($sec, $usec);
 
 // define version string
-define("SETTINGS_FILE", "settings.php");
+define("SETTINGS_FILE", "settings2.php");
 
 // Unique ID for this request
 define("UNIQ", md5(uniqid(mt_rand(), true)));
@@ -153,7 +153,7 @@ if($BLOGINFO['birthday'])
     $BLOGINFO['birthday_month'] = $month;
     $BLOGINFO['birthday_day'] = $day;
     $BLOGINFO['birthday_year'] = $year;
-    $BLOGINFO['age'] = ($month >= date("m") && $day > date("d")) ? date("Y") - $year - 1 : date("Y") - $year;
+    $BLOGINFO['age'] = ($month >= date("m") && $day > date("d")) ? date("Y") - $year : date("Y") - $year - 1;
 } else {
     $BLOGINFO['age'] = $BLOGINFO['birthday_month'] = $BLOGINFO['birthday_day'] = $BLOGINFO['birthday_year'] = "";
 }
@@ -191,6 +191,12 @@ if(!defined("NO_ACTION"))
             echo controlpanel();
             exit;
         }
+    }
+
+    if(isset($_GET['register']))
+    {
+        require("register.php");
+        exit;
     }
 
     // special front page
