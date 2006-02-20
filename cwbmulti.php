@@ -103,18 +103,28 @@ if(isset($_GET['subdomain_mode']) ? $_GET['subdomain_mode'] : SUBDOMAIN_MODE)
     $who = preg_replace("/\\?.*$/", "", $who);
 }
 
+/*
+** Keep https:// if we're using it
+*/
+if($_SERVER['HTTPS'] == "on")
+{
+    define("HTTP", "https://");
+} else {
+    define("HTTP", "http://");
+}
+
 if($who == "")
 {
     define("BLOGID", 1);
     define("BLOGNAME", "");
     define("SKINID", "00000000000000000000000000000000");
     if(DEFAULT_SUBDOMAIN == "")
-        define("INDEX_URL", "http://" . BASE_DOMAIN . INSTALLED_PATH);
+        define("INDEX_URL", HTTP . BASE_DOMAIN . INSTALLED_PATH);
     else
-        define("INDEX_URL", "http://" . DEFAULT_SUBDOMAIN . "." . BASE_DOMAIN . INSTALLED_PATH);
+        define("INDEX_URL", HTTP . DEFAULT_SUBDOMAIN . "." . BASE_DOMAIN . INSTALLED_PATH);
 } elseif(!isset($blogdata[$who])) {
     die( "<html><head><title>".SITE_TITLE." :: Invalid User</title><link rel=\"stylesheet\" href=\"stylesheet.php?id=1\" /></head>"
-       . "<body><b>Invalid User \"$who\"</b><br /><br /><a href=\"http://" . DEFAULT_SUBDOMAIN . BASE_DOMAIN . INSTALLED_PATH . "\">...go back</a></body></html>" );
+       . "<body><b>Invalid User \"$who\"</b><br /><br /><a href=\"" . HTTP . DEFAULT_SUBDOMAIN . BASE_DOMAIN . INSTALLED_PATH . "\">...go back</a></body></html>" );
 } else {
     define("BLOGID", $blogdata[$who]['blogid']);
     define("BLOGNAME", $who);
@@ -131,9 +141,9 @@ if($who == "")
     {
         define("INDEX_URL", $blogdata[$who]['custom_url']);
     } elseif(SUBDOMAIN_MODE) {
-        define("INDEX_URL", "http://" . BLOGNAME . "." . BASE_DOMAIN . INSTALLED_PATH);
+        define("INDEX_URL", HTTP . BLOGNAME . "." . BASE_DOMAIN . INSTALLED_PATH);
     } else {
-        define("INDEX_URL", "http://" . BASE_DOMAIN . INSTALLED_PATH . BLOGNAME);
+        define("INDEX_URL", HTTP . BASE_DOMAIN . INSTALLED_PATH . BLOGNAME);
     }
 }
 
@@ -175,7 +185,7 @@ $BLOGINFO['links'] = nl2br($BLOGINFO['links']);
 $BLOGINFO['version'] = CWBVERSION;
 $BLOGINFO['anonymous_name'] = ANONYMOUS_NAME;
 
-$BLOGINFO['multiuser_root'] = "http://" . DEFAULT_SUBDOMAIN . BASE_DOMAIN . INSTALLED_PATH;
+$BLOGINFO['multiuser_root'] = HTTP . DEFAULT_SUBDOMAIN . BASE_DOMAIN . INSTALLED_PATH;
 
 if(!defined("NO_ACTION"))
 {
