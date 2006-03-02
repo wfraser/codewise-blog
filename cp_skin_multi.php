@@ -61,6 +61,19 @@ if(isset($_POST['skinid']))
 
     if(isset($_POST['delete'])) {
 
+        if($_POST['skinid'] == "00000000000000000000000000000000")
+        {
+            $body = skinvoodoo("error", "error", array("message" => "You cannot delete the master skin."));
+            return;
+        }
+
+        $db->issue_query("SELECT blogid FROM skins WHERE skinid = ".$db->prepare_value($_POST['skinid']));
+        if($db->fetch_var == 1 && BLOGID != 1)
+        {
+            $body = skinvoodoo("error", "error", array("message" => "You cannot delete a built-in skin."));
+            return;
+        }
+
         /* for users, don't actually delete, just disown (to blogid 0).
         ** Only root can actually delete. */
         if(BLOGID != 1)
