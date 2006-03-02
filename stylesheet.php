@@ -28,7 +28,7 @@
 
 header("Content-type: text/css");
 
-require("settings.php");
+require("settings2.php");
 require("l1_mysql.php");
 
 $db = new L1_MySQL(SQL_HOST, SQL_USER, SQL_PASS, SQL_DB);
@@ -51,7 +51,7 @@ if($db->num_rows[$q] == 0 || ($text = $db->fetch_var($q)) === NULL)
     $text = $db->fetch_var($db->issue_query("SELECT css FROM skins WHERE skinid = '00000000000000000000000000000000'"));
 
 // debug
-$text = file_get_contents("skin_blueEye/blueEye.css");
+//$text = file_get_contents("skin_blueEye/blueEye.css");
 
 // optimize by removing all unnecessary text
 $text = preg_replace('/\/\*.*\*\//Us', " ", $text);
