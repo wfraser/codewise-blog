@@ -28,7 +28,7 @@
 
 header("Content-type: text/css");
 
-require("settings2.php");
+require("settings.php");
 require("l1_mysql.php");
 
 $db = new L1_MySQL(SQL_HOST, SQL_USER, SQL_PASS, SQL_DB);
