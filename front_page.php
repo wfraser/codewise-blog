@@ -60,7 +60,7 @@
                                     <tr><td><b>Blogs on this site:</b></td></tr>
 <?php
 
-$q = $db->issue_query("SELECT name,realname,title FROM blogs WHERE blogid != '1' ORDER BY blogid ASC");
+$q = $db->issue_query("SELECT name,realname,title FROM blogs WHERE blogid > 1 ORDER BY blogid ASC");
 $data = $db->fetch_all($q, L1SQL_ASSOC, "name");
 
 foreach($data as $blogname => $blog)
@@ -113,6 +113,19 @@ foreach($data as $blogname => $blog)
                 <td class="blogbody">
 
 <?php
+
+    if(file_exists("TERMS"))
+    {
+    
+?>
+                    <br />
+                    <span style="border: 1px solid #487393; padding: 5px; margin-left: 2em;">
+                        <a href="?register" style="text-decoration:underline">Register for a blog on this site.</a>
+                    </span>
+                    <br /><br />
+<?php
+
+    }
 
     $q = $db->issue_query("SELECT tid,blogid,title,timestamp,text FROM topics ORDER BY timestamp DESC LIMIT 5");
     $data = $db->fetch_all($q, L1SQL_ASSOC, "");
