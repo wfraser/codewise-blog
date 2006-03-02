@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS blogs;
 CREATE TABLE blogs (
-  blogid int(8) unsigned NOT NULL,
+  blogid int(8) unsigned NOT NULL auto_increment,
   name varchar(32) NOT NULL default '',
   email varchar(64) NOT NULL default '',
   realname varchar(64) default NULL,
@@ -15,7 +15,9 @@ CREATE TABLE blogs (
   joindate int(10) NOT NULL default '0',
   custom_url varchar(128) default NULL,
   skinid varchar(32) NOT NULL default '00000000000000000000000000000000',
-  UNIQUE KEY blogid (blogid,name)
+  status enum('validating','active','banned','closed') NOT NULL default 'validating',
+  UNIQUE KEY blogid (blogid),
+  UNIQUE KEY name (name)
 ) TYPE=MyISAM;
 
 DROP TABLE IF EXISTS replies;

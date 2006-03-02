@@ -60,7 +60,7 @@
                                     <tr><td><b>Blogs on this site:</b></td></tr>
 <?php
 
-$q = $db->issue_query("SELECT name,realname,title FROM blogs WHERE blogid > 1 ORDER BY blogid ASC");
+$q = $db->issue_query("SELECT name,realname,title FROM blogs WHERE status = 'active' ORDER BY blogid ASC");
 $data = $db->fetch_all($q, L1SQL_ASSOC, "name");
 
 foreach($data as $blogname => $blog)

@@ -131,10 +131,7 @@ if(isset($_GET['confirm']) && isset($_GET['username']) && isset($_GET['code']))
 
     if($hash === $_GET['code'])
     {
-        $blogid = $db->fetch_var($db->issue_query("SELECT blogid FROM blogs WHERE name != ".$db->prepare_value($_GET['username'])." ORDER BY blogid DESC LIMIT 1"));
-        $blogid++;
-
-        $db->update("blogs", array("blogid" => $blogid), array("name" => $_GET['username']));
+        $db->update("blogs", array("status" => "active"), array("name" => $_GET['username']));
 
         if(SUBDOMAIN_MODE)
             $user_url = "http://" . $_GET['username'] . "." . BASE_DOMAIN . INSTALLED_PATH;
@@ -173,7 +170,7 @@ if(isset($_GET['confirm']) && isset($_GET['username']) && isset($_GET['code']))
     $password = md5(uniqid(mt_rand(), TRUE));
 
     $db->insert("blogs", array(
-        "blogid" => 0, // temporary until user confirms account
+        //"blogid" => 0, // ;et it autoincrement
         "name" => $_POST['name'],
         "email" => $_POST['email'],
         "title" => $_POST['title'],
@@ -187,6 +184,7 @@ if(isset($_GET['confirm']) && isset($_GET['username']) && isset($_GET['code']))
         "password" => $password,
         "joindate" => time(),
         "skinid" => "00000000000000000000000000000000",
+        "status" => "validating",
     ));
 
     $confirm_address = "http://" . DEFAULT_SUBDOMAIN . BASE_DOMAIN . INSTALLED_PATH . "?register&confirm&username=" . $_POST['name'] . "&code=" . $password;
