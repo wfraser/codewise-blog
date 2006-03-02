@@ -39,7 +39,7 @@ parse_str($url_parts['query'], $vars = array());
 if(isset($vars['skinid']) && $db->num_rows[ $db->issue_query("SELECT skinid FROM skins WHERE skinid = ".$db->prepare_value($vars['skinid'])) ] > 0)
 {
     $skinid = $db->prepare_value($vars['skinid'], FALSE);
-} elseif(isset($_GET['id']))
+} elseif(isset($_GET['id'])) {
     $skinid = $_GET['id'];
 } else {
     $skinid = "00000000000000000000000000000000";
