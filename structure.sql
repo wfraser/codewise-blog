@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS blogs;
 CREATE TABLE blogs (
-  blogid int(8) unsigned NOT NULL auto_increment,
+  blogid int(8) unsigned NOT NULL,
   name varchar(32) NOT NULL default '',
   email varchar(64) NOT NULL default '',
   realname varchar(64) default NULL,
