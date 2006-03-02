@@ -28,7 +28,7 @@
 
 define("CWB_COPYRIGHT",
 "<a href=\"http://gna.org/projects/codewiseblog\">CodewiseBlog</a> &copy; 2005-2006 "
-. "<a href=\"http://www.codewise.org/~netmanw00t/\">Bill Fraser</a> / "
+. "<a href=\"http://www.codewise.org/~netmanw00t/\">Bill R. Fraser</a> / "
 . "<a href=\"http://www.codewise.org/\">Codewise.org</a>.<br />"
 . "All textual content is the property of its author.<br />"
 . "CodewiseBlog is free software under the <a href=\"COPYING\">GNU General Public License</a>"
