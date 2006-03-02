@@ -107,6 +107,9 @@ function statistics()
     $q = $db->issue_query("SELECT DISTINCT name FROM replies WHERE blogid = '" . BLOGID . "'");
     $num_distinct_replies = $db->num_rows[$q];
 
+    /* For comments that are inserted by a script, the tripcode is set to
+    ** 'autoinserted comment', an impossible tripcode since the tripcode cannot
+    ** contain spaces. We won't count them in the stats here. */
     $q = $db->issue_query("SELECT pid FROM replies WHERE tripcode != '' AND tripcode != 'autoinserted comment' AND blogid = '" . BLOGID . "'");
     $num_tripcodes = $db->num_rows[$q];
 
