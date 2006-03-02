@@ -37,7 +37,7 @@ function process_subscribe_form()
     if($db->num_rows[$q] > 0)
         return skinvoodoo("error", "error", array("message" => "This email address is already subscribed to " . BLOG_TITLE . "."));
 
-    $data = array("blogid" => BLOGID, "email" => $_POST['email'], "password" => `uuidgen`);
+    $data = array("blogid" => BLOGID, "email" => $_POST['email'], "password" => uuidgen());
 
     $db->insert("subscriptions", $data);
 
