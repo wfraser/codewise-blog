@@ -31,8 +31,10 @@ $current = "adduser";
 $blogid = $db->fetch_var($db->issue_query("SELECT blogid FROM blogs ORDER BY blogid DESC LIMIT 1"));
 $blogid++;
 
-if(empty($_POST))
+if(BLOGID != 1)
 {
+    $body = skinvoodoo("error","error",array("message"=>"You do not have permission to access this area of the control panel."));
+} elseif(empty($_POST)) {
 
     $body = skinvoodoo(
         "controlpanel_adduser", "",
