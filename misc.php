@@ -327,4 +327,9 @@ function text_clip($text, $limit = 500, $append = " ...")
     return($content);
 }
 
+function uuidgen()
+{
+    return md5($_SERVER['SERVER_ADDR'] . getmypid() . uniqid(mt_rand(), true));
+}
+
 ?>
