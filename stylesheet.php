@@ -39,8 +39,8 @@ parse_str($url_parts['query'], $vars = array());
 if(isset($vars['skinid']) && $db->num_rows[ $db->issue_query("SELECT skinid FROM skins WHERE skinid = ".$db->prepare_value($vars['skinid'])) ] > 0)
 {
     $skinid = $db->prepare_value($vars['skinid'], FALSE);
-} elseif( $db->num_rows[ $q = $db->issue_query("SELECT skinid FROM blogs WHERE blogid = ".$db->prepare_value($_GET['id'])) ] > 0 ) {
-    $skinid = $db->fetch_var($q);
+} elseif(isset($_GET['id']))
+    $skinid = $_GET['id'];
 } else {
     $skinid = "00000000000000000000000000000000";
 }
@@ -49,6 +49,9 @@ $q = $db->issue_query("SELECT css FROM skins WHERE skinid = '$skinid'");
 
 if($db->num_rows[$q] == 0 || ($text = $db->fetch_var($q)) === NULL)
     $text = $db->fetch_var($db->issue_query("SELECT css FROM skins WHERE skinid = '00000000000000000000000000000000'"));
+
+// debug
+$text = file_get_contents("skin_blueEye/blueEye.css");
 
 // optimize by removing all unnecessary text
 $text = preg_replace('/\/\*.*\*\//Us', " ", $text);

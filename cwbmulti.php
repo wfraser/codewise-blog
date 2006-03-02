@@ -173,12 +173,7 @@ $BLOGINFO['ucp_url'] = INDEX_URL . "?controlpanel";
 if(!SUBDOMAIN_MODE) $BLOGINFO['rdf_url'] = "rdf.php/" . BLOGNAME;
 else                $BLOGINFO['rdf_url'] = "rdf.php";
 
-if(isset($_GET['master_skin']))
-{
-    $BLOGINFO['css_url'] = "stylesheet.php";
-} else {
-    $BLOGINFO['css_url'] = "stylesheet.php?id=" . BLOGID;
-}
+$BLOGINFO['css_url'] = "stylesheet.php?id=" . SKINID;
 
 $BLOGINFO['interests'] = nl2br($BLOGINFO['interests']);
 $BLOGINFO['links'] = nl2br($BLOGINFO['links']);
