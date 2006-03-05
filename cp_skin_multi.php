@@ -278,7 +278,7 @@ default:
         $content .= skinvoodoo("controlpanel_skin_multi", "section_edit", array(
             "section_name" => $_POST['section_sel'],
             "using_master" => $using_master,
-            "autoresize" => INDEX_URL . "?autoresize.js",
+            "autoresize" => HTTP.BASE_DOMAIN.INSTALLED_PATH."/cwb/autoresize.js",
             "rows" => $_POST['rows'] ? $_POST['rows'] : 30,
             "cols" => $_POST['cols'] ? $_POST['cols'] : 80,
             "skinid" => $_POST['skinid'],

@@ -34,8 +34,8 @@ if(empty($_POST) || isset($_POST['resize']))
         "controlpanel_write", "",
         array(
             "posturl" => INDEX_URL . "?controlpanel:write",
-            "quicktags" => INDEX_URL . "?quicktags.js",
-            "autoresize" => INDEX_URL . "?autoresize.js",
+            "quicktags" => HTTP.BASE_DOMAIN.INSTALLED_PATH."/cwb/quicktags.js",
+            "autoresize" => HTTP.BASE_DOMAIN.INSTALLED_PATH."/cwb/autoresize.js",
             "rows" => $_POST['rows'] ? $_POST['rows'] : 25,
             "cols" => $_POST['cols'] ? $_POST['cols'] : 80,
             "text" => $_POST['text'] ? $_POST['text'] : "",
@@ -51,8 +51,8 @@ if(empty($_POST) || isset($_POST['resize']))
             "controlpanel_write", "",
             array(
                 "posturl" => INDEX_URL . "?controlpanel:write",
-                "quicktags" => INDEX_URL . "?quicktags.js",
-                "autoresize" => INDEX_URL . "?autoresize.js",
+                "quicktags" => HTTP.BASE_DOMAIN.INSTALLED_PATH."/cwb/quicktags.js",
+                "autoresize" => HTTP.BASE_DOMAIN.INSTALLED_PATH."/cwb/autoresize.js",
                 "rows" => $_POST['rows'] ? $_POST['rows'] : 25,
                 "cols" => $_POST['cols'] ? $_POST['cols'] : 80,
                 "text" => $_POST['text'],
@@ -73,8 +73,8 @@ if(empty($_POST) || isset($_POST['resize']))
                 "controlpanel_write", "",
                 array(
                     "posturl" => INDEX_URL . "?controlpanel:write",
-                    "quicktags" => INDEX_URL . "?quicktags.js",
-                    "autoresize" => INDEX_URL . "?autoresize.js",
+                    "quicktags" => HTTP.BASE_DOMAIN.INSTALLED_PATH."/cwb/quicktags.js",
+                    "autoresize" => HTTP.BASE_DOMAIN.INSTALLED_PATH."/cwb/autoresize.js",
                     "rows" => $_POST['rows'] ? $_POST['rows'] : 25,
                     "cols" => $_POST['cols'] ? $_POST['cols'] : 80,
                     "text" => $_POST['text'],

@@ -218,22 +218,6 @@ if(!defined("NO_ACTION"))
         exit;
     }
 
-    // QuickTags for controlpanel:write page
-    if(isset($_GET['quicktags_js']))
-    {
-        header("Content-Type: text/javascript");
-        readfile("cwb/quicktags.js");
-        exit;
-    }
-
-    // autoResize() script from controlpanel pages
-    if(isset($_GET['autoresize_js']))
-    {
-        header("Content-Type: text/javascript");
-        readfile("cwb/autoresize.js");
-        exit;
-    }
-
     if(!is_numeric($_GET['page']))
         $_GET['page'] = 1;
 
