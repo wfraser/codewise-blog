@@ -116,13 +116,27 @@ foreach($data as $blogname => $blog)
 
     if(file_exists("TERMS"))
     {
-    
+
 ?>
-                    <br />
-                    <span style="border: 1px solid #487393; padding: 5px; margin-left: 2em;">
-                        <a href="?register" style="text-decoration:underline">Register for a blog on this site.</a>
-                    </span>
-                    <br /><br />
+<a href="?register">
+<table style="border:none; width:100%">
+<tr>
+<td>
+    <table style="padding: 0px; border: 1px solid #487393; width: 100%;">
+        <tr>
+            <td style="padding-left: 3px; width: 1px">
+                <img src="cwb/keys.png" style="border:none" />
+            </td>
+            <td style="padding: 5px">
+                <span style="text-decoration:underline">Register for a blog on this site.</span>
+            </td>
+        </tr>
+    </table>
+</td>
+</tr>
+</table>
+</a>
+<br />
 <?php
 
     }
