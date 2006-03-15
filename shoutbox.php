@@ -102,6 +102,13 @@ function shoutbox_process()
     $_SESSION['postername'] = $name;
     $_SESSION['posterlink'] = $link;
 
+    $ip = $_SERVER['REMOTE_ADDR'];
+
+    // make sure we get the client's IP if we're using mod_rewrite to proxy the request
+    if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+        $ip .= "::".$_SERVER['HTTP_X_FORWARDED_FOR'];
+                
+
     $data = array
     (
         "blogid" => BLOGID,
@@ -109,7 +116,7 @@ function shoutbox_process()
         "timestamp" => time(),
         "link" => $link,
         "text" => $text,
-        "extra" => "ip: " . $_SERVER['REMOTE_ADDR'] . "\nuseragent: " . $_SERVER['HTTP_USER_AGENT'] . "\n",
+        "extra" => "ip: $ip\nuseragent: {$_SERVER['HTTP_USER_AGENT']}\n",
     );
 
     $db->insert("shoutbox", $data);
