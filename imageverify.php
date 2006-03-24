@@ -29,9 +29,9 @@
 if(basename($_SERVER['SCRIPT_NAME']) == "imageverify.php")
 {
 
-    header("Content-Type: text/jpeg");
+    header("Content-Type: image/jpeg");
 
-    require("settings2.php");
+    require("settings.php");
     require("l1_mysql.php");
 
     $db = new L1_MySQL(SQL_HOST, SQL_USER, SQL_PASS, SQL_DB);
@@ -46,7 +46,7 @@ if(basename($_SERVER['SCRIPT_NAME']) == "imageverify.php")
     $white = imagecolorallocate($image, 255, 255, 255);
     imagefilledrectangle($image, 0, 0, 150, 50, $white);
 
-    $fonts = glob(FSPATH . "fonts/*.pfa");
+    $fonts = glob(FSPATH . "/fonts/*.pfa");
 
     $x = 5;
 
