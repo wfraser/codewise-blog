@@ -96,8 +96,11 @@ function shoutbox_process()
             . "<a href=\"" . INDEX_URL . "\">Back...</a>";
     }
 
+    if(strlen($text) > 255)
+        return skinvoodoo("error", "error", "Text is too long. Please <a href=\"javascript:history.back()\">go back</a> and fix it.");
+
     if($text == "")
-        return "<div style=\"color:red\">Text cannot be empty.</div>Please <a href=\"" . INDEX_URL . "\">go back</a> and fix it.";
+        return skinvoodoo("error", "error", array("message" => "Text cannot be empty.</div>Please <a href=\"javascript:history.back()\">go back</a> and fix it."));
 
     $_SESSION['postername'] = $name;
     $_SESSION['posterlink'] = $link;
@@ -107,7 +110,7 @@ function shoutbox_process()
     // make sure we get the client's IP if we're using mod_rewrite to proxy the request
     if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
         $ip .= "::".$_SERVER['HTTP_X_FORWARDED_FOR'];
-                
+
 
     $data = array
     (
