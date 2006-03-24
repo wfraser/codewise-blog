@@ -60,6 +60,7 @@ function show_reply_form($tid, $preview_data = "", $text = "", $text_filter_msg 
 
     if($preview_data !== "")
     {
+        $preview_data['pid'] = "0";
         $out .= display_post($preview_data, TRUE);
     } else {
         if(is_numeric($_GET['ref']))
@@ -80,6 +81,9 @@ function show_reply_form($tid, $preview_data = "", $text = "", $text_filter_msg 
         $tags .= "&gt; ";
     }
 
+    // image verification id
+    $ivid = genivid();
+
     return $out . skinvoodoo("replyform", "", array(
         "form_url" => INDEX_URL . "?do_reply=$tid#previewcomment",
         "name" => $_SESSION['postername'],
@@ -89,6 +93,8 @@ function show_reply_form($tid, $preview_data = "", $text = "", $text_filter_msg 
         "text" => htmlspecialchars($text),
         "allowed_tags" => $tags,
         "text_filter_msg" => $text_filter_msg === "" ? "" : $text_filter_msg,
+        "imageverify" => HTTP.BASE_DOMAIN.INSTALLED_PATH."imageverify.php?id=$ivid",
+        "ivid" => $ivid,
     ));
 
 } // end of show_reply_form()
@@ -142,12 +148,19 @@ function process_reply_form($tid)
         "extra" => "ip: $ip\nuseragent: " . $_SERVER['HTTP_USER_AGENT'] . "\n",
     );
 
-    if(empty($text))
-        return skinvoodoo("error", "error", array("message" => "Your comment cannot be empty.<br />Please go back and fix this."));
-
     if($_POST['preview'] == "preview" || $text_filter_msg)
     {
-            return show_reply_form($data['tid'], $data, $_POST['text'], $text_filter_msg);
+        return show_reply_form($data['tid'], $data, $_POST['text'], $text_filter_msg);
+    }
+
+    if(md5(strtolower($_POST['imageverify'])) != $_POST['ivid'])
+    {
+        return show_reply_form($data['tid'], $data, $_POST['text'], "You didn't correctly type the letters in the image.<br />Try again.");
+    }
+
+    if(empty($text))
+    {
+        return show_reply_form($data['tid'], $data, $_POST['text'], "Your comment cannot be empty.<br />Please go back and fix this.");
     }
 
     $db->insert("replies", $data);
