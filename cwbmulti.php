@@ -74,6 +74,7 @@ require("reply.php");
 require("subscribe.php");
 require("controlpanel.php");
 require("file_put_contents.php"); // from the PHP_Compat project
+require("imageverify.php");
 
 require("l1_mysql.php");
 $db = new L1_MySQL(SQL_HOST, SQL_USER, SQL_PASS);
