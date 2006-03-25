@@ -20,6 +20,13 @@ CREATE TABLE blogs (
   UNIQUE KEY name (name)
 ) TYPE=MyISAM;
 
+DROP TABLE IF EXISTS imageverify;
+CREATE TABLE imageverify (
+ id varchar(32) NOT NULL default '',
+ text varchar(4) NOT NULL default '',
+ PRIMARY KEY  (id)
+) TYPE=MyISAM;
+
 DROP TABLE IF EXISTS replies;
 CREATE TABLE replies (
   pid int(8) unsigned NOT NULL auto_increment,
