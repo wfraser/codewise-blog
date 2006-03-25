@@ -1,7 +1,7 @@
 <?php
 
 /*
-** Image Verification Generator
+** Image Verification
 ** for CodewiseBlog
 **
 ** by Bill R. Fraser <bill.fraser@gmail.com>
@@ -26,6 +26,10 @@
 ** Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+/*
+** This file is require()d by cwbmulti.php and requested directly.
+** Only generate the image when requested directly.
+*/
 if(basename($_SERVER['SCRIPT_NAME']) == "imageverify.php")
 {
 
@@ -34,38 +38,53 @@ if(basename($_SERVER['SCRIPT_NAME']) == "imageverify.php")
     require("settings.php");
     require("l1_mysql.php");
 
-    $db = new L1_MySQL(SQL_HOST, SQL_USER, SQL_PASS, SQL_DB);
+    if(isset($_GET['id']))
+    {
+        $db = new L1_MySQL(SQL_HOST, SQL_USER, SQL_PASS, SQL_DB);
 
-    $q = $db->issue_query("SELECT text FROM imageverify WHERE id = ".($prepared_id = $db->prepare_value($_GET['id'])));
-    $text = $db->fetch_var($q);
+        $q = $db->issue_query("SELECT text FROM imageverify WHERE id = ".($prepared_id = $db->prepare_value($_GET['id'])));
 
-    $db->issue_query("DELETE FROM imageverify WHERE id = $prepared_id");
+        if($db->num_rows[$q] == 0)
+            error_image("Bogus IVID");
+
+        $text = $db->fetch_var($q);
+
+        $db->issue_query("DELETE FROM imageverify WHERE id = $prepared_id");
+    } else {
+        /* if no IVID was given, generate some random letters and display them
+         * anyways. It's good for debugging. */
+        $text = genivtext();
+    }
 
     // 150 x 50 white image
     $image = imagecreatetruecolor(150, 50);
-    $white = imagecolorallocate($image, 255, 255, 255);
+    $white = imagecolorallocate($image, 0xff,0xff,0xff);
     imagefilledrectangle($image, 0, 0, 150, 50, $white);
 
     $fonts = glob(FSPATH . "/fonts/*.pfa");
 
+    // this is the distance from the left of the image to draw the first letter
     $x = 5;
 
     for($i = 0; $i < strlen($text); $i++)
     {
         $letter = $text[$i];
 
-        $font = imagepsloadfont( $fonts[ mt_rand(0, count($fonts) - 1) ] );
+        $fontname = $fonts[ mt_rand(0, count($fonts) - 1) ];
 
+        $font = imagepsloadfont( $fontname );
+        if($font === FALSE)
+            error_image("Failed to load font: $fontname");
+
+        // random colors, hopefully visible ;)
         $color = imagecolorallocate($image, mt_rand(0, 192), mt_rand(0, 192), mt_rand(0, 192));
 
         // rotate between +/- .50
         imagepsslantfont($font, (mt_rand(-50, 50) * .01));
 
-        // shrink or stretch between +/- 2.0
-        //imagepsextendfont($font, (mt_rand(-20, 20) * .1));
-
         $pos = imagepstext($image, $letter, $font, 40, $color, $white, $x, 40);
 
+        // draw the next letter 3px right of where the last letter ended
         $x += $pos[2] + 3;
 
         imagepsfreefont($font);
@@ -74,10 +93,32 @@ if(basename($_SERVER['SCRIPT_NAME']) == "imageverify.php")
     imagejpeg($image);
 }
 
-function genivid()
+// display some useful error message
+function error_image($text)
 {
-    global $db;
+    $font = 5;
 
+    // length and width based on text and font size
+    $x = (strlen($text) + 7) * imagefontwidth($font);
+    $y = (imagefontheight($font) + 2);
+
+    $image = imagecreatetruecolor($x, $y);
+    $white = imagecolorallocate($image, 0xff,0xff,0xff);
+    $black = imagecolorallocate($image, 0,0,0);
+    imagefilledrectangle($image, 0,0, $x,$y, $white);
+
+    imagestring($image, $font, 0,0, "Error: $text", $black);
+
+    imagejpeg($image);
+    exit;
+}
+
+/*
+** generate 4 random letters suitable for display
+** this should not be used except by this script.
+*/
+function genivtext()
+{
     // i or l, they're too similar, and no uppercase O or D as they are too similar
     $letters = array("A","a","B","b","C","c","d","E","e","F","f","G","g","H",
         "h","J","j","K","k","M","m","N","n","P","p","Q","q","R","r","S","s","T",
@@ -87,6 +128,18 @@ function genivid()
     for($i = 0; $i < 4; $i++)
         $ivtext .= $letters[ mt_rand(0, count($letters) - 1) ];
 
+    return $ivtext;
+}
+
+/*
+** Use this to generate letters and hash to feed to the image generator.
+** The return value should be the ?id= argument to imageverify.php
+*/
+function genivid()
+{
+    global $db;
+
+    $ivtext = genivtext();
     $ivid = md5(strtolower($ivtext));
 
     $db->insert("imageverify", array("id" => $ivid, "text" => $ivtext));
