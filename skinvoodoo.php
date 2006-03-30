@@ -201,6 +201,7 @@ function voodoo($skin, $args = array(), $skin_section = "", $expand = TRUE)
             "cwb_type" => "CWBTYPE",
             "site_title" => "SITE_TITLE",
             "site_motto" => "SITE_MOTTO",
+            "imageverify" => "IMAGEVERIFY",
         );
 
         $new = "";

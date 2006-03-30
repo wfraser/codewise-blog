@@ -81,8 +81,13 @@ function show_reply_form($tid, $preview_data = "", $text = "", $text_filter_msg 
         $tags .= "&gt; ";
     }
 
-    // image verification id
-    $ivid = genivid();
+    if(IMAGEVERIFY)
+    {
+        // image verification id
+        $ivid = genivid();
+    } else {
+        $ivid = NULL;
+    }
 
     return $out . skinvoodoo("replyform", "", array(
         "form_url" => INDEX_URL . "?do_reply=$tid#previewcomment",
@@ -153,7 +158,7 @@ function process_reply_form($tid)
         return show_reply_form($data['tid'], $data, $_POST['text'], $text_filter_msg);
     }
 
-    if(md5(strtolower($_POST['imageverify'])) != $_POST['ivid'])
+    if(IMAGEVERIFY && md5(strtolower($_POST['imageverify'])) != $_POST['ivid'])
     {
         return show_reply_form($data['tid'], $data, $_POST['text'], "You didn't correctly type the letters in the image.<br />Try again.");
     }

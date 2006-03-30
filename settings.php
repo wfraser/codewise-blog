@@ -32,7 +32,7 @@ define('SQL_PASS', 'sql_password');
 define('SQL_DB', 'sql_database');
 define('SITE_TITLE', 'CodewiseBlog');
 define('SITE_MOTTO', 'A better place to write.');
-
+define('IMAGEVERIFY', TRUE);
 
 $ALLOWED_TAGS = array
 (
