@@ -384,6 +384,7 @@ define('DATE_FORMAT', '{$_POST['date_format']}');
 define('ANONYMOUS_NAME', '{$_POST['anonymous_name']}');
 define('SITE_TITLE', '{$_POST['site_title']}');
 define('SITE_MOTTO', '{$_POST['site_motto']}');
+define('IMAGEVERIFY', {$_POST['imageverify']});
 
 $allowed_tags
 
@@ -495,6 +496,15 @@ function dataChanged()
         <td>Site Motto:</td>
         <td><input type="text" size="25" name="site_motto" value="A Better Place to Write" /></td>
         <td>Some tagline text to display along with the title.</td>
+    </tr>
+    <tr>
+        <td>Image Verification on Comments:</td>
+        <td><select name="imageverify">
+            <option value="TRUE" selected="selected">Enabled</option>
+            <option value="FALSE">Disabled</option>
+            </select>
+        </td>
+        <td>It is reccomended this is set to Enabled to prevent spam, but disabl e it if your server does not have GD installed or it doesn't work properly.</td>
     </tr>
     <tr>
         <td>Blog Posts Per Page:</td>
