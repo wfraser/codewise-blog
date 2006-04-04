@@ -118,24 +118,26 @@ foreach($data as $blogname => $blog)
     {
 
 ?>
-<a href="?register">
 <table style="border:none; width:100%">
 <tr>
 <td>
     <table style="padding: 0px; border: 1px solid #487393; width: 100%;">
         <tr>
             <td style="padding-left: 3px; width: 1px">
-                <img src="cwb/keys.png" style="border:none" />
+                <a href="?register">
+                    <img src="cwb/keys.png" style="border:none" />
+                </a>
             </td>
             <td style="padding: 5px">
-                <span style="text-decoration:underline">Register for a blog on this site.</span>
+                <a href="?register">
+                    <span style="text-decoration:underline">Register for a blog on this site.</span>
+                </a>
             </td>
         </tr>
     </table>
 </td>
 </tr>
 </table>
-</a>
 <br />
 <?php
 
