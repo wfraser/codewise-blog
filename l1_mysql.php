@@ -7,7 +7,7 @@
 ** http://projects.codewise.org/l1_sql/
 **
 ** by Bill R. Fraser <bill.fraser@gmail.com>
-** Copyright (c) 2004 - 2005
+** Copyright (c) 2004-2006 Codewise.org
 */
 
 /*

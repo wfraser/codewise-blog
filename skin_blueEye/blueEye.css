@@ -181,3 +181,39 @@ textarea {
     font-family: Trebuchet, sans-serif;
     font-size: 10pt;
 }
+
+div.floatingpopup {
+    left: 30%;
+    width: 25em;
+    text-align: justify;
+    background: white;
+    border: 1px solid black;
+    position: absolute;
+}
+
+span.floatingpopup_title {
+    left: 5px;
+    position: absolute;
+    text-decoration: underline;
+    font-weight: bold;
+    color: white;
+}
+
+div.floatingpopup_titlebar {
+    background: #487393;
+    border-bottom: 1px solid black;
+    text-align: right;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+
+span.floatingpopup_closebox {
+    background: white;
+    border: 1px solid black;
+    padding: 2px;
+    margin-right: 2px;
+}
+
+div.floatingpopup_text {
+    padding: .5em;
+}

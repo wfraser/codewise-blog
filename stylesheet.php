@@ -5,7 +5,7 @@
 ** for CodewiseBlog Multi-User
 **
 ** by Bill R. Fraser <bill.fraser@gmail.com>
-** Copyright (c) 2005 Codewise.org
+** Copyright (c) 2005-2006 Codewise.org
 */
 
 /*
@@ -33,22 +33,21 @@ require("l1_mysql.php");
 
 $db = new L1_MySQL(SQL_HOST, SQL_USER, SQL_PASS, SQL_DB);
 
-$url_parts = parse_url($_SERVER['HTTP_REFERER']);
-parse_str($url_parts['query'], $vars = array());
-
-if(isset($vars['skinid']) && $db->num_rows[ $db->issue_query("SELECT skinid FROM skins WHERE skinid = ".$db->prepare_value($vars['skinid'])) ] > 0)
+if(isset($_GET['id']))
 {
-    $skinid = $db->prepare_value($vars['skinid'], FALSE);
-} elseif( $db->num_rows[ $q = $db->issue_query("SELECT skinid FROM blogs WHERE blogid = ".$db->prepare_value($_GET['id'])) ] > 0 ) {
-    $skinid = $db->fetch_var($q);
+    $skinid = $_GET['id'];
 } else {
     $skinid = "00000000000000000000000000000000";
 }
 
 $q = $db->issue_query("SELECT css FROM skins WHERE skinid = '$skinid'");
 
+// if the skin selected doesn't exist, or if the css section is NULL, grab the master
 if($db->num_rows[$q] == 0 || ($text = $db->fetch_var($q)) === NULL)
     $text = $db->fetch_var($db->issue_query("SELECT css FROM skins WHERE skinid = '00000000000000000000000000000000'"));
+
+// debug
+//$text = file_get_contents("skin_blueEye/blueEye.css");
 
 // optimize by removing all unnecessary text
 $text = preg_replace('/\/\*.*\*\//Us', " ", $text);

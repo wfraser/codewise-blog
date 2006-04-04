@@ -5,7 +5,7 @@
 ** for CodewiseBlog Multi-User
 **
 ** by Bill R. Fraser <bill.fraser@gmail.com>
-** Copyright (c) 2005 Codewise.org
+** Copyright (c) 2005-2006 Codewise.org
 */
 
 /*
@@ -165,8 +165,8 @@ if(empty($_POST))
             "second_sel" => $second_sel,
             "ampm_sel"   => $ampm_sel,
             "preview" => $preview,
-            "quicktags" => INDEX_URL . "?quicktags.js",
-            "autoresize" => INDEX_URL . "?autoresize.js",
+            "quicktags" => HTTP . BASE_DOMAIN . INSTALLED_PATH . "/cwb/quicktags.js",
+            "autoresize" => HTTP . BASE_DOMAIN . INSTALLED_PATH . "/cwb/autoresize.js",
             "rows" => $_POST['rows'] ? $_POST['rows'] : 25,
             "cols" => $_POST['cols'] ? $_POST['cols'] : 80,
         )

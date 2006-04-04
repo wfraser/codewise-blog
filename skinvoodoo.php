@@ -5,7 +5,7 @@
 ** for CodewiseBlog Multi-User
 **
 ** by Bill R. Fraser <bill.fraser@gmail.com>
-** Copyright (c) 2005 Codewise.org
+** Copyright (c) 2005-2006 Codewise.org
 */
 
 /*
@@ -27,8 +27,8 @@
 */
 
 define("CWB_COPYRIGHT",
-"<a href=\"http://gna.org/projects/codewiseblog\">CodewiseBlog</a> &copy; 2005 "
-. "<a href=\"http://www.codewise.org/~netmanw00t/\">Bill Fraser</a> / "
+"<a href=\"http://gna.org/projects/codewiseblog\">CodewiseBlog</a> &copy; 2005-2006 "
+. "<a href=\"http://www.codewise.org/~netmanw00t/\">Bill R. Fraser</a> / "
 . "<a href=\"http://www.codewise.org/\">Codewise.org</a>.<br />"
 . "All textual content is the property of its author.<br />"
 . "CodewiseBlog is free software under the <a href=\"COPYING\">GNU General Public License</a>"
@@ -201,6 +201,7 @@ function voodoo($skin, $args = array(), $skin_section = "", $expand = TRUE)
             "cwb_type" => "CWBTYPE",
             "site_title" => "SITE_TITLE",
             "site_motto" => "SITE_MOTTO",
+            "imageverify" => "IMAGEVERIFY",
         );
 
         $new = "";

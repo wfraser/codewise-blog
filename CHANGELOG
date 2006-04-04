@@ -89,3 +89,16 @@ Dev - July 25 to September 12, 2005
   - added SITE_TITLE and SITE_MOTTO config constants
   - added option to ping weblogs.com upon writing a new post
   - new semitransparent CWB icon
+
+1.2.0 - April 3, 2005
+  - modified multi-skin editor to allow multiple default skins (i.e. not only the Master Skin)
+  - skin editor hides controlpanel sections from non-root users
+  - skin editor can import and export skins to XML VoodooArchive format
+  - added links that trigger floating popups with info about Tripcodes and the Custom URL field in the User Info control panel
+  - fixed bug that set the blog title to '1' if it was changed
+  - fixed user age calculation bug
+  - continue to use https:// if user uses it in the first place
+  - fixed control panel permission bug: controlpanel:adduser didn't check whether user was root or not
+  - shoutbox posts get the IP recorded when using mod_rewrite to proxy requests
+  - shoutbox post text limited to 255 chars
+  - image verification for comments, to combat spam

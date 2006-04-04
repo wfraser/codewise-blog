@@ -5,7 +5,7 @@
 ** for CodewiseBlog Multi-User
 **
 ** by Bill R. Fraser <bill.fraser@gmail.com>
-** Copyright (c) 2005 Codewise.org
+** Copyright (c) 2004-2006 Codewise.org
 */
 
 /*
@@ -80,9 +80,6 @@ function textprocess($text)
 
     $text = str_replace("\n", "<br />", str_replace("\r", "", $text));
 
-    $text = preg_replace("/(f)uck/i", "\\1%&amp;#", $text);
-    $text = preg_replace("/(s)hit/i", "\\1%&amp;#", $text);
-
     return $text;
 } // end of textprocess
 
@@ -114,7 +111,7 @@ function in_text_filter($text, $text_filter_msg = "")
             else
                 $attrib_cont = $attrib_match[2];
 
-            if(!in_array(strtolower($attrib_name), $ALLOWED_TAGS[strtolower($tag_name)]))
+            if(!@in_array(strtolower($attrib_name), $ALLOWED_TAGS[strtolower($tag_name)]))
             {
                 $new_text = str_replace($full_tag, str_replace($full_attrib, "", $full_tag), $new_text);
                 $text_filter_msg .= "Removed illegal <code>&lt;$tag_name&gt;</code> attribute <code>$attrib_name</code><br />";
@@ -196,11 +193,6 @@ function tripcode($input)
     if($input === null || $input === "" || $input === false)
         return(null);
 
-    /*
-    ** since this algorithm could be easily brute-forced, we'll obfuscate it in
-    ** a non-obvious and server-dependent way.
-    */
-    //$input .= "%".$_ENV['HOST']."%";
     $md5 = md5($input);
 
     $values = array();
@@ -333,6 +325,11 @@ function text_clip($text, $limit = 500, $append = " ...")
     }
 
     return($content);
+}
+
+function uuidgen()
+{
+    return md5($_SERVER['SERVER_ADDR'] . getmypid() . uniqid(mt_rand(), true));
 }
 
 ?>

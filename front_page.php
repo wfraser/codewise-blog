@@ -5,7 +5,7 @@
 ** for CodewiseBlog Multi-User
 **
 ** by Bill R. Fraser <bill.fraser@gmail.com>
-** Copyright (c) 2005 Codewise.org
+** Copyright (c) 2005-2006 Codewise.org
 */
 
 /*
@@ -60,7 +60,7 @@
                                     <tr><td><b>Blogs on this site:</b></td></tr>
 <?php
 
-$q = $db->issue_query("SELECT name,realname,title FROM blogs WHERE blogid != '1' ORDER BY blogid ASC");
+$q = $db->issue_query("SELECT name,realname,title FROM blogs WHERE status = 'active' ORDER BY blogid ASC");
 $data = $db->fetch_all($q, L1SQL_ASSOC, "name");
 
 foreach($data as $blogname => $blog)
@@ -113,6 +113,35 @@ foreach($data as $blogname => $blog)
                 <td class="blogbody">
 
 <?php
+
+    if(file_exists("TERMS"))
+    {
+
+?>
+<table style="border:none; width:100%">
+<tr>
+<td>
+    <table style="padding: 0px; border: 1px solid #487393; width: 100%;">
+        <tr>
+            <td style="padding-left: 3px; width: 1px">
+                <a href="?register">
+                    <img src="cwb/keys.png" style="border:none" />
+                </a>
+            </td>
+            <td style="padding: 5px">
+                <a href="?register">
+                    <span style="text-decoration:underline">Register for a blog on this site.</span>
+                </a>
+            </td>
+        </tr>
+    </table>
+</td>
+</tr>
+</table>
+<br />
+<?php
+
+    }
 
     $q = $db->issue_query("SELECT tid,blogid,title,timestamp,text FROM topics ORDER BY timestamp DESC LIMIT 5");
     $data = $db->fetch_all($q, L1SQL_ASSOC, "");

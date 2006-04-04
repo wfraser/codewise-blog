@@ -5,7 +5,7 @@
 ** for CodewiseBlog Multi-User
 **
 ** by Bill R. Fraser <bill.fraser@gmail.com>
-** Copyright (c) 2005 Codewise.org
+** Copyright (c) 2005-2006 Codewise.org
 */
 
 /*
@@ -34,6 +34,10 @@ define("NO_ACTION", TRUE);
 
 require("cwbmulti.php");
 
+$first_post = $db->fetch_var($db->issue_query("SELECT timestamp FROM topics WHERE blogid = '".BLOGID."' ORDER by TIMESTAMP ASC LIMIT 1"));
+$latest_post =  $db->fetch_var($db->issue_query("SELECT timestamp FROM topics WHERE blogid = '".BLOGID."' ORDER by TIMESTAMP DESC LIMIT 1"));
+$copyright_years = date("Y", $first_post) . "-" . date("Y", $latest_post);
+
 ?>
 
 <rdf:RDF
@@ -48,9 +52,8 @@ require("cwbmulti.php");
         <title><?php echo htmlspecialchars($BLOGINFO['title']); ?></title>
         <link><?php echo INDEX_URL; ?></link>
         <description><?php echo htmlspecialchars($BLOGINFO['title']); ?> :: by <?php echo htmlspecialchars($BLOGINFO['realname'] == NULL ? BLOGNAME : $BLOGINFO['realname']); ?></description>
-        <dc:language>en-us</dc:language>
-        <dc:rights>Copyright <?php echo $copyright_years; ?> - <?php echo htmlspecialchars($BLOGINFO['realname'] == NULL ? BLOGNAME : $BLOGINFO['realname']); ?></dc:rights>
-        <dc:date>2005-10-16T02:00:01Z</dc:date>
+        <dc:rights>Copyright (c) <?php echo $copyright_years; ?> <?php echo htmlspecialchars($BLOGINFO['realname'] == NULL ? BLOGNAME : $BLOGINFO['realname']); ?></dc:rights>
+        <dc:date><?php echo iso8601_date($latest_post); ?></dc:date>
         <dc:creator><?php echo htmlspecialchars($BLOGINFO['realname'] == NULL ? BLOGNAME : $BLOGINFO['realname']); ?></dc:creator>
         <items>
             <rdf:Seq>

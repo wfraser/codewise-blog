@@ -5,7 +5,7 @@
 ** for CodewiseBlog Multi-User
 **
 ** by Bill R. Fraser <bill.fraser@gmail.com>
-** Copyright (c) 2005 Codewise.org
+** Copyright (c) 2005-2006 Codewise.org
 */
 
 /*
@@ -64,6 +64,7 @@ if(BLOGID != 1)
             "sql_pass" => SQL_PASS,
             "sql_db" => SQL_DB,
             "allowed_tags" => $allowed_tags,
+            "imageverify" => IMAGEVERIFY,
         )
     );
 } else {
@@ -222,6 +223,14 @@ if(BLOGID != 1)
         $file);
     if($file != $filenew)
         $applied[] = "SQL_DB";
+    $file = $filenew;
+
+    $filenew = preg_replace(
+        "/(?<=\\s)define\\(\\s*(['\"])((?-i)IMAGEVERIFY)\\1,\\s*" . (IMAGEVERIFY ? "TRUE" : "FALSE") . "\\s*\\);/is",
+        "define('IMAGEVERIFY', " . $_POST['imageverify'] . ");",
+        $file);
+    if($file != $filenew)
+        $applied[] = "IMAGEVERIFY";
     $file = $filenew;
 
     $new_php_array = "\$ALLOWED_TAGS = array\n(\n";

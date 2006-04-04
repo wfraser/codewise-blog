@@ -53,6 +53,21 @@
         </td>
         <td>Only disable this for debugging</td>
     </tr>
+    <tr>
+        <td>Enable image verification on post replies:</td>
+        <td>
+            <select name="imageverify">
+<!-- #cwb_if# ${imageverify} -->
+                <option value="TRUE" selected="selected">Enabled</option>
+                <option value="FALSE">Disabled</option>
+<!-- #cwb_else# -->
+                <option value="FALSE" selected="selected">Disabled</option>
+                <option value="TRUE">Enabled</option>
+<!-- #cwb_endif# -->
+            </select>
+        </td>
+        <td>It is reccomended this is set to Enabled to prevent spam, but disable it if your server does not have GD installed or it doesn't work properly.</td>
+    </tr>
     <tr><td><hr /></td><td><hr /></td></tr>
     <tr>
         <td>SQL Hostname:</td>

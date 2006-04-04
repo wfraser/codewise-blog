@@ -5,7 +5,7 @@
 ** for CodewiseBlog Multi-User
 **
 ** by Bill R. Fraser <bill.fraser@gmail.com>
-** Copyright (c) 2005 Codewise.org
+** Copyright (c) 2005-2006 Codewise.org
 */
 
 /*
@@ -107,6 +107,9 @@ function statistics()
     $q = $db->issue_query("SELECT DISTINCT name FROM replies WHERE blogid = '" . BLOGID . "'");
     $num_distinct_replies = $db->num_rows[$q];
 
+    /* For comments that are inserted by a script, the tripcode is set to
+    ** 'autoinserted comment', an impossible tripcode since the tripcode cannot
+    ** contain spaces. We won't count them in the stats here. */
     $q = $db->issue_query("SELECT pid FROM replies WHERE tripcode != '' AND tripcode != 'autoinserted comment' AND blogid = '" . BLOGID . "'");
     $num_tripcodes = $db->num_rows[$q];
 

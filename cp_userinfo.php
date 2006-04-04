@@ -5,7 +5,7 @@
 ** for CodewiseBlog Multi-User
 **
 ** by Bill R. Fraser <bill.fraser@gmail.com>
-** Copyright (c) 2005 Codewise.org
+** Copyright (c) 2005-2006 Codewise.org
 */
 
 /*
@@ -59,7 +59,7 @@ if($_POST)
             "links" => $_POST['links'] == "" ? NULL : $_POST['links'],
             "photo" => $_POST['photo'] == "" ? NULL : htmlspecialchars($_POST['photo']),
             "homepage" => $_POST['homepage'] == "" ? NULL : htmlspecialchars($_POST['homepage']),
-            "title" => $_POST['title'] == str_replace(" ", "&nbsp;", htmlspecialchars($_POST['title'])),
+            "title" => str_replace(" ", "&nbsp;", htmlspecialchars($_POST['title'])),
             "custom_url" => $_POST['custom_url'] == "" ? NULL : $_POST['custom_url'],
         );
 

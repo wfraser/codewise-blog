@@ -5,7 +5,7 @@
 ** for CodewiseBlog Multi-User
 **
 ** by Bill R. Fraser <bill.fraser@gmail.com>
-** Copyright (c) 2005 Codewise.org
+** Copyright (c) 2005-2006 Codewise.org
 */
 
 /*
@@ -31,8 +31,10 @@ $current = "adduser";
 $blogid = $db->fetch_var($db->issue_query("SELECT blogid FROM blogs ORDER BY blogid DESC LIMIT 1"));
 $blogid++;
 
-if(empty($_POST))
+if(BLOGID != 1)
 {
+    $body = skinvoodoo("error","error",array("message"=>"You do not have permission to access this area of the control panel."));
+} elseif(empty($_POST)) {
 
     $body = skinvoodoo(
         "controlpanel_adduser", "",

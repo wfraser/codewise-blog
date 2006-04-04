@@ -1152,6 +1152,9 @@ Lets user select a saved skin for editing<br />
 <td>CWB-generated list of saved skins</td>
 </tr>
 <tr>
+<td>${max_file_size}</td>
+<td>PHP requires this value to be POSTed under the name 'MAX_FILE_SIZE' when any files are uploaded</td>
+</tr>
 </table><br /><br />
 <h3>The saved_skinids_entry subsection</h3>
 An entry in the list of saved skins<br />
@@ -1193,6 +1196,21 @@ Allows administrators to change the skin's owner when the description page is sh
 <td>the Blog ID of the skin's current owner</td>
 </tr>
 </table><br /><br />
+<h3>The import_successful subsection</h3>
+This is shown upon a successful skin import<br />
+<table>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr><tr>
+<td>${posturl}</td>
+<td>The URL the form is POSTed to</td>
+</tr>
+<tr>
+<td>${newskinid}</td>
+<td>The SKINID of the newly created skin</td>
+</tr>
+</table><br /><br />
 </div>
 
 
@@ -1222,7 +1240,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 ---
 
-This document copyright (c) 2005 Codewise.org
+This document copyright (c) 2005-2006 Codewise.org
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.2
 or any later version published by the Free Software Foundation;

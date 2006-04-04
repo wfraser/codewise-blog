@@ -5,7 +5,7 @@
 ** for CodewiseBlog Multi-User
 **
 ** by Bill R. Fraser <bill.fraser@gmail.com>
-** Copyright (c) 2005 Codewise.org
+** Copyright (c) 2005-2006 Codewise.org
 */
 
 /*
@@ -96,11 +96,21 @@ function shoutbox_process()
             . "<a href=\"" . INDEX_URL . "\">Back...</a>";
     }
 
+    if(strlen($text) > 255)
+        return skinvoodoo("error", "error", "Text is too long. Please <a href=\"javascript:history.back()\">go back</a> and fix it.");
+
     if($text == "")
-        return "<div style=\"color:red\">Text cannot be empty.</div>Please <a href=\"" . INDEX_URL . "\">go back</a> and fix it.";
+        return skinvoodoo("error", "error", array("message" => "Text cannot be empty.</div>Please <a href=\"javascript:history.back()\">go back</a> and fix it."));
 
     $_SESSION['postername'] = $name;
     $_SESSION['posterlink'] = $link;
+
+    $ip = $_SERVER['REMOTE_ADDR'];
+
+    // make sure we get the client's IP if we're using mod_rewrite to proxy the request
+    if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+        $ip .= "::".$_SERVER['HTTP_X_FORWARDED_FOR'];
+
 
     $data = array
     (
@@ -109,7 +119,7 @@ function shoutbox_process()
         "timestamp" => time(),
         "link" => $link,
         "text" => $text,
-        "extra" => "ip: " . $_SERVER['REMOTE_ADDR'] . "\nuseragent: " . $_SERVER['HTTP_USER_AGENT'] . "\n",
+        "extra" => "ip: $ip\nuseragent: {$_SERVER['HTTP_USER_AGENT']}\n",
     );
 
     $db->insert("shoutbox", $data);

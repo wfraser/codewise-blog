@@ -4,7 +4,7 @@
 ** CodewiseBlog Multi-User
 **
 ** by Bill R. Fraser <bill.fraser@gmail.com>
-** Copyright (c) 2005 Codewise.org
+** Copyright (c) 2005-2006 Codewise.org
 */
 
 /*
@@ -29,8 +29,6 @@ $starttime = (string) $sec + $usec;
 unset($sec, $usec);
 
 // define version string
-define("CWBVERSION","1.1.0");
-define("CWBTYPE", "Multi-User");
 define("SETTINGS_FILE", "settings.php");
 
 // Unique ID for this request
@@ -39,6 +37,9 @@ define("UNIQ", md5(uniqid(mt_rand(), true)));
 require(SETTINGS_FILE);
 
 chdir(FSPATH);
+
+// define version strings
+require("version.php");
 
 /*
 ** Set up environment
@@ -73,6 +74,7 @@ require("reply.php");
 require("subscribe.php");
 require("controlpanel.php");
 require("file_put_contents.php"); // from the PHP_Compat project
+require("imageverify.php");
 
 require("l1_mysql.php");
 $db = new L1_MySQL(SQL_HOST, SQL_USER, SQL_PASS);
@@ -102,18 +104,28 @@ if(isset($_GET['subdomain_mode']) ? $_GET['subdomain_mode'] : SUBDOMAIN_MODE)
     $who = preg_replace("/\\?.*$/", "", $who);
 }
 
+/*
+** Keep https:// if we're using it
+*/
+if($_SERVER['HTTPS'] == "on")
+{
+    define("HTTP", "https://");
+} else {
+    define("HTTP", "http://");
+}
+
 if($who == "")
 {
     define("BLOGID", 1);
     define("BLOGNAME", "");
     define("SKINID", "00000000000000000000000000000000");
     if(DEFAULT_SUBDOMAIN == "")
-        define("INDEX_URL", "http://" . BASE_DOMAIN . INSTALLED_PATH);
+        define("INDEX_URL", HTTP . BASE_DOMAIN . INSTALLED_PATH);
     else
-        define("INDEX_URL", "http://" . DEFAULT_SUBDOMAIN . "." . BASE_DOMAIN . INSTALLED_PATH);
+        define("INDEX_URL", HTTP . DEFAULT_SUBDOMAIN . "." . BASE_DOMAIN . INSTALLED_PATH);
 } elseif(!isset($blogdata[$who])) {
     die( "<html><head><title>".SITE_TITLE." :: Invalid User</title><link rel=\"stylesheet\" href=\"stylesheet.php?id=1\" /></head>"
-       . "<body><b>Invalid User \"$who\"</b><br /><br /><a href=\"http://" . DEFAULT_SUBDOMAIN . BASE_DOMAIN . INSTALLED_PATH . "\">...go back</a></body></html>" );
+       . "<body><b>Invalid User \"$who\"</b><br /><br /><a href=\"" . HTTP . DEFAULT_SUBDOMAIN . BASE_DOMAIN . INSTALLED_PATH . "\">...go back</a></body></html>" );
 } else {
     define("BLOGID", $blogdata[$who]['blogid']);
     define("BLOGNAME", $who);
@@ -130,9 +142,9 @@ if($who == "")
     {
         define("INDEX_URL", $blogdata[$who]['custom_url']);
     } elseif(SUBDOMAIN_MODE) {
-        define("INDEX_URL", "http://" . BLOGNAME . "." . BASE_DOMAIN . INSTALLED_PATH);
+        define("INDEX_URL", HTTP . BLOGNAME . "." . BASE_DOMAIN . INSTALLED_PATH);
     } else {
-        define("INDEX_URL", "http://" . BASE_DOMAIN . INSTALLED_PATH . BLOGNAME);
+        define("INDEX_URL", HTTP . BASE_DOMAIN . INSTALLED_PATH . BLOGNAME);
     }
 }
 
@@ -152,7 +164,7 @@ if($BLOGINFO['birthday'])
     $BLOGINFO['birthday_month'] = $month;
     $BLOGINFO['birthday_day'] = $day;
     $BLOGINFO['birthday_year'] = $year;
-    $BLOGINFO['age'] = ($month >= date("m") && $day > date("d")) ? date("Y") - $year - 1 : date("Y") - $year;
+    $BLOGINFO['age'] = ($month >= date("m") && $day > date("d")) ? date("Y") - $year : date("Y") - $year - 1;
 } else {
     $BLOGINFO['age'] = $BLOGINFO['birthday_month'] = $BLOGINFO['birthday_day'] = $BLOGINFO['birthday_year'] = "";
 }
@@ -162,19 +174,14 @@ $BLOGINFO['ucp_url'] = INDEX_URL . "?controlpanel";
 if(!SUBDOMAIN_MODE) $BLOGINFO['rdf_url'] = "rdf.php/" . BLOGNAME;
 else                $BLOGINFO['rdf_url'] = "rdf.php";
 
-if(isset($_GET['master_skin']))
-{
-    $BLOGINFO['css_url'] = "stylesheet.php";
-} else {
-    $BLOGINFO['css_url'] = "stylesheet.php?id=" . BLOGID;
-}
+$BLOGINFO['css_url'] = "stylesheet.php?id=" . SKINID;
 
 $BLOGINFO['interests'] = nl2br($BLOGINFO['interests']);
 $BLOGINFO['links'] = nl2br($BLOGINFO['links']);
 $BLOGINFO['version'] = CWBVERSION;
 $BLOGINFO['anonymous_name'] = ANONYMOUS_NAME;
 
-$BLOGINFO['multiuser_root'] = "http://" . DEFAULT_SUBDOMAIN . BASE_DOMAIN . INSTALLED_PATH;
+$BLOGINFO['multiuser_root'] = HTTP . DEFAULT_SUBDOMAIN . BASE_DOMAIN . INSTALLED_PATH;
 
 if(!defined("NO_ACTION"))
 {
@@ -192,6 +199,12 @@ if(!defined("NO_ACTION"))
         }
     }
 
+    if(isset($_GET['register']))
+    {
+        require("register.php");
+        exit;
+    }
+
     // special front page
     if(BLOGID == 1 && !isset($_GET['login'])) // allow admin controlpanel login from front page
     {
@@ -199,18 +212,11 @@ if(!defined("NO_ACTION"))
         exit;
     }
 
-    // QuickTags for controlpanel:write page
-    if(isset($_GET['quicktags_js']))
+    if(isset($_GET['util_js']))
     {
-        header("Content-type: text/javascript");
-        die(file_get_contents("cwb/quicktags.js"));
-    }
-
-    // autoResize() script from controlpanel pages
-    if(isset($_GET['autoresize_js']))
-    {
-        header("Content-type: text/javascript");
-        die(file_get_contents("cwb/autoresize.js"));
+        header("Content-Type: text/javascript");
+        readfile("cwb/util.js");
+        exit;
     }
 
     if(!is_numeric($_GET['page']))

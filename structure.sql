@@ -15,7 +15,16 @@ CREATE TABLE blogs (
   joindate int(10) NOT NULL default '0',
   custom_url varchar(128) default NULL,
   skinid varchar(32) NOT NULL default '00000000000000000000000000000000',
-  UNIQUE KEY blogid (blogid,name)
+  status enum('validating','active','banned','closed') NOT NULL default 'validating',
+  UNIQUE KEY blogid (blogid),
+  UNIQUE KEY name (name)
+) TYPE=MyISAM;
+
+DROP TABLE IF EXISTS imageverify;
+CREATE TABLE imageverify (
+ id varchar(32) NOT NULL default '',
+ text varchar(4) NOT NULL default '',
+ PRIMARY KEY  (id)
 ) TYPE=MyISAM;
 
 DROP TABLE IF EXISTS replies;

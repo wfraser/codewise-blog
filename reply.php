@@ -5,7 +5,7 @@
 ** for CodewiseBlog Multi-User
 **
 ** by Bill R. Fraser <bill.fraser@gmail.com>
-** Copyright (c) 2005 Codewise.org
+** Copyright (c) 2005-2006 Codewise.org
 */
 
 /*
@@ -60,6 +60,7 @@ function show_reply_form($tid, $preview_data = "", $text = "", $text_filter_msg 
 
     if($preview_data !== "")
     {
+        $preview_data['pid'] = "0";
         $out .= display_post($preview_data, TRUE);
     } else {
         if(is_numeric($_GET['ref']))
@@ -80,6 +81,14 @@ function show_reply_form($tid, $preview_data = "", $text = "", $text_filter_msg 
         $tags .= "&gt; ";
     }
 
+    if(IMAGEVERIFY)
+    {
+        // image verification id
+        $ivid = genivid();
+    } else {
+        $ivid = NULL;
+    }
+
     return $out . skinvoodoo("replyform", "", array(
         "form_url" => INDEX_URL . "?do_reply=$tid#previewcomment",
         "name" => $_SESSION['postername'],
@@ -89,6 +98,8 @@ function show_reply_form($tid, $preview_data = "", $text = "", $text_filter_msg 
         "text" => htmlspecialchars($text),
         "allowed_tags" => $tags,
         "text_filter_msg" => $text_filter_msg === "" ? "" : $text_filter_msg,
+        "imageverify" => HTTP.BASE_DOMAIN.INSTALLED_PATH."imageverify.php?id=$ivid",
+        "ivid" => $ivid,
     ));
 
 } // end of show_reply_form()
@@ -114,7 +125,7 @@ function process_reply_form($tid)
 
     if($link == "http://")
         $link = null;
-    if(strpos($link, "http://") !== 0)
+    elseif(strpos($link, "http://") !== 0)
         $link = "http://" . $link;
 
     $_SESSION['postername'] = $name;
@@ -123,6 +134,12 @@ function process_reply_form($tid)
 
     if(empty($name))
         $name = ANONYMOUS_NAME;
+
+    $ip = $_SERVER['REMOTE_ADDR'];
+
+    // make sure we get the client's IP if we're using mod_rewrite to proxy the request
+    if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+        $ip .= "::".$_SERVER['HTTP_X_FORWARDED_FOR'];
 
     $data = array
     (
@@ -133,15 +150,22 @@ function process_reply_form($tid)
         "timestamp" => $timestamp,
         "link" => $link,
         "text" => $text,
-        "extra" => "ip: " . $_SERVER['REMOTE_ADDR'] . "\nuseragent: " . $_SERVER['HTTP_USER_AGENT'] . "\n",
+        "extra" => "ip: $ip\nuseragent: " . $_SERVER['HTTP_USER_AGENT'] . "\n",
     );
-
-    if(empty($text))
-        return skinvoodoo("error", "error", array("message" => "Your comment cannot be empty.<br />Please go back and fix this."));
 
     if($_POST['preview'] == "preview" || $text_filter_msg)
     {
-            return show_reply_form($data['tid'], $data, $_POST['text'], $text_filter_msg);
+        return show_reply_form($data['tid'], $data, $_POST['text'], $text_filter_msg);
+    }
+
+    if(IMAGEVERIFY && md5(strtolower($_POST['imageverify'])) != $_POST['ivid'])
+    {
+        return show_reply_form($data['tid'], $data, $_POST['text'], "You didn't correctly type the letters in the image.<br />Try again.");
+    }
+
+    if(empty($text))
+    {
+        return show_reply_form($data['tid'], $data, $_POST['text'], "Your comment cannot be empty.<br />Please go back and fix this.");
     }
 
     $db->insert("replies", $data);
