@@ -86,7 +86,7 @@ function check_post()
         $_POST['title']
     );
 
-    if(!preg_match('/^(0?[1-9]|1[012])\/(0[1-9]|[12][0-9]|3[01])\/(19|20)[0-9]{2}$/', $_POST['birthday']))
+    if($_POST['birthday'] != "" && !preg_match('/^(0?[1-9]|1[012])\/(0[1-9]|[12][0-9]|3[01])\/(19|20)[0-9]{2}$/', $_POST['birthday']))
     {
         $GLOBALS['NOTIFY'] = "Invalid Birthday. Format is mm/dd/yyyy";
         var_dump($_POST['birthday']);
