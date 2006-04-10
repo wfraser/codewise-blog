@@ -39,10 +39,10 @@ function process_subscribe_form()
 
     $data = array("blogid" => BLOGID, "email" => $_POST['email'], "password" => uuidgen());
 
-    //$db->insert("subscriptions", $data);
+    $db->insert("subscriptions", $data);
 
-    //if(EMAIL)
-    //    mail( ADMIN_EMAIL, "New Blog Subscriber", $_POST['email'] . " has subscribed to your blog.", "From: " . BASE_DOMAIN . " <nobody@" . BASE_DOMAIN . ">");
+    if(EMAIL)
+        mail( ADMIN_EMAIL, "New Blog Subscriber", $_POST['email'] . " has subscribed to your blog.", "From: " . BASE_DOMAIN . " <nobody@" . BASE_DOMAIN . ">");
 
     return skinvoodoo("error", "notify", array("message" => "You have been successfully subscribed to " . BLOG_TITLE . ".<br />"
         . "You will be notified of future updates at the provided email address.<br />"
