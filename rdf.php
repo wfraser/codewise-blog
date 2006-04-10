@@ -34,9 +34,15 @@ define("NO_ACTION", TRUE);
 
 require("cwbmulti.php");
 
-$first_post = $db->fetch_var($db->issue_query("SELECT timestamp FROM topics WHERE blogid = '".BLOGID."' ORDER by TIMESTAMP ASC LIMIT 1"));
-$latest_post =  $db->fetch_var($db->issue_query("SELECT timestamp FROM topics WHERE blogid = '".BLOGID."' ORDER by TIMESTAMP DESC LIMIT 1"));
-$copyright_years = date("Y", $first_post) . "-" . date("Y", $latest_post);
+// prevent a SQL error if there are no topics
+if($db->num_rows[$db->issue_query("SELECT tid FROM topics WHERE blogid = '".BLOGID."'")] > 0)
+{
+    $first_post = $db->fetch_var($db->issue_query("SELECT timestamp FROM topics WHERE blogid = '".BLOGID."' ORDER by TIMESTAMP ASC LIMIT 1"));
+    $latest_post =  $db->fetch_var($db->issue_query("SELECT timestamp FROM topics WHERE blogid = '".BLOGID."' ORDER by TIMESTAMP DESC LIMIT 1"));
+    $copyright_years = date("Y", $first_post) . "-" . date("Y", $latest_post);
+} else {
+    $copyright_years = date("Y");
+}
 
 ?>
 
@@ -64,6 +70,7 @@ if(isset($_GET['all_one_page']))
     $limit = "";
 else
     $limit = "LIMIT 10"; // rdf spec says it must be 10
+
 $q = $db->issue_query("SELECT tid,title,text,timestamp FROM topics WHERE blogid = '" . BLOGID . "' ORDER BY timestamp DESC $limit");
 $data = $db->fetch_all($q);
 
