@@ -30,7 +30,7 @@ function process_subscribe_form()
 {
     global $db;
 
-    if($_POST['email'] == "")
+    if($_POST['email'] == "" || !preg_match("/[a-zA-Z0-9._+-]+@[a-zA-Z0-9._-]+/", $_POST['email']))
         return skinvoodoo("error", "error", array("message" => "You must enter a valid email address."));
 
     $q = $db->issue_query("SELECT email FROM subscriptions WHERE email = " . $db->prepare_value($_POST['email']) . " AND blogid = '" . BLOGID . "'");
@@ -39,10 +39,10 @@ function process_subscribe_form()
 
     $data = array("blogid" => BLOGID, "email" => $_POST['email'], "password" => uuidgen());
 
-    $db->insert("subscriptions", $data);
+    //$db->insert("subscriptions", $data);
 
-    if(EMAIL)
-        mail( ADMIN_EMAIL, "New Blog Subscriber", $_POST['email'] . " has subscribed to your blog.", "From: " . BASE_DOMAIN . " <nobody@" . BASE_DOMAIN . ">");
+    //if(EMAIL)
+    //    mail( ADMIN_EMAIL, "New Blog Subscriber", $_POST['email'] . " has subscribed to your blog.", "From: " . BASE_DOMAIN . " <nobody@" . BASE_DOMAIN . ">");
 
     return skinvoodoo("error", "notify", array("message" => "You have been successfully subscribed to " . BLOG_TITLE . ".<br />"
         . "You will be notified of future updates at the provided email address.<br />"
