@@ -1,3 +1,4 @@
+<?php die("<html><body>The installer has been disabled.</body></html>"); ?>
 <?php
 
 /*
@@ -222,31 +223,7 @@ The following tables will be erased: <?=$table_list?><br />
             $db->issue_query($statement);
         }
 
-$desc = <<<EOF
-CodewiseBlog Default Skin
-for CodewiseBlog Multi-User
-
-by Bill R. Fraser <bill.fraser@gmail.com>
-Copyright (c) 2005 Codewise.org
-
----
-
-This skin is part of CodewiseBlog
-
-CodewiseBlog is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
-
-CodewiseBlog is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with CodewiseBlog; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-EOF;
+	$desc = file_get_contents(FSPATH . "/skin_blueEye/DESCRIPTION");
 
         $db->insert("skins", array("skinid" => "00000000000000000000000000000000", "blogid" => 1, "name" => "CodewiseBlog Default Skin", "description" => $desc));
 
@@ -257,6 +234,8 @@ EOF;
             $cont = file_get_contents(FSPATH."skin_blueEye/$file");
             if(preg_match("/\\.css$/", $file)) {
                 $section = "css";
+	    } elseif($file == "DESCRIPTION") {
+	    	continue;
             } else {
                 $section = preg_replace("/\\.html$/", "", $file);
             }
@@ -663,7 +642,8 @@ Go back and change your username to something else.
             "password"   => md5($_POST['password']),
             "joindate"   => 0,
             "custom_url" => NULL,
-            "blogid"     => "00000000000000000000000000000000",
+            "skinid"     => "00000000000000000000000000000000",
+	    "status"     => "closed",
         );
 
         $user_blog = array(
@@ -681,7 +661,8 @@ Go back and change your username to something else.
             "password"   => md5($_POST['password']),
             "joindate"   => time(),
             "custom_url" => NULL,
-            "blogid"     => "00000000000000000000000000000000",
+            "skinid"     => "00000000000000000000000000000000",
+	    "status"     => "active",
         );
 
         $db->insert("blogs", $root_blog);
