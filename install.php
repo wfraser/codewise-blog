@@ -1,4 +1,3 @@
-<?php die("<html><body>The installer has been disabled.</body></html>"); ?>
 <?php
 
 /*
