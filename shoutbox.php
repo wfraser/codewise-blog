@@ -97,7 +97,7 @@ function shoutbox_process()
     }
 
     if(strlen($text) > 255)
-        return skinvoodoo("error", "error", "Text is too long. Please <a href=\"javascript:history.back()\">go back</a> and fix it.");
+        return skinvoodoo("error", "error", array("message" => "Text is too long. Please <a href=\"javascript:history.back()\">go back</a> and fix it."));
 
     if($text == "")
         return skinvoodoo("error", "error", array("message" => "Text cannot be empty.</div>Please <a href=\"javascript:history.back()\">go back</a> and fix it."));
