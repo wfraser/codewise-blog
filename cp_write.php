@@ -108,7 +108,7 @@ if(empty($_POST) || isset($_POST['resize']))
                     $message =
 "Hello,
 
-This is the " . html_entity_decode($BLOGINFO['title']) . " subscription service letting you know that there has been a new blog entry posted, entitled \"" . $_POST['title'] . "
+This is the " . html_entity_decode($BLOGINFO['title']) . " subscription service letting you know that there has been a new blog entry posted, entitled \"" . $_POST['title'] . "\"
 You can view it here: " . INDEX_URL . "?tid=$tid
 
 Thanks for reading!
