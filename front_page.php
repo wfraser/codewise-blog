@@ -190,9 +190,9 @@ foreach($data as $blogname => $blog)
                 <img src="<?php echo $blog['photo']; ?>" alt="<?php echo $blog['name']; ?>" height="75" />
             </td>
             <td style="padding: 5px">
-                <a href="<?php echo $url; ?>"><b><?php echo $blog['title']; ?></b></a> by <?php echo $name; ?>
+                <a href="<?php echo $url . "?tid=" . $topic['tid']; ?>"><b><?php echo $topic['title']; ?></b></a> :: <?php echo $num_replies; ?> comments
                 <br />
-                <a href="<?php echo $url . "?tid=" . $topic['tid']; ?>"><?php echo $topic['title']; ?></a> :: <?php echo $num_replies; ?> comments
+                <a href="<?php echo $url; ?>"><?php echo $blog['title']; ?></a> by <?php echo $name; ?>
                 <br />
                 <?php echo date(DATE_FORMAT, $topic['timestamp']); ?>
             </td>
