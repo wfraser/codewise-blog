@@ -164,7 +164,7 @@ if($BLOGINFO['birthday'])
     $BLOGINFO['birthday_month'] = $month;
     $BLOGINFO['birthday_day'] = $day;
     $BLOGINFO['birthday_year'] = $year;
-    $BLOGINFO['age'] = ($month >= date("m") && $day > date("d")) ? date("Y") - $year : date("Y") - $year - 1;
+    $BLOGINFO['age'] = ($month >= date("m") && $day > date("d")) ? date("Y") - $year - 1 : date("Y") - $year;
 } else {
     $BLOGINFO['age'] = $BLOGINFO['birthday_month'] = $BLOGINFO['birthday_day'] = $BLOGINFO['birthday_year'] = "";
 }
