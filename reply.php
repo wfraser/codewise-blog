@@ -100,6 +100,7 @@ function show_reply_form($tid, $preview_data = "", $text = "", $text_filter_msg 
         "text_filter_msg" => $text_filter_msg === "" ? "" : $text_filter_msg,
         "imageverify" => HTTP.BASE_DOMAIN.INSTALLED_PATH."imageverify.php?id=$ivid",
         "ivid" => $ivid,
+        "terms" => (file_exists(FSPATH."/TERMS") ? HTTP.BASE_DOMAIN.INSTALLED_PATH."TERMS" : NULL),
     ));
 
 } // end of show_reply_form()
