@@ -250,7 +250,7 @@ function mail_db_error($error)
 <html>
     <head>
         <title>Database Error</title>
-        <link rel="stylesheet" href="http://www.codewise.org/blueEye.css" />
+        <link rel="stylesheet" href="skin_blueEye/blueEye.css" />
     </head>
     <body>
 <?php
