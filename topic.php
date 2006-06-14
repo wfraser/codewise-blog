@@ -35,7 +35,7 @@ function display_topic($topic, $topic_page = FALSE)
     $date = date(DATE_FORMAT, $topic['timestamp']);
     $text = output_topic_text($topic['text']);
 
-    $q = $db->issue_query("SELECT pid FROM replies WHERE tid = '$tid'");
+    $q = $db->issue_query("SELECT pid FROM replies WHERE tid = '$tid' AND blogid = '".BLOGID."'");
     $num_replies = $db->num_rows[$q];
 
     $out = "";
