@@ -68,9 +68,10 @@ function skinvoodoo($skin_section, $subcall = "", $args = array())
         $SKIN_CACHE[$skin_section] = $skin;
     }
 
+    // DEBUG
     //$skin = file_get_contents(FSPATH . "/skin_blueEye/$skin_section.html");
 
-    preg_match_all("/<\\!-- :cwb_start: ([^\s]+) -->(.*)<\\!-- :cwb_end: \\1 -->/Us", $skin, $matches, PREG_SET_ORDER);
+    preg_match_all("/<\\!-- :cwb_start: ([^\s]+) -->\n*?(.*)<\\!-- :cwb_end: \\1 -->\n*?/Us", $skin, $matches, PREG_SET_ORDER);
 
     if($subcall == "")
     {
@@ -120,9 +121,9 @@ function voodoo($skin, $args = array(), $skin_section = "", $expand = TRUE)
     */
 
     $ifcapture = "<\\!-- #cwb_if# (?P<condition>(?:.(?!-->))+) -->";
-    $if = "<\\!-- #cwb_if# ((?:.(?!--))+) -->";
-    $else = "<\\!-- #cwb_else# -->";
-    $end = "<\\!-- #cwb_endif# -->";
+    $if = "<\\!-- #cwb_if# ((?:.(?!--))+) -->\n*";
+    $else = "<\\!-- #cwb_else# -->\n*";
+    $end = "<\\!-- #cwb_endif# -->\n*";
     $pattern = "/$ifcapture(?P<true>(?>.(?!$if))*?)($else(?P<false>(?>.(?!$if))*?))?$end/s";
 
     /*
@@ -202,6 +203,8 @@ function voodoo($skin, $args = array(), $skin_section = "", $expand = TRUE)
             "site_title" => "SITE_TITLE",
             "site_motto" => "SITE_MOTTO",
             "imageverify" => "IMAGEVERIFY",
+            "logged_in" => "LOGGED_IN",
+            "admin" => "ADMIN",
         );
 
         $new = "";
