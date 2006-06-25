@@ -1,6 +1,6 @@
 <?php
 
-require("settings2.php");
+require("settings.php");
 require("l1_mysql.php");
 
 ?>
