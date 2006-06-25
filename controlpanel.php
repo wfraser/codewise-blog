@@ -39,13 +39,22 @@ function cplogin()
     if($_SESSION['controlpanel'] == 1 || md5($_POST['password']) == $root_hash)
     {
         $_SESSION['controlpanel'] = 1;
+        define('LOGGED_IN', TRUE);
+        define('ADMIN', TRUE);
         return "You are now logged in as Admin. Beware that changes you make are potentially dangerous!<br />"
-            . "<a href=\"" . INDEX_URL . "?controlpanel\">Continue to the Control Panel</a>";
+            . "<a href=\"" . INDEX_URL . "?controlpanel\">Continue to the Control Panel</a><br />"
+            . "<a href=\"" . INDEX_URL . "\">Back to your blog</a>";
     } elseif($_SESSION['controlpanel'] == BLOGID || md5($_POST['password']) == $hash) {
         $_SESSION['controlpanel'] = BLOGID;
-        return "You are now logged in.<br /><a href=\"" . INDEX_URL . "?controlpanel\">Continue to the Control Panel</a>";
+        define('LOGGED_IN', TRUE);
+        define('ADMIN', FALSE);
+        return "You are now logged in.<br />"
+            . "<a href=\"" . INDEX_URL . "?controlpanel\">Continue to the Control Panel</a><br />"
+            . "<a href=\"" . INDEX_URL . "\">Back to your blog</a>";
     } else {
         $GLOBALS['NOTIFY'] = "Incorrect password.";
+        define('LOGGED_IN', FALSE);
+        define('ADMIN', FALSE);
         return main_page(1);
     }
 }
@@ -75,9 +84,12 @@ function controlpanel()
         require("cp_skin_multi.php");
     } elseif(isset($_GET['controlpanel:adduser'])) {
         require("cp_adduser.php");
+    } elseif(isset($_GET['controlpanel:manage'])) {
+        require("cp_manage.php");
     } else {
         $current = "home";
-        $body = "<div align=\"center\">Welcome to the CodewiseBlog control panel.<br />"
+        //$body = "<div align=\"center\">Welcome to the CodewiseBlog control panel.<br />"
+        $body = skinvoodoo("controlpanel", "welcome", array())
           . skinvoodoo("controlpanel", "versionfooter", array()) . "</div>";
     }
 
@@ -92,6 +104,7 @@ function controlpanel()
         "url_userinfo" => INDEX_URL . "?controlpanel:userinfo",
         "url_skin"     => INDEX_URL . "?controlpanel:skin",
         "url_adduser"  => INDEX_URL . "?controlpanel:adduser",
+        "url_manage"   => INDEX_URL . "?controlpanel:manage",
     );
 
     $out = skinvoodoo("controlpanel", "", $args);
