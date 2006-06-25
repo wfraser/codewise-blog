@@ -13,7 +13,7 @@ require("l1_mysql.php");
 
 if(!isset($_GET['skin_dir']))
     die("Set ?skin_dir=something to import the skin files in that directory into the database.</body></html>");
-elseif(!is_dir(FSPATH . $_GET['skin_dir']))
+elseif(!is_dir(FSPATH . "/" . $_GET['skin_dir']))
     die("No such directory as the one described in ?skin_dir</body></html>");
 
 if(!isset($_GET['skinid']))
@@ -25,7 +25,7 @@ if(!isset($_GET['skinid']))
 
 $skinid = str_pad($_GET['skinid'], 32, "0", STR_PAD_LEFT);
 
-$description = file(FSPATH . $_GET['skin_dir'] . "/DESCRIPTION");
+$description = file(FSPATH . "/" . $_GET['skin_dir'] . "/DESCRIPTION");
 $name = rtrim($description[0]);
 $description = implode("", $description);
 
@@ -47,12 +47,12 @@ array_shift($cols); // remove the 'blogid' one
 array_shift($cols); // remove the 'name' one
 array_shift($cols); // remove the 'description' one
 
-$dir = opendir(FSPATH . $_GET['skin_dir']);
+$dir = opendir(FSPATH . '/' . $_GET['skin_dir']);
 while($file = readdir($dir))
 {
     if(substr($file, 0, 1) == "." || substr($file, -1, 1) == "~" || is_dir(FSPATH . $_GET['skin_dir'] . "/" . $file))
         continue;
-    $cont = file_get_contents(FSPATH . $_GET['skin_dir'] . "/" . $file);
+    $cont = file_get_contents(FSPATH . '/' . $_GET['skin_dir'] . "/" . $file);
     if(preg_match("/\\.css$/", $file))
     {
         $section = "css";
