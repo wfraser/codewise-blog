@@ -28,6 +28,12 @@
 
 $current = "edit";
 
+// hack to allow direct link to editing a topic
+if(isset($_GET['tid']))
+{
+    $_POST['tid'] = $_GET['tid'];
+}
+
 if(empty($_POST))
 {
     $q = $db->issue_query("SELECT tid,title,timestamp FROM topics WHERE blogid = '" . BLOGID . "' ORDER BY tid DESC");
