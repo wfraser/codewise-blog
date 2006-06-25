@@ -1,9 +1,19 @@
 <tr>
 <td class="sidebar">
+<!-- #cwb_if# %{logged_in} -->
+    <!-- #cwb_if# %{admin} -->
+        <b>You are logged in as admin.</b><br />
+        <a href="%{multiuser_root}?controlpanel">Go to the Admin Control Panel</a><br />
+    <!-- #cwb_else# -->
+        <b>You are logged in.</b><br />
+    <!-- #cwb_endif# -->
+    <a href="?controlpanel">Go to the Control Panel</a>
+<!-- #cwb_else# -->
     <b>User Login:</b><br />
     <form action="${url}" method="post">
     <small>password:</small> <input type="password" name="password" style="font-size:smaller" size="10" /><br />
     <input type="submit" value="enter" style="font-size:smaller" />
     </form>
+<!-- #cwb_endif# -->
 </td>
 </tr>
