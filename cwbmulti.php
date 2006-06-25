@@ -75,6 +75,7 @@ require("subscribe.php");
 require("controlpanel.php");
 require("file_put_contents.php"); // from the PHP_Compat project
 require("imageverify.php");
+require("antispam.php");
 
 require("l1_mysql.php");
 $db = new L1_MySQL(SQL_HOST, SQL_USER, SQL_PASS);
@@ -182,6 +183,23 @@ $BLOGINFO['version'] = CWBVERSION;
 $BLOGINFO['anonymous_name'] = ANONYMOUS_NAME;
 
 $BLOGINFO['multiuser_root'] = HTTP . DEFAULT_SUBDOMAIN . BASE_DOMAIN . INSTALLED_PATH;
+
+if(isset($_GET['login']))
+{
+    // don't define them yet - we'll define them in controlpanel.php:cplogin()
+} elseif(isset($_GET['delsession'])) {
+    define('LOGGED_IN', FALSE);
+    define('ADMIN', 'FALSE');
+} elseif($_SESSION['controlpanel'] === 1) {
+    define('LOGGED_IN', TRUE);
+    define('ADMIN', TRUE);
+} elseif($_SESSION['controlpanel'] == BLOGID) {
+    define('LOGGED_IN', TRUE);
+    define('ADMIN', FALSE);
+} else {
+    define('LOGGED_IN', FALSE);
+    define('ADMIN', FALSE);
+}
 
 if(!defined("NO_ACTION"))
 {
