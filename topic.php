@@ -40,33 +40,23 @@ function display_topic($topic, $topic_page = FALSE)
 
     $out = "";
 
-    $out .= skinvoodoo("topic", "topicheader", array(
+    $args = array(
+        "tid" => $tid,
         "date" => $date,
         "title" => $title,
         "text" => $text,
         "url_showtopic" => INDEX_URL . "?tid=$tid",
         "url_showcomments" => INDEX_URL . "?tid=$tid#comments",
         "url_addcomment" => INDEX_URL . "?reply=$tid#commentform",
+        "url_edittopic" => INDEX_URL . "?controlpanel:edit&amp;tid=$tid",
         "num_comments" => ($topic_page ? NULL : $num_replies)
-    ));
+    );
 
-    $out .= skinvoodoo("topic", "", array(
-        "date" => $date,
-        "title" => $title,
-        "text" => $text,
-        "url_showcomments" => INDEX_URL . "?tid=$tid#comments",
-        "url_addcomment" => INDEX_URL . "?reply=$tid#commentform",
-        "num_comments" => ($topic_page ? NULL : $num_replies)
-    ));
+    $out .= skinvoodoo("topic", "topicheader", $args);
 
-    $out .= skinvoodoo("topic", "topicfooter", array(
-        "date" => $date,
-        "title" => $title,
-        "text" => $text,
-        "url_showcomments" => INDEX_URL . "?tid=$tid#comments",
-        "url_addcomment" => INDEX_URL . "?reply=$tid#commentform",
-        "num_comments" => ($topic_page ? NULL : $num_replies)
-    ));
+    $out .= skinvoodoo("topic", "", $args);
+
+    $out .= skinvoodoo("topic", "topicfooter", $args);
 
     return $out;
 
@@ -99,6 +89,7 @@ function display_post($post, $highlight = FALSE)
         "date" => date(DATE_FORMAT, $timestamp),
         "url_post" => INDEX_URL . "?tid=$tid&amp;pid=$pid#pid$pid",
         "url_reply" => INDEX_URL . "?reply=$tid&amp;ref=$pid#commentform",
+        "url_delreply" => INDEX_URL . "?controlpanel:manage&amp;del=reply:$pid",
         "text" => textprocess($text),
         "special_anchor" => $special_anchor,
     ));
