@@ -2,6 +2,9 @@
 <div class="topicheader">
     Posted ${date}<br />
     <span class="topictitle"><a href="${url_showtopic}">${title}</a></span>
+<!-- #cwb_if# %{logged_in} -->
+    <a href="${url_edittopic}">(edit it)</a>
+<!-- #cwb_endif# -->
 </div>
 <!-- :cwb_end: topicheader -->
 <div class="topicbody">

@@ -10,20 +10,27 @@
     <tr><td></td><td><input type="submit" value="Shout!" /></td></tr>
 </table>
 </form>
+
 <!-- :cwb_start: row_even -->
 <tr><td style="background:#eee">
-    <b><!-- #cwb_if# ${link} --><a href="${link}">${name}</a><!-- #cwb_else# --><span style="color:black">${name}</span><!-- #cwb_endif# --></b>:<br />
-    <span style="color:black">${text}</span><br />
-    <span style="color:#AAA">${date}</span>
+<!-- *cwb_call* row link="${link}" name="${name}" text="${text}" date="${date}" url_delshout="${url_delshout}" -->
 </td></tr>
 <!-- :cwb_end: row_even -->
+
 <!-- :cwb_start: row_odd -->
 <tr><td style="background:#fff">
-    <b><!-- #cwb_if# ${link} --><a href="${link}">${name}</a><!-- #cwb_else# --><span style="color:black">${name}</span><!-- #cwb_endif# --></b>:<br />
-    <span style="color:black">${text}</span><br />
-    <span style="color:#AAA">${date}</span>
+<!-- *cwb_call* row link="${link}" name="${name}" text="${text}" date="${date}" url_delshout="${url_delshout}" -->
 </td></tr>
 <!-- :cwb_end: row_odd -->
+
+<!-- :cwb_start: row -->
+    <b><!-- #cwb_if# ${link} --><a href="${link}">${name}</a><!-- #cwb_else# --><span style="color:black">${name}</span><!-- #cwb_endif# --></b>:
+<!-- #cwb_if# %{logged_in} --><a href="${url_delshout}">(delete)</a><!-- #cwb_endif# -->
+    <br />
+    <span style="color:black">${text}</span><br />
+    <span style="color:#AAA">${date}</span>
+<!-- :cwb_end: row -->
+
 <!-- :cwb_start: nothing -->
 <tr><td><b>nothing to show</b></td></tr>
 <!-- :cwb_end: nothing -->

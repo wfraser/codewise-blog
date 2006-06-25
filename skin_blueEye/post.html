@@ -7,6 +7,9 @@
     </span>${date}
     <a href="${url_post}">No.${pid}</a>
     <a href="${url_reply}">(reply)</a>
+<!-- #cwb_if# %{logged_in} -->
+    <a href="${url_delreply}">(delete)</a>
+<!-- #cwb_endif# -->
 </div>
 <div class="postbody">
 ${text}
