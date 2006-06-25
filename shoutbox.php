@@ -42,7 +42,13 @@ function shoutbox()
         if($i % 2)  $sect = "row_odd";
         else        $sect = "row_even";
 
-        $contents .= skinvoodoo("shoutbox", $sect, array("link" => $row['link'], "name" => $row['name'], "text" => $text, "date" => date(DATE_FORMAT, $row['timestamp'])));
+        $contents .= skinvoodoo("shoutbox", $sect, array(
+            "link" => $row['link'],
+            "name" => $row['name'],
+            "text" => $text,
+            "date" => date(DATE_FORMAT, $row['timestamp']),
+            "url_delshout" => INDEX_URL . "?controlpanel:manage&del=shout:{$row['timestamp']}",
+        ));
     }
 
     if($db->num_rows[$q] == 0)
@@ -111,7 +117,6 @@ function shoutbox_process()
     if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
         $ip .= "::".$_SERVER['HTTP_X_FORWARDED_FOR'];
 
-
     $data = array
     (
         "blogid" => BLOGID,
@@ -121,6 +126,9 @@ function shoutbox_process()
         "text" => $text,
         "extra" => "ip: $ip\nuseragent: {$_SERVER['HTTP_USER_AGENT']}\n",
     );
+
+    if(($out = antispam_shoutbox($data, $ip)) !== NULL)
+        return $out;
 
     $db->insert("shoutbox", $data);
 
