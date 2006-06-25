@@ -1,0 +1,13 @@
+<!-- :cwb_start: confirm -->
+Are you <b>ABSOLUTELY SURE</b> you want to delete this ${type} post?<br />
+<form action="${posturl}" method="post">
+<input type="submit" name="REALLY_FREAKING_SURE" value="YES, DELETE IT" />
+<input type="hidden" name="type" value="${type}" />
+<input type="hidden" name="id" value="${id}" />
+</form>
+<!-- :cwb_end: confirm -->
+
+<!-- :cwb_start: success -->
+Okay, deleted.
+<a href="%{index_url}">Return to your blog</a>
+<!-- :cwb_end: success -->
