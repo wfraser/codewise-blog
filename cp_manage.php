@@ -39,17 +39,31 @@ if(isset($_POST['REALLY_FREAKING_SURE']))
     switch($_POST['type'])
     {
 case "reply":
-        $q = $db->issue_query("DELETE FROM replies WHERE pid = ".$db->prepare_value($_POST['id']));
+        $q_check = $db->issue_query("SELECT blogid FROM replies WHERE pid = ".$db->prepare_value($_POST['id']));
+        if($db->fetch_var($q_check) !== BLOGID)
+        {
+            $body = skinvoodoo("error", "error", array('message' => "That post isn't yours to delete."));
+            return;
+        }
+        
+        $q_del = $db->issue_query("DELETE FROM replies WHERE pid = ".$db->prepare_value($_POST['id']));
         break;
 case "shout":
-        $q = $db->issue_query("DELETE FROM shoutbox WHERE timestamp = ".$db->prepare_value($_POST['id']));
+        $q_check = $db->issue_query("SELECT blogid FROM shoutbox WHERE timestamp = ".$db->prepare_value($_POST['id']));
+        if($db->fetch_var($q_check) !== BLOGID)
+        {
+            $body = skinvoodoo("error", "error", array('message' => "That shout is not yours to delete."));
+            return;
+        }
+
+        $q_del = $db->issue_query("DELETE FROM shoutbox WHERE timestamp = ".$db->prepare_value($_POST['id']));
         break;
 default:
         $body = skinvoodoo('error', 'error', array('message' => 'Invalid post type.'));
         return;
     }
 
-    if($db->num_rows[$q] != 1)
+    if($db->num_rows[$q_del] != 1)
     {
         $body = skinvoodoo('error', 'error', array('message' => 'Delete failed... Please contact and administrator'));
         return;
