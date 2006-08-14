@@ -74,7 +74,7 @@ function skinvoodoo($skin_section, $subcall = "", $args = array())
     }
 
     // DEBUG
-    //$skin = file_get_contents(FSPATH . "/skin_blueEye/$skin_section.html");
+    $skin = file_get_contents(FSPATH . "/skin_blueEye/$skin_section.html");
 
     preg_match_all("/<\\!-- :cwb_start: ([^\s]+) -->\n*?(.*)<\\!-- :cwb_end: \\1 -->\n*?/Us", $skin, $matches, PREG_SET_ORDER);
 
@@ -205,13 +205,12 @@ function voodoo($skin, $args = array(), $skin_section = "", $expand = TRUE)
         if(strpos($match[2], " @all") === 0)
         {
             $call_args = $args;
-            $match[2] = preg_replace("/^ @all/", "", $match[2]);
+            $call_arg_list = preg_replace("/^ @all/", "", $match[2]);
         } else {
             $call_args = array();
         }
 
         preg_match_all("/ ([a-zA-Z0-9-_]+)=\"([^\"]*)\"/s", $call_arg_list, $arg_matches, PREG_SET_ORDER);
-        $call_args = array();
         foreach($arg_matches as $match)
             $call_args[$match[1]] = voodoo($match[2], $args, $skin_section);
 
