@@ -74,7 +74,7 @@ function skinvoodoo($skin_section, $subcall = "", $args = array())
     }
 
     // DEBUG
-    $skin = file_get_contents(FSPATH . "/skin_blueEye/$skin_section.html");
+    //$skin = file_get_contents(FSPATH . "/skin_blueEye/$skin_section.html");
 
     preg_match_all("/<\\!-- :cwb_start: ([^\s]+) -->\n*?(.*)<\\!-- :cwb_end: \\1 -->\n*?/Us", $skin, $matches, PREG_SET_ORDER);
 
