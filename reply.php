@@ -111,7 +111,7 @@ function process_reply_form($tid)
 
     $name = strip_tags($_POST['name']);
     $tripcode = $_POST['tripcode'];
-    $link = htmlentities(strip_tags($_POST['link']));
+    $link = urlencode(strip_tags($_POST['link']));
     $text_filter = in_text_filter($_POST['text']);
     $timestamp = time();
 
