@@ -26,11 +26,16 @@
 ** Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+if(file_exists(FSPATH."/TERMS"))
+    $terms = ", subject to <a href=\"http://".BASE_DOMAIN.INSTALLED_PATH."TERMS\">terms</a>.";
+else
+    $terms = "";
+
 define("CWB_COPYRIGHT",
 "<a href=\"http://gna.org/projects/codewiseblog\">CodewiseBlog</a> &copy; 2005-2006 "
 . "<a href=\"http://www.codewise.org/~netmanw00t/\">Bill R. Fraser</a> / "
 . "<a href=\"http://www.codewise.org/\">Codewise.org</a>.<br />"
-. "All textual content is the property of its author.<br />"
+. "All textual content is the property of its author$terms.<br />"
 . "CodewiseBlog is free software under the <a href=\"COPYING\">GNU General Public License</a>"
 );
 
@@ -78,12 +83,18 @@ function skinvoodoo($skin_section, $subcall = "", $args = array())
         foreach($matches as $match)
             $skin = str_replace($match[0], "", $skin);
     } else {
+        $found = FALSE;
         foreach($matches as $match)
+        {
             if($match[1] == $subcall)
             {
+                $found = TRUE;
                 $skin = $match[2];
                 break;
             }
+        }
+        if(!$found)
+            return "[[[SKIN ERROR: NO SUCH SECTION '$skin_section::$subcall']]]";
     }
 
     return voodoo($skin, $args, $skin_section);
@@ -97,10 +108,11 @@ function skinvoodoo($skin_section, $subcall = "", $args = array())
 ** skinvoodoo().
 **
 ** Order of processing is as follows:
-** 1) If/Else/End (and variables in the If tag's condition)
-** 2) Local variables (${foo})
-** 3) Global variables (%{foo})
-** 4) Local subsection calls
+** 1) If/Else/End (and variables in the If tag's condition - see note below)
+** 2) Local subsection calls (and variables in the environment assignment - see
+**      note below)
+** 3) Local variables (${foo})
+** 4) Global variables (%{foo})
 **
 ** $skin is the Voodoo template code, sans subsection tags.
 ** $args is an associative array containing the names and values of all local
@@ -111,10 +123,28 @@ function skinvoodoo($skin_section, $subcall = "", $args = array())
 **   to FALSE to return global variables as their PHP code equivalents (for use
 **   when evaluating the value of If tag conditions).
 **
+** Note:
+**   Global and local variables may be used as the condition in an If tag and in
+**   the variable assignments of call tags. If used here, they will be evaluated
+**   as their respective parent tags are evaluated, and not at later stages like
+**   if they were in the normal skin body.
+**
 */
 function voodoo($skin, $args = array(), $skin_section = "", $expand = TRUE)
 {
     global $BLOGINFO;
+
+    /*
+    ** Comments
+    **
+    ** e.g. <!-- !cwb! comment text here !cwb! -->
+    */
+
+    preg_match_all("/<\\!-- \\!cwb\\! .* \\!cwb\\! -->\n?/", $skin, $matches, PREG_SET_ORDER);
+    foreach($matches as $match)
+    {
+        $skin = str_replace($match[0], "", $skin);
+    }
 
     /*
     ** <!-- #cwb_(if|else|endif)# --> Tags
@@ -156,7 +186,43 @@ function voodoo($skin, $args = array(), $skin_section = "", $expand = TRUE)
     } while(count($matches) > 0);
 
     /*
+    ** Local Calls
+    **
+    ** e,g, <!-- *cwb_call* methodname @all var1="value1" var2="value2" -->
+    **
+    ** If the first variable listed is "@all", the current section's environment
+    ** is copied to the new call and subsequent variables listed override this
+    ** environment.
+    */
+
+    preg_match_all("/<\\!-- \\*cwb_call\\* ([a-zA-Z0-9-_]+?)(( @all| [a-zA-Z0-9-_]+=\"[^\"]*?\")*?) -->/Us", $skin, $matches, PREG_SET_ORDER);
+    foreach($matches as $match)
+    {
+        $old = $match[0];
+        $call = $match[1];
+        $call_arg_list = $match[2];
+
+        if(strpos($match[2], " @all") === 0)
+        {
+            $call_args = $args;
+            $match[2] = preg_replace("/^ @all/", "", $match[2]);
+        } else {
+            $call_args = array();
+        }
+
+        preg_match_all("/ ([a-zA-Z0-9-_]+)=\"([^\"]*)\"/s", $call_arg_list, $arg_matches, PREG_SET_ORDER);
+        $call_args = array();
+        foreach($arg_matches as $match)
+            $call_args[$match[1]] = voodoo($match[2], $args, $skin_section);
+
+        $new = skinvoodoo($skin_section, $call, $call_args);
+        $skin = str_replace($old, $new, $skin);
+    }
+
+    /*
     ** Local Variables
+    **
+    ** e.g. ${variable}
     */
 
     preg_match_all('/\${([a-zA-Z0-9-_]+)}/', $skin, $matches, PREG_SET_ORDER);
@@ -177,6 +243,8 @@ function voodoo($skin, $args = array(), $skin_section = "", $expand = TRUE)
 
     /*
     ** Global Variables & Calls
+    **
+    ** e.g. %{variable}
     */
 
     preg_match_all("/%{([a-zA-Z0-9-_]+)}/", $skin, $matches, PREG_SET_ORDER);
@@ -220,26 +288,6 @@ function voodoo($skin, $args = array(), $skin_section = "", $expand = TRUE)
             else
                 $new = "\$BLOGINFO['$name']";
         }
-        $skin = str_replace($old, $new, $skin);
-    }
-
-    /*
-    ** Local Calls
-    */
-
-    preg_match_all("/<\\!-- \\*cwb_call\\* ([a-zA-Z0-9-_]+?)(( [a-zA-Z0-9-_]+=\"[^\"]*?\")*?) -->/Us", $skin, $matches, PREG_SET_ORDER);
-    foreach($matches as $match)
-    {
-        $old = $match[0];
-        $call = $match[1];
-        $call_arg_list = $match[2];
-
-        preg_match_all("/ ([a-zA-Z0-9-_]+)=\"([^\"]*)\"/s", $call_arg_list, $arg_matches, PREG_SET_ORDER);
-        $call_args = array();
-        foreach($arg_matches as $match)
-            $call_args[$match[1]] = $match[2];
-
-        $new = skinvoodoo($skin_section, $call, $call_args);
         $skin = str_replace($old, $new, $skin);
     }
 
