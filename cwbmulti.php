@@ -117,6 +117,9 @@ if($_SERVER['HTTPS'] == "on")
 
 if($who == "")
 {
+    /*
+    ** No user
+    */
     define("BLOGID", 1);
     define("BLOGNAME", "");
     define("SKINID", "00000000000000000000000000000000");
@@ -125,28 +128,44 @@ if($who == "")
     else
         define("INDEX_URL", HTTP . DEFAULT_SUBDOMAIN . "." . BASE_DOMAIN . INSTALLED_PATH);
 } elseif(!isset($blogdata[$who])) {
-    die( "<html><head><title>".SITE_TITLE." :: Invalid User</title><link rel=\"stylesheet\" href=\"stylesheet.php?id=1\" /></head>"
-       . "<body><b>Invalid User \"$who\"</b><br /><br /><a href=\"" . HTTP . DEFAULT_SUBDOMAIN . BASE_DOMAIN . INSTALLED_PATH . "\">...go back</a></body></html>" );
+
+    /*
+    ** Check to see if the request is a custom url
+    ** This is needed when non-proxying RewriteRule directives are used
+    */
+    $path = substr($_SERVER['REQUEST_URI'], 0, strpos($_SERVER['REQUEST_URI'].'?', '?'));
+    $q = $db->issue_query("SELECT name FROM blogs WHERE custom_url = ".$db->prepare_value(HTTP.$_SERVER['HTTP_HOST'].$path));
+
+    if($db->num_rows[$q] > 0)
+    {
+        $who = $db->fetch_var($q);
+    } else {
+        /*
+        ** Bogus user
+        */
+        die( "<html><head><title>".SITE_TITLE." :: Invalid User</title><link rel=\"stylesheet\" href=\"stylesheet.php?id=1\" /></head>"
+            . "<body><b>Invalid User \"$who\"</b><br /><br /><a href=\"" . HTTP . DEFAULT_SUBDOMAIN . BASE_DOMAIN . INSTALLED_PATH . "\">...go back</a></body></html>" );
+    }
+}
+
+define("BLOGID", $blogdata[$who]['blogid']);
+define("BLOGNAME", $who);
+
+if(isset($_GET['skinid'])
+    && $db->num_rows[ $db->issue_query("SELECT skinid FROM skins WHERE skinid = ".$db->prepare_value($_GET['skinid'])) ] > 0)
+{
+    define("SKINID", $db->prepare_value($_GET['skinid'], FALSE));
 } else {
-    define("BLOGID", $blogdata[$who]['blogid']);
-    define("BLOGNAME", $who);
+    define("SKINID", $db->fetch_var($db->issue_query("SELECT skinid FROM blogs WHERE blogid = '".BLOGID."'")));
+}
 
-    if(isset($_GET['skinid'])
-        && $db->num_rows[ $db->issue_query("SELECT skinid FROM skins WHERE skinid = ".$db->prepare_value($_GET['skinid'])) ] > 0)
-    {
-        define("SKINID", $db->prepare_value($_GET['skinid'], FALSE));
-    } else {
-        define("SKINID", $db->fetch_var($db->issue_query("SELECT skinid FROM blogs WHERE blogid = '".BLOGID."'")));
-    }
-
-    if($blogdata[$who]['custom_url'] != NULL && CUSTOM_URL_ENABLED)
-    {
-        define("INDEX_URL", $blogdata[$who]['custom_url']);
-    } elseif(SUBDOMAIN_MODE) {
-        define("INDEX_URL", HTTP . BLOGNAME . "." . BASE_DOMAIN . INSTALLED_PATH);
-    } else {
-        define("INDEX_URL", HTTP . BASE_DOMAIN . INSTALLED_PATH . BLOGNAME);
-    }
+if($blogdata[$who]['custom_url'] != NULL && CUSTOM_URL_ENABLED)
+{
+    define("INDEX_URL", $blogdata[$who]['custom_url']);
+} elseif(SUBDOMAIN_MODE) {
+    define("INDEX_URL", HTTP . BLOGNAME . "." . BASE_DOMAIN . INSTALLED_PATH);
+} else {
+    define("INDEX_URL", HTTP . BASE_DOMAIN . INSTALLED_PATH . BLOGNAME);
 }
 
 /*
