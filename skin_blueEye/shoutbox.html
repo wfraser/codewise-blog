@@ -2,8 +2,13 @@
     <tr><td style="text-decoration:underline; font-weight:bold; text-align:center; padding-bottom:5px">Shoutbox</td></tr>
     ${contents}
 </table>
+<style type="text/css">.nodisplay { display: none }</style>
 <form action="${posturl}" method="post">
 <table style="border:none; width:100%; font-size:9pt">
+    <tr class="nodisplay"><td colspan="2">
+            <div class="nodisplay">Anti-spam field (don't enter anything! This field shouldn't really display at all - something is wrong...):
+                <input type="text" name="subject" /></div>
+    </td></tr>
     <tr><td>Name:</td><td><input type="text" name="name" size="20" style="font-size:9pt" value="${name}" /></td></tr>
     <tr><td>Link:</td><td><input type="text" name="link" size="20" style="font-size:9pt" value="${link}" /></td></tr>
     <tr><td>Text:</td><td><input type="text" name="text" size="20" style="font-size:9pt" /></td></tr>
