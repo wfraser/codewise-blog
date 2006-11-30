@@ -79,9 +79,9 @@ function shoutbox_process()
     {
         $link = null;
     } elseif(strpos($_POST['link'], "http://")) {
-        $link = urlencode("http://".$_POST['link']);
+        $link = htmlspecialchars("http://".$_POST['link']);
     } else {
-        $link = urlencode($_POST['link']);
+        $link = htmlspecialchars($_POST['link']);
     }
 
     $filter = in_text_filter($_POST['text']);
