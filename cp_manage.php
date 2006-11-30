@@ -69,10 +69,13 @@ default:
         return;
     }
 
-    $body = skinvoodoo('controlpanel_manage', 'success', array(
-        "type" => $_POST['type'],
-        "id" => $_POST['id'],
-    ));
+    header("Location: ".INDEX_URL);
+    exit;
+
+    //$body = skinvoodoo('controlpanel_manage', 'success', array(
+    //    "type" => $_POST['type'],
+    //    "id" => $_POST['id'],
+    //));
 } elseif(isset($_POST['type']) && isset($_POST['id'])) {
     $body = skinvoodoo('controlpanel_manage', 'confirm', array(
         "type" => $_POST['type'],
