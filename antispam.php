@@ -31,20 +31,12 @@ function antispam_shoutbox($database_row, $client_ip)
     global $db;
 
     /*
-    ** Don't let someone repost within a minute
+    ** If the spam honeypot field is filled in, throw out the post
     */
 
-    //$q = $db->issue_query("SELECT NOW() - FROM_UNIXTIME(timestamp) FROM shoutbox WHERE extra = ".$db->prepare_value($database_row['extra'])." ORDER BY timestamp DESC LIMIT 1");
-
-    $q = $db->issue_query("SELECT NOW() - FROM_UNIXTIME(timestamp) FROM shoutbox WHERE extra LIKE 'ip: ".$db->prepare_value($client_ip, FALSE)."\n%' ORDER BY timestamp DESC LIMIT 1");
-
-    if($db->num_rows[$q] == 0)
-        return NULL;
-
-    $timediff = $db->fetch_var($q);
-    if($timediff < 60)
+    if ($_POST['SUBJECT'] != "")
     {
-        return skinvoodoo("error", "error", array("message" => "You shouted too recently. Wait a minute and try again."));
+        return skinvoodoo("error", "error", array("message" => "No spam allowed. kthxbail."));
     }
 
     return NULL;
