@@ -92,6 +92,11 @@ $db->database(SQL_DB);
 ** Who are we running for?
 */
 
+// first of all, on some servers, mod_rewrite doesn't set the request uri
+// correctly. Fix!
+if (isset($_SERVER['REDIRECT_URL']))
+	$_SERVER['REQUEST_URI'] = $_SERVER['REDIRECT_URL'];
+
 $q = $db->issue_query("SELECT blogid,name,custom_url,status FROM blogs");
 $blogdata = $db->fetch_all($q, L1SQL_ASSOC, "name");
 
