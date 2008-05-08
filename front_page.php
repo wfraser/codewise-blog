@@ -41,9 +41,9 @@
                     <a href="<?php echo INDEX_URL; ?>"><span class="main-title"><?php echo SITE_TITLE ?></span></a><br />
                     <i><?php echo SITE_MOTTO; ?></i>
                 </td>
-                <td style="width:100%;text-align:right;font-size:small">
-<?php echo fortune(); ?>
-                </td>
+		<td style="width:100%;text-align:right;font-size:small">
+		    <i>methinks ACM needs to install Fortune on their server...</i>
+		</td>
             </tr>
         </table>
 
@@ -158,7 +158,7 @@ foreach($data as $blogname => $blog)
 
     foreach($data as $topic)
     {
-        $q = $db->issue_query("SELECT name,realname,photo,title FROM blogs WHERE blogid = " . $db->prepare_value($topic['blogid']));
+        $q = $db->issue_query("SELECT name,realname,photo,title,custom_url FROM blogs WHERE blogid = " . $db->prepare_value($topic['blogid']));
         $blog = $db->fetch_row($q);
 
         $q = $db->issue_query("SELECT COUNT(*) FROM replies WHERE blogid = " . $db->prepare_value($topic['blogid']) . " AND tid = " . $db->prepare_value($topic['tid']));
@@ -174,8 +174,9 @@ foreach($data as $blogname => $blog)
             $name = $blog['name'];
         }
 
-        if(SUBDOMAIN_MODE)
-        {
+	if ($blog['custom_url']) {
+	    $url = preg_replace("/\\/$/", "", $blog['custom_url']);
+	} elseif (SUBDOMAIN_MODE) {
             $url = "http://{$blog['name']}." . BASE_DOMAIN . INSTALLED_PATH;
         } else {
             $url = "http://" . (DEFAULT_SUBDOMAIN == "" ? "" : DEFAULT_SUBDOMAIN . ".") . BASE_DOMAIN . INSTALLED_PATH . $blog['name'];
