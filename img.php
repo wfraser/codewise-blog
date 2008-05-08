@@ -1,12 +1,11 @@
 <?php
 
 /*
-** Codewise Gallery
+** Image Fetch and Cache
+** for CodewiseBlog
 **
 ** by William R. Fraser <wrf@codewise.org>
-** Copyright (c) 2007-2008 Codewise.org
-**
-** Last Modified May 6, 2008
+** Copyright (c) 2008 Codewise.org
 */
 
 function default_icon()
