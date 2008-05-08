@@ -148,13 +148,10 @@ foreach($data as $blogname => $blog)
     }
 
     $q = $db->issue_query("SELECT blogid FROM blogs WHERE status = 'active'");
-    $activeblogids = $db->fetch_column($q);
-    if (count($activeblogids) == 0)
+    if ($db->num_rows[$q] == 0)
         $activeblogids = "false";
     else
-        $activeblogids = "blogid = " . implode($activeblogids, " OR blogid = ");
-
-    print_r($blogids);
+        $activeblogids = "blogid = " . implode($db->fetch_column($q), " OR blogid = ");
 
     $q = $db->issue_query("SELECT tid,blogid,title,timestamp,text FROM topics WHERE $activeblogids ORDER BY timestamp DESC LIMIT 5");
     $data = $db->fetch_all($q, L1SQL_ASSOC, "");
