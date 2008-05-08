@@ -4,8 +4,8 @@
 ** Control Panel :: The Great Multi-Skin Editor (Behold!)
 ** for CodewiseBlog Multi-User
 **
-** by Bill R. Fraser <bill.fraser@gmail.com>
-** Copyright (c) 2005-2006 Codewise.org
+** by William R. Fraser <wrf@codewise.org>
+** Copyright (c) 2005-2008 Codewise.org
 */
 
 /*
@@ -89,7 +89,7 @@ if(isset($_POST['skinid']))
 
         // if it's the current skin being deleted, switch to master
         if(SKINID == $_POST['skinid'])
-            $db->update("blogs", array("skinid" => "00000000000000000000000000000000"), array("blogid" => BLOGID));
+            $db->update("blogs", array("skinid" => DEFAULT_SKINID), array("blogid" => BLOGID));
 
     } else {
 

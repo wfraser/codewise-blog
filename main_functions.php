@@ -4,8 +4,8 @@
 ** Main Functions
 ** for CodewiseBlog Multi-User
 **
-** by Bill R. Fraser <bill.fraser@gmail.com>
-** Copyright (c) 2005-2006 Codewise.org
+** by William R. Fraser <wrf@codewise.org>
+** Copyright (c) 2005-2008 Codewise.org
 */
 
 /*
@@ -134,7 +134,7 @@ function show_topic($tid, $page)
 
     if($db->num_rows[$q] == 0)
     {
-        return "no such topic";
+        return "no such entry";
     }
 
     $topic = $db->fetch_row($q, 0, L1SQL_ASSOC);
@@ -157,6 +157,8 @@ function show_topic($tid, $page)
     if($page > 1)
         $db->fetch_row($q, (POSTS_PER_PAGE * ($page - 1)) - 1, L1SQL_NUM);
 
+    $topic_urltitle = string_to_url_goodness($topic['title']);
+
     for($i = 0; $i < POSTS_PER_PAGE || isset($_GET['all_one_page']); $i++)
     {
         $post = $db->fetch_row($q, 0, L1SQL_ASSOC);
@@ -165,9 +167,9 @@ function show_topic($tid, $page)
             break;
 
         if($post['pid'] == $_GET['pid'])
-            $out .= display_post($post, TRUE);
+            $out .= display_post($post, TRUE, $topic_urltitle);
         else
-            $out .= display_post($post);
+            $out .= display_post($post, FALSE, $topic_urltitle);
     }
 
     for($i = 1; $i <= ceil($db->num_rows[$q] / POSTS_PER_PAGE); $i++)

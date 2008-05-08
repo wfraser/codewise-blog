@@ -3,8 +3,8 @@
 /*
 ** CodewiseBlog Multi-User
 **
-** by Bill R. Fraser <bill.fraser@gmail.com>
-** Copyright (c) 2005-2006 Codewise.org
+** by William R. Fraser <wrf@codewise.org>
+** Copyright (c) 2005-2008 Codewise.org
 */
 
 /*
@@ -77,6 +77,9 @@ require("file_put_contents.php"); // from the PHP_Compat project
 require("imageverify.php");
 require("antispam.php");
 
+// new URL scheme hax
+require("parseurl.php");
+
 require("l1_mysql.php");
 $db = new L1_MySQL(SQL_HOST, SQL_USER, SQL_PASS);
 
@@ -89,7 +92,7 @@ $db->database(SQL_DB);
 ** Who are we running for?
 */
 
-$q = $db->issue_query("SELECT blogid,name,custom_url FROM blogs");
+$q = $db->issue_query("SELECT blogid,name,custom_url,status FROM blogs");
 $blogdata = $db->fetch_all($q, L1SQL_ASSOC, "name");
 
 // set ?subdomain_mode=0 to pass the username by path anyways.
@@ -101,8 +104,9 @@ if(isset($_GET['subdomain_mode']) ? $_GET['subdomain_mode'] : SUBDOMAIN_MODE)
         $who = "";
 } else {
     $preg_path = str_replace("/", "\\/", quotemeta(INSTALLED_PATH));
-    $who = preg_replace("/^$preg_path(.*\\/)*/", "", $_SERVER['REQUEST_URI']);
+    $who = preg_replace("/^$preg_path(rdf\.php\/)?/", "", $_SERVER['REQUEST_URI']);
     $who = preg_replace("/\\?.*$/", "", $who);
+    $who = preg_replace("/\\/.*$/", "", $who);
 }
 
 /*
@@ -122,7 +126,7 @@ if($who == "")
     */
     define("BLOGID", 1);
     define("BLOGNAME", "");
-    define("SKINID", "00000000000000000000000000000000");
+    define("SKINID", DEFAULT_SKINID);
     if(DEFAULT_SUBDOMAIN == "")
         define("INDEX_URL", HTTP . BASE_DOMAIN . INSTALLED_PATH);
     else
@@ -148,6 +152,9 @@ if($who == "")
     }
 }
 
+if($blogdata[$who]['status'] == "closed")
+    $_GET['skinid'] = CLOSED_SKINID;
+
 define("BLOGID", $blogdata[$who]['blogid']);
 define("BLOGNAME", $who);
 
@@ -155,6 +162,9 @@ if(isset($_GET['skinid'])
     && $db->num_rows[ $db->issue_query("SELECT skinid FROM skins WHERE skinid = ".$db->prepare_value($_GET['skinid'])) ] > 0)
 {
     define("SKINID", $db->prepare_value($_GET['skinid'], FALSE));
+} else if (array_psearch($_GET, "/^controlpanel:?/") !== FALSE) {
+    // always use the CP Skin when accessing the CP.
+    define("SKINID", CONTROLPANEL_SKINID);
 } else {
     define("SKINID", $db->fetch_var($db->issue_query("SELECT skinid FROM blogs WHERE blogid = '".BLOGID."'")));
 }
@@ -165,7 +175,7 @@ if($blogdata[$who]['custom_url'] != NULL && CUSTOM_URL_ENABLED)
 } elseif(SUBDOMAIN_MODE) {
     define("INDEX_URL", HTTP . BLOGNAME . "." . BASE_DOMAIN . INSTALLED_PATH);
 } else {
-    define("INDEX_URL", HTTP . BASE_DOMAIN . INSTALLED_PATH . BLOGNAME);
+    define("INDEX_URL", HTTP . BASE_DOMAIN . INSTALLED_PATH . BLOGNAME . "/");
 }
 
 /*
@@ -184,7 +194,7 @@ if($BLOGINFO['birthday'])
     $BLOGINFO['birthday_month'] = $month;
     $BLOGINFO['birthday_day'] = $day;
     $BLOGINFO['birthday_year'] = $year;
-    $BLOGINFO['age'] = ($month >= date("m") && $day > date("d")) ? date("Y") - $year - 1 : date("Y") - $year;
+    $BLOGINFO['age'] = ($month > date("m") || ($month == date("m") && $day > date("d"))) ? date("Y") - $year - 1 : date("Y") - $year;
 } else {
     $BLOGINFO['age'] = $BLOGINFO['birthday_month'] = $BLOGINFO['birthday_day'] = $BLOGINFO['birthday_year'] = "";
 }
@@ -194,7 +204,7 @@ $BLOGINFO['ucp_url'] = INDEX_URL . "?controlpanel";
 if(!SUBDOMAIN_MODE) $BLOGINFO['rdf_url'] = "rdf.php/" . BLOGNAME;
 else                $BLOGINFO['rdf_url'] = "rdf.php";
 
-$BLOGINFO['css_url'] = "stylesheet.php?id=" . SKINID;
+$BLOGINFO['css_url'] = HTTP.BASE_DOMAIN.INSTALLED_PATH."stylesheet.php?id=" . SKINID;
 
 $BLOGINFO['interests'] = nl2br($BLOGINFO['interests']);
 $BLOGINFO['links'] = nl2br($BLOGINFO['links']);
@@ -225,6 +235,9 @@ if(!defined("NO_ACTION"))
     /*
     ** Let's light this candle!
     */
+
+    // new URL scheme hax
+    path_parse_url();
 
     // control panel
     foreach(array_keys($_GET) as $key)
@@ -263,7 +276,7 @@ if(!defined("NO_ACTION"))
     {
         $body = show_topic($_GET['tid'], $_GET['page']);
     } elseif(is_numeric($_GET['month']) && is_numeric($_GET['year'])) {
-        $body = show_month($_GET['month'], $_GET['year'], $_GET['page']);
+        $body = show_month((int) $_GET['month'], (int) $_GET['year'], $_GET['page']);
     } elseif(is_numeric($_GET['reply'])) {
         $body = show_reply_form($_GET['reply']);
     } elseif(is_numeric($_GET['do_reply'])) {
@@ -286,6 +299,15 @@ if(!defined("NO_ACTION"))
     }
 
     $out = skinvoodoo("main");
+
+/*
+    if($blogdata[$who]['status'] == "closed")
+    {
+        $q = $db->issue_query("SELECT tid FROM topics WHERE blogid = '".BLOGID."' ORDER BY tid DESC LIMIT 1");
+        $farewell_tid = $db->fetch_var($q);
+        $out = str_replace("<!-- #CWB_BODY# -->", show_topic($farewell_tid,0), $out);
+    }
+*/
 
     $out = str_replace("<!-- #CWB_BODY# -->", $body, $out);
 

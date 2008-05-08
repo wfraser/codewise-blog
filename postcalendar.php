@@ -4,8 +4,8 @@
 ** Posting Calendar Functions
 ** for CodewiseBlog Multi-User
 **
-** by Bill R. Fraser <bill.fraser@gmail.com>
-** Copyright (c) 2005-2006 Codewise.org
+** by William R. Fraser <wrf@codewise.org>
+** Copyright (c) 2005-2008 Codewise.org
 */
 
 /*
@@ -43,7 +43,12 @@ function postcalendar()
         $month = $row['month'];
         $name = $row['name'];
 
-        $out .= skinvoodoo("postcalendar", "monthrow", array("url" => INDEX_URL . "?year=$year&amp;month=$month", "monthname" => $name, "year" => $year));
+        $out .= skinvoodoo("postcalendar", "monthrow", array(
+            "url" => INDEX_URL . "?year=$year&amp;month=$month",
+            "url2" => INDEX_URL . "archive/$year/$month/",
+            "monthname" => $name,
+            "year" => $year
+        ));
 
         /*
         ** For the most recent month, display a list of the 5 most recent titles as
@@ -77,6 +82,7 @@ function postcalendar()
             {
                 $tid = $row['tid'];
                 $title = $row['title'];
+                $urltitle = string_to_url_goodness($title);
 
                 if($row['extra'] == "HIDE")
                     continue;
@@ -84,11 +90,18 @@ function postcalendar()
                 if(strlen($title) > 25)
                     $title = substr($title, 0, 22) . "...";
 
-                $currentmonth .= skinvoodoo("postcalendar", "topiclink", array("url" => INDEX_URL . "?tid=$tid", "title" => $title));
+                $currentmonth .= skinvoodoo("postcalendar", "topiclink", array(
+                    "url" => INDEX_URL . "?tid=$tid",
+                    "url2" => INDEX_URL . "article/$urltitle",
+                    "title" => $title
+                ));
             }
 
             if($db->num_rows[$q] - (($_GET['page'] - 1) * TOPICS_PER_PAGE) > TOPICS_PER_PAGE)
-                $currentmonth .= skinvoodoo("postcalendar", "nextpage", array("url" => INDEX_URL . "?year=$year&amp;month=$month&amp;page=2"));
+                $currentmonth .= skinvoodoo("postcalendar", "nextpage", array(
+                    "url" => INDEX_URL . "?year=$year&amp;month=$month&amp;page=2",
+                    "url2" => INDEX_URL . "archive/$year/$month/?page=2",
+                ));
 
             $out .= skinvoodoo("postcalendar", "latestmonth", array("contents" => $currentmonth));
         }

@@ -4,8 +4,8 @@
 ** Control Panel :: Add User
 ** for CodewiseBlog Multi-User
 **
-** by Bill R. Fraser <bill.fraser@gmail.com>
-** Copyright (c) 2005-2006 Codewise.org
+** by William R. Fraser <wrf@codewise.org>
+** Copyright (c) 2005-2008 Codewise.org
 */
 
 /*
@@ -53,7 +53,7 @@ if(BLOGID != 1)
         "title" => $_POST['title'],
         "password" => md5($_POST['password']),
         "joindate" => time(),
-        "skinid" => "00000000000000000000000000000000",
+        "skinid" => DEFAULT_SKINID,
     ));
 
     $db->insert("skin", array("blogid" => $blogid));

@@ -4,8 +4,8 @@
 ** Miscellaneous Functions
 ** for CodewiseBlog Multi-User
 **
-** by Bill R. Fraser <bill.fraser@gmail.com>
-** Copyright (c) 2004-2006 Codewise.org
+** by William R. Fraser <wrf@codewise.org>
+** Copyright (c) 2004-2008 Codewise.org
 */
 
 /*
@@ -70,7 +70,7 @@ function delete_session()
     return main_page(1);
 }
 
-function textprocess($text)
+function textprocess($text, $doautobr = TRUE)
 {
     preg_match_all("/<php>(.*)<\\/php>/Us", $text, $matches, PREG_SET_ORDER);
     foreach($matches as $match)
@@ -78,7 +78,21 @@ function textprocess($text)
         $text = str_replace($match[0], trim(highlight_string(trim($match[1]), TRUE)), $text);
     }
 
-    $text = str_replace("\n", "<br />", str_replace("\r", "", $text));
+    if ($doautobr)
+        $text = str_replace("\n", "<br />", str_replace("\r", "", $text));
+
+    preg_match_all("/[^\\sa-zA-Z0-9,.\\/<>?;:'\"[\\]{}\\-=_+\\\\|`~!@#$%^&*()]/", $text, $badchars);
+    foreach ($badchars[0] as $badchar) {
+        $text = str_replace($text, $badchar, htmlentities($badchar));
+    }
+
+    /*
+    for ($i = 0; $i < strlen($text); $i++) {
+        if ($text[$i] > '\x70') {
+            $text[$i] = htmlentities($text[$i]);
+        }
+    }
+    */
 
     return $text;
 } // end of textprocess
@@ -176,6 +190,8 @@ function in_text_filter($text, $text_filter_msg = "")
         // another idea: simply append a closing tag
         //    $new_text .= "</$tag_name>";
     }
+
+    $new_text = preg_replace("/&(?![a-zA-Z]+;)/", "&amp;", $new_text);
 
     if($new_text == $text)
     {
@@ -294,17 +310,24 @@ function text_clip($text, $limit = 500, $append = " ...")
         return($text);
     } else {
         $content = "";
+        $tags = array(); // stack for holding tags that are open at time of clip
         $parts = preg_split("/(<[^>]+>)/",$text,-1,PREG_SPLIT_DELIM_CAPTURE);
         foreach($parts as $part)
         {
             if(strlen($content) + strlen($part) <= $limit - strlen($append))
             {
+                if(substr($part,0,2) == "</") // html end tag
+                    array_pop($tags); // pop the tag
+                else if (substr($part,0,1) == "<") // html start tag
+                    array_push($tags, substr($part,1,-1)); // add tag to the stack
                 $content .= $part;
                 continue;
             } else {
                 if(substr($part,0,1) == "<") // html tag part
                 {
                     $content .= $append;
+                    for($i = count($tags) - 1; $i >= 0; $i--)
+                        $content .= "</" . $tags[$i] . ">";
                     break;
                 } else { // text part
                     $words = preg_split("/( )/",$part,-1,PREG_SPLIT_DELIM_CAPTURE);
@@ -330,6 +353,16 @@ function text_clip($text, $limit = 500, $append = " ...")
 function uuidgen()
 {
     return md5($_SERVER['SERVER_ADDR'] . getmypid() . uniqid(mt_rand(), true));
+}
+
+function array_psearch($array, $preg)
+{
+    foreach ($array as $key => $value) {
+        if (preg_match($preg, $value)) {
+            return array($key, $value);
+        }
+    }
+    return FALSE;
 }
 
 ?>

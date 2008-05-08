@@ -102,3 +102,15 @@ Dev - July 25 to September 12, 2005
   - shoutbox posts get the IP recorded when using mod_rewrite to proxy requests
   - shoutbox post text limited to 255 chars
   - image verification for comments, to combat spam
+
+1.2.1 -
+  - added anti-spam routines for shoutbox posts
+  - allow logged-in user to directly edit topics, delete replies and shoutbox posts, without a trip to the control panel
+  - add link to the TERMS file on the reply form and in copyright notice if the file exists
+  - Skinvoodoo will give an error message if a skin subsection does not exist
+  - better antispam method
+  - bugfixes in: installer, rdf.php, register, skinvoodoo
+
+PRE-1.3.0-DEV / PRE-2.0.0-DEV - April 2006 to April 2008 and beyond
+  - 2+ years of changes, fixes, updates, etc. Too many to list.
+  - no releases, next release will be v2.0.0

@@ -4,8 +4,8 @@
 ** Topic Functions
 ** for CodewiseBlog Multi-User
 **
-** by Bill R. Fraser <bill.fraser@gmail.com>
-** Copyright (c) 2005-2006 Codewise.org
+** by William R. Fraser <wrf@codewise.org>
+** Copyright (c) 2005-2008 Codewise.org
 */
 
 /*
@@ -32,6 +32,7 @@ function display_topic($topic, $topic_page = FALSE)
 
     $tid = $topic['tid'];
     $title = $topic['title'];
+    $urltitle = string_to_url_goodness($title);
     $date = date(DATE_FORMAT, $topic['timestamp']);
     $text = output_topic_text($topic['text']);
 
@@ -44,7 +45,11 @@ function display_topic($topic, $topic_page = FALSE)
         "tid" => $tid,
         "date" => $date,
         "title" => $title,
+        "urltitle" => $urltitle,
         "text" => $text,
+        "url2_showtopic" => INDEX_URL . "article/$urltitle/",
+        "url2_showcomments" => INDEX_URL . "article/$urltitle/#comments",
+        "url2_addcomment" => INDEX_URL . "article/$urltitle/reply#commentform",
         "url_showtopic" => INDEX_URL . "?tid=$tid",
         "url_showcomments" => INDEX_URL . "?tid=$tid#comments",
         "url_addcomment" => INDEX_URL . "?reply=$tid#commentform",
@@ -62,7 +67,7 @@ function display_topic($topic, $topic_page = FALSE)
 
 } // end of display_topic()
 
-function display_post($post, $highlight = FALSE)
+function display_post($post, $highlight = FALSE, $topic_urltitle = "")
 {
     $pid = $post['pid'];
     $tid = $post['tid'];
@@ -80,6 +85,14 @@ function display_post($post, $highlight = FALSE)
     if($highlight)
         $special_anchor = "previewcomment";
 
+    if ($topic_urltitle === "") {
+        $url2_post = INDEX_URL . "?tid=$tid&amp;pid=$pid#pid$pid";
+        $url2_reply = INDEX_URL . "?reply=$tid&amp;ref=$pid#commentform";
+    } else {
+        $url2_post = INDEX_URL . "article/$topic_urltitle/$pid#pid$pid";
+        $url2_reply = INDEX_URL . "article/$topic_urltitle/reply?ref=$pid#commentform";
+    }
+
     return skinvoodoo("post", "", array(
         "tid" => $tid,
         "pid" => $pid,
@@ -87,6 +100,8 @@ function display_post($post, $highlight = FALSE)
         "name" => $name,
         "tripcode" => $tripcode,
         "date" => date(DATE_FORMAT, $timestamp),
+        "url2_post" => $url2_post, 
+        "url2_reply" => $url2_reply,
         "url_post" => INDEX_URL . "?tid=$tid&amp;pid=$pid#pid$pid",
         "url_reply" => INDEX_URL . "?reply=$tid&amp;ref=$pid#commentform",
         "url_delreply" => INDEX_URL . "?controlpanel:manage&amp;del=reply:$pid",
@@ -98,13 +113,15 @@ function display_post($post, $highlight = FALSE)
 
 function output_topic_text($text)
 {
+    $text = preg_replace("/&(?![a-zA-Z]+;)/", "&amp;", $text);
+
     $parts = preg_split("/(<noautobr>(.*)<\/noautobr>)/Us", $text, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
 
     $text = "";
     for($i = 0; $i < count($parts); $i++)
     {
         if(strpos($parts[$i], "<noautobr>") === 0)
-            $text .= $parts[++$i];
+            $text .= textprocess($parts[++$i], FALSE);
         else
             $text .= textprocess($parts[$i]);
     }

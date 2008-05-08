@@ -4,8 +4,8 @@
 ** Control Panel :: User Registration
 ** for CodewiseBlog Multi-User
 **
-** by Bill R. Fraser <bill.fraser@gmail.com>
-** Copyright (c) 2005-2006 Codewise.org
+** by William R. Fraser <wrf@codewise.org>
+** Copyright (c) 2005-2008 Codewise.org
 */
 
 /*
@@ -130,8 +130,6 @@ if(isset($_GET['confirm']) && isset($_GET['username']) && isset($_GET['code']))
 
     if($hash === $_GET['code'])
     {
-        $db->update("blogs", array("status" => "active"), array("name" => $_GET['username']));
-
         if(SUBDOMAIN_MODE)
             $user_url = "http://" . $_GET['username'] . "." . BASE_DOMAIN . INSTALLED_PATH;
         else
@@ -154,7 +152,7 @@ if(isset($_GET['confirm']) && isset($_GET['username']) && isset($_GET['code']))
     } elseif($_POST['code'] !== $db->fetch_var( $db->issue_query("SELECT password FROM blogs WHERE name = ".$db->prepare_value($_POST['username'])) )) {
         $GLOBALS['NOTIFY'] = "Wrong authentication code.";
     } else {
-        $db->update("blogs", array("password" => md5($_POST['password1'])), array("name" => $_POST['username']));
+        $db->update("blogs", array("password" => md5($_POST['password1']), "status" => "active"), array("name" => $_POST['username']));
 
         if(SUBDOMAIN_MODE)
             $user_url = "http://" . $_POST['username'] . "." . BASE_DOMAIN . INSTALLED_PATH;

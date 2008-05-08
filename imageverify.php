@@ -4,8 +4,8 @@
 ** Image Verification
 ** for CodewiseBlog
 **
-** by Bill R. Fraser <bill.fraser@gmail.com>
-** Copyright (c) 2006 Codewise.org
+** by William R. Fraser <wrf@codewise.org>
+** Copyright (c) 2006-2008 Codewise.org
 */
 
 /*
@@ -142,7 +142,10 @@ function genivid()
     $ivtext = genivtext();
     $ivid = md5(strtolower($ivtext));
 
-    $db->insert("imageverify", array("id" => $ivid, "text" => $ivtext));
+    $db->insert("imageverify", array("id" => $ivid, "text" => $ivtext, "timestamp" => time()));
+
+    // delete records more than 2 days old.
+    $db->issue_query("DELETE FROM imageverify WHERE timestamp < " . (time() - 60*60*24*2));
 
     return $ivid;
 }

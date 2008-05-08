@@ -4,8 +4,8 @@
 ** "Voodoo" Skin Engine
 ** for CodewiseBlog Multi-User
 **
-** by Bill R. Fraser <bill.fraser@gmail.com>
-** Copyright (c) 2005-2006 Codewise.org
+** by William R. Fraser <wrf@codewise.org>
+** Copyright (c) 2005-2008 Codewise.org
 */
 
 /*
@@ -25,19 +25,6 @@
 ** along with CodewiseBlog; if not, write to the Free Software
 ** Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
-
-if(file_exists(FSPATH."/TERMS"))
-    $terms = ", subject to <a href=\"http://".BASE_DOMAIN.INSTALLED_PATH."TERMS\">terms</a>.";
-else
-    $terms = "";
-
-define("CWB_COPYRIGHT",
-"<a href=\"http://gna.org/projects/codewiseblog\">CodewiseBlog</a> &copy; 2005-2006 "
-. "<a href=\"http://www.codewise.org/~netmanw00t/\">Bill R. Fraser</a> / "
-. "<a href=\"http://www.codewise.org/\">Codewise.org</a>.<br />"
-. "All textual content is the property of its author$terms.<br />"
-. "CodewiseBlog is free software under the <a href=\"COPYING\">GNU General Public License</a>"
-);
 
 /*
 ** Skin Voodoo
@@ -272,6 +259,8 @@ function voodoo($skin, $args = array(), $skin_section = "", $expand = TRUE)
             "imageverify" => "IMAGEVERIFY",
             "logged_in" => "LOGGED_IN",
             "admin" => "ADMIN",
+            "realname" => "str_replace(\" \", \"&nbsp;\", htmlentities(html_entity_decode(\$BLOGINFO['realname'])))",
+            "title" => "str_replace(\" \", \"&nbsp;\", htmlentities(html_entity_decode(\$BLOGINFO['title'])))",
         );
 
         $new = "";

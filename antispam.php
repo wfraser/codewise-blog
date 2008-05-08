@@ -4,8 +4,8 @@
 ** Anti-Spam Routines
 ** for CodewiseBlog Multi-User
 **
-** by Bill R. Fraser <bill.fraser@gmail.com>
-** Copyright (c) 2006 Codewise.org
+** by William R. Fraser <wrf@codewise.org>
+** Copyright (c) 2006-2008 Codewise.org
 */
 
 /*          
@@ -34,7 +34,7 @@ function antispam_shoutbox($database_row, $client_ip)
     ** If the spam honeypot field is filled in, throw out the post
     */
 
-    if ($_POST['subjecct'] != "")
+    if ($_POST['subject'] != "")
     {
         return skinvoodoo("error", "error", array("message" => "No spam allowed. kthxbail."));
     }

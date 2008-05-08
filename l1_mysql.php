@@ -6,8 +6,8 @@
 **
 ** http://projects.codewise.org/l1_sql/
 **
-** by Bill R. Fraser <bill.fraser@gmail.com>
-** Copyright (c) 2004-2006 Codewise.org
+** by William R. Fraser <wrf@codewise.org>
+** Copyright (c) 2004-2008 Codewise.org
 */
 
 /*
@@ -100,26 +100,26 @@ class L1_MySQL
     ** column names and the values are treated as SQL values and both are
     ** escaped as such.
     **
-    ** The $use_slashes argument dictates whether to enclose values in single
-    ** slashes.
+    ** The $use_quotes argument dictates whether to enclose values in single
+    ** quotes.
     */
-    function prepare_value($data, $use_slashes = TRUE)
+    function prepare_value($data, $use_quotes = TRUE)
     {
-        if($use_slashes)
-            $slash = "'";
+        if($use_quotes)
+            $quote = "'";
         else
-            $slash = "";
+            $quote = "";
 
         if(is_array($data))
         {
             $a_sql = array();
             foreach($data as $field => $value)
             {
-                $a_sql[ $this->prepare_value($field,FALSE) ] = ($value === null ? "null" : $slash.mysql_real_escape_string($value,$this->session).$slash);
+                $a_sql[ $this->prepare_value($field,FALSE) ] = ($value === null ? "null" : $quote.mysql_real_escape_string($value,$this->session).$quote);
             }
             return($a_sql);
         } else {
-            $sql = ($data === null ? "null" : $slash.mysql_real_escape_string($data,$this->session).$slash);
+            $sql = ($data === null ? "null" : $quote.mysql_real_escape_string($data,$this->session).$quote);
             return($sql);
         }
     }

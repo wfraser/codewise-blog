@@ -4,8 +4,8 @@
 ** Front Page
 ** for CodewiseBlog Multi-User
 **
-** by Bill R. Fraser <bill.fraser@gmail.com>
-** Copyright (c) 2005-2006 Codewise.org
+** by William R. Fraser <wrf@codewise.org>
+** Copyright (c) 2005-2008 Codewise.org
 */
 
 /*
@@ -28,7 +28,7 @@
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <title><?php echo SITE_TITLE; ?></title>
         <link rel="stylesheet" href="stylesheet.php" />
@@ -60,7 +60,7 @@
                                     <tr><td><b>Blogs on this site:</b></td></tr>
 <?php
 
-$q = $db->issue_query("SELECT name,realname,title FROM blogs WHERE status = 'active' ORDER BY blogid ASC");
+$q = $db->issue_query("SELECT name,realname,title,custom_url FROM blogs WHERE status = 'active' ORDER BY blogid ASC");
 $data = $db->fetch_all($q, L1SQL_ASSOC, "name");
 
 foreach($data as $blogname => $blog)
@@ -78,16 +78,20 @@ foreach($data as $blogname => $blog)
         $name = $blog['name'];
     }
 
-    if(SUBDOMAIN_MODE)
-    {
+    if(isset($blog['custom_url'])) {
+        $link = $blog['custom_url'];
+    } elseif(SUBDOMAIN_MODE) {
         $link = "http://$blogname." . BASE_DOMAIN . INSTALLED_PATH;
     } else {
-        $link = "http://" . (DEFAULT_SUBDOMAIN == "" ? "" : DEFAULT_SUBDOMAIN . ".") . BASE_DOMAIN . INSTALLED_PATH . $blogname;
+        $link = "http://" . (DEFAULT_SUBDOMAIN == "" ? "" : DEFAULT_SUBDOMAIN . ".") . BASE_DOMAIN . INSTALLED_PATH . $blogname . "/";
     }
+
+    // this is dumb, but helpful
+    $blog['title'] = preg_replace('/([^\x09\x0A\x0D\x20-\x7F]|[\x21-\x2F]|[\x3A-\x40]|[\x5B-\x60])/e', '"&#".ord("$0").";"', html_entity_decode($blog['title']));
 ?>
                                     <tr><td><hr align="center" style="border:1px solid #eee" width="50%" noshade="noshade" /></td></tr>
                                     <tr><td><a href="<?php echo $link; ?>"><?php echo $blog['title']; ?></a><br />
-                                            <span style="font-size:smaller">by <?php echo $name; ?></span></td></tr>
+                                            <span style="font-size:smaller">by <?php echo htmlentities($name); ?></span></td></tr>
 <?php
 
 } // foreach($data as $blogname => $blog)
@@ -125,7 +129,7 @@ foreach($data as $blogname => $blog)
         <tr>
             <td style="padding-left: 3px; width: 1px">
                 <a href="?register">
-                    <img src="cwb/keys.png" style="border:none" />
+                    <img src="cwb/keys.png" style="border:none" alt="Keys" />
                 </a>
             </td>
             <td style="padding: 5px">
@@ -143,7 +147,16 @@ foreach($data as $blogname => $blog)
 
     }
 
-    $q = $db->issue_query("SELECT tid,blogid,title,timestamp,text FROM topics ORDER BY timestamp DESC LIMIT 5");
+    $q = $db->issue_query("SELECT blogid FROM blogs WHERE status = 'active'");
+    $activeblogids = $db->fetch_column($q);
+    if (count($activeblogids) == 0)
+        $activeblogids = "false";
+    else
+        $activeblogids = "blogid = " . implode($activeblogids, " OR blogid = ");
+
+    print_r($blogids);
+
+    $q = $db->issue_query("SELECT tid,blogid,title,timestamp,text FROM topics WHERE $activeblogids ORDER BY timestamp DESC LIMIT 5");
     $data = $db->fetch_all($q, L1SQL_ASSOC, "");
 
     foreach($data as $topic)
@@ -179,6 +192,9 @@ foreach($data as $blogname => $blog)
         }
 
         $text = output_topic_text(text_clip($filtered_text, 1000, " &hellip;"));
+
+        // $topic['url'] = $url . "?tid=" . $topic['tid'];
+        $topic['url'] = $url . "/article/" . string_to_url_goodness($topic['title']);
 ?>
 
 <table style="border:none; width:100%">
@@ -187,10 +203,10 @@ foreach($data as $blogname => $blog)
     <table style="padding: 0px; border: 1px solid #ddd; width: 100%">
         <tr>
             <td style="padding-left: 3px; width: 1px">
-                <img src="<?php echo $blog['photo']; ?>" alt="<?php echo $blog['name']; ?>" height="75" />
+                <img src="<?php echo INDEX_URL; ?>img.php?blogid=<?php echo $topic['blogid']; ?>" alt="<?php echo $blog['name']; ?>" />
             </td>
             <td style="padding: 5px">
-                <a href="<?php echo $url . "?tid=" . $topic['tid']; ?>"><b><?php echo $topic['title']; ?></b></a> :: <?php echo $num_replies; ?> comments
+                <a href="<?php echo $topic['url']; ?>"><b><?php echo $topic['title']; ?></b></a> :: <?php echo $num_replies; ?> comments
                 <br />
                 <a href="<?php echo $url; ?>"><?php echo $blog['title']; ?></a> by <?php echo $name; ?>
                 <br />

@@ -1,6 +1,6 @@
 <?php
 
-define("CWBVERSION", "PRE-1.3.0-DEV");
-define("CWBTYPE", "Multi-User");
+define("CWBVERSION", "PRE-2.0.0-DEV");
+define("CWBTYPE", "Mainline");
 
 ?>

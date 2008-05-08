@@ -4,8 +4,8 @@
 ** Shoutbox Functions
 ** for CodewiseBlog Multi-User
 **
-** by Bill R. Fraser <bill.fraser@gmail.com>
-** Copyright (c) 2005-2006 Codewise.org
+** by William R. Fraser <wrf@codewise.org>
+** Copyright (c) 2005-2008 Codewise.org
 */
 
 /*
@@ -70,6 +70,11 @@ function shoutbox()
 function shoutbox_process()
 {
     global $db;
+
+    if (BLOGID == 2)
+    {
+        return skinvoodoo("error", "error", array("message" => "Shoutbox is disabled for this user."));
+    }
 
     $name = strip_tags($_POST['name']);
     if($name == "")
