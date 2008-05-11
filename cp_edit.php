@@ -197,7 +197,8 @@ if(empty($_POST))
 
         // int mktime ( [int hour [, int minute [, int second [, int month [, int day [, int year [, int is_dst]]]]]]] )
         $time = mktime(
-            $_POST['hour'] + ($_POST['ampm'] == "pm" ? 12 : 0),
+            // lol 12 hour time makes no sense :P
+            $_POST['hour'] + ($_POST['ampm'] == "pm" ? (($_POST['hour'] == 12) ? 0 : 12) : (($_POST['hour'] == 12) ? -12 : 0)),
             $_POST['minute'],
             $_POST['second'],
             $_POST['month'],
