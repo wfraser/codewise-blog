@@ -42,7 +42,7 @@
                     <i><?php echo SITE_MOTTO; ?></i>
                 </td>
 		<td style="width:100%;text-align:right;font-size:small">
-		    <i>methinks ACM needs to install Fortune on their server...</i>
+		    <i><?php echo fortune(); ?></i>
 		</td>
             </tr>
         </table>
