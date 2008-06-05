@@ -73,7 +73,6 @@ require("stats.php");
 require("reply.php");
 require("subscribe.php");
 require("controlpanel.php");
-require("file_put_contents.php"); // from the PHP_Compat project
 require("imageverify.php");
 require("antispam.php");
 
