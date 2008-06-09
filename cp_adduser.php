@@ -66,3 +66,5 @@ if(BLOGID != 1)
     $body = "User created. Their page is located <a href=\"" . $newuser . "\">here</a>";
 
 }
+
+?>
