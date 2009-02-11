@@ -55,7 +55,7 @@ if(empty($_POST) || isset($_POST['resize']))
                 "autoresize" => HTTP.BASE_DOMAIN.INSTALLED_PATH."cwb/autoresize.js",
                 "rows" => $_POST['rows'] ? $_POST['rows'] : 25,
                 "cols" => $_POST['cols'] ? $_POST['cols'] : 80,
-                "text" => $_POST['text'],
+                "text" => htmlspecialchars($_POST['text']),
                 "title" => $_POST['title'],
             )
         );
