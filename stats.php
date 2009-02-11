@@ -96,7 +96,7 @@ function statistics()
     if($firstblog == 0)
         $time_elapsed = "";
     else
-        $time_elapsed = wordwrap("First post was $time_elapsed ago.", 40, "<br />") . "<br />\n";
+        $time_elapsed = "First post was $time_elapsed ago.<br />\n";
 
     $q = $db->issue_query("SELECT tid FROM topics WHERE blogid = '" . BLOGID . "'");
     $num_topics = $db->num_rows[$q];
