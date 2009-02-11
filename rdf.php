@@ -76,7 +76,7 @@ $data = $db->fetch_all($q);
 
 foreach($data as $row)
 {
-    echo "                <rdf:li rdf:resource=\"" . INDEX_URL . "?tid=" . $row['tid'] . "\" />\n";
+    echo "                <rdf:li rdf:resource=\"" . INDEX_URL . "article/" . string_to_url_goodness($row['title']) . "\" />\n";
 }
 
 ?>
@@ -86,10 +86,10 @@ foreach($data as $row)
 
 <?php foreach($data as $row)
 {
-    echo "    <item rdf:about=\"" . INDEX_URL . "?tid=" . $row['tid'] . "\">
+    echo "    <item rdf:about=\"" . INDEX_URL . "article/" . string_to_url_goodness($row['title']) . "\">
         <title>" . $row['title'] . "</title>
-        <link>" . INDEX_URL . "?tid=" . $row['tid'] . "</link>
-        <description>" . htmlspecialchars(textprocess($row['text'])) . "</description>
+        <link>" . INDEX_URL . "article/" . string_to_url_goodness($row['title']) . "</link>
+        <description>" . htmlspecialchars(output_topic_text($row['text'])) . "</description>
         <dc:date>" . iso8601_date($row['timestamp']) . "</dc:date>
     </item>";
 }
