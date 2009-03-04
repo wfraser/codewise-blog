@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>%{titletag}</title>
 <link rel="stylesheet" type="text/css" title="stylesheet" href="%{css_url}" />
@@ -12,7 +12,7 @@
     <tr>
         <td style="text-align:center">
             <a href="%{index_url}"><span class="main-title">%{title}</span></a><br />
-            <i>by <!-- #cwb_if# %{realname} -->%{realname} / <!-- #cwb_endif# --><!-- #cwb_if# %{homepage} --><a href="%{homepage}">%{name}</a><!-- #cwb_else# -->%{name}<!-- #cwb_endif# --></i>
+            <i>by&nbsp;<!-- #cwb_if# %{realname} -->%{realname}&nbsp;/&nbsp;<!-- #cwb_endif# --><!-- #cwb_if# %{homepage} --><a href="%{homepage}">%{name}</a><!-- #cwb_else# -->%{name}<!-- #cwb_endif# --></i>
         </td>
         <td style="width:100%;text-align:right;font-size:small">
 %{fortune}
@@ -30,8 +30,8 @@
             <tr>
             <td class="sidebar">
                 <div style="text-align:center">
-                <span id="showbio"><a href="javascript:showbio()"><b>who?</b></a><br /></span>
-                <span id="hidebio" style="display:none"><a href="javascript:hidebio()"><b>ahh, I see...</b></a><br /></span>
+                <span id="showbio"><a href="javascript:showbio()"><b>%{name}</b></a><br /></span>
+                <span id="hidebio" style="display:none"><a href="javascript:hidebio()"><b>%{name}</b></a><br /></span>
 <!-- #cwb_if# %{photo} -->
                 <img src="%{photo}" alt="%{name}::photo" style="padding:.75em" />
 <!-- #cwb_else# -->
@@ -70,7 +70,7 @@
             </tr>
 
             <tr>
-            <td class="sidebar" style="text-align:center; font-size:smaller">
+            <td class="sidebar" style="white-space:normal; text-align:center; font-size:smaller">
 %{statistics}
             </td>
             </tr>
@@ -90,10 +90,10 @@
         %{copyright}
     </td>
     <td>
-        <a href="%{multiuser_root}"><img src="cwb.png" alt="CWB" style="border:none" /></a>
+        <a href="%{multiuser_root}"><img src="%{multiuser_root}cwb.png" alt="CWB" style="border:none" /></a>
     </td>
     </tr>
 </table>
 </body>
 </html>
-<!-- :cwb_start: versionfooter -->Powered by: CodewiseBlog %{cwb_type} <a href="CHANGELOG" style="color:#aaa;text-decoration:underline">v%{cwb_version}</a><!-- :cwb_end: versionfooter -->
+<!-- :cwb_start: versionfooter -->Powered by: CodewiseBlog %{cwb_type} <a href="%{multiuser_root}CHANGELOG" style="color:#aaa;text-decoration:underline">v%{cwb_version}</a><!-- :cwb_end: versionfooter -->

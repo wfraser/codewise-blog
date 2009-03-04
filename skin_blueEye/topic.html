@@ -1,7 +1,7 @@
 <!-- :cwb_start: topicheader -->
 <div class="topicheader">
     Posted ${date}<br />
-    <span class="topictitle"><a href="${url_showtopic}">${title}</a></span>
+    <span class="topictitle"><a href="${url2_showtopic}">${title}</a></span>
 <!-- #cwb_if# %{logged_in} -->
     <a href="${url_edittopic}">(edit it)</a>
 <!-- #cwb_endif# -->
@@ -12,14 +12,14 @@
 </div>
 <!-- :cwb_start: topicfooter -->
 <div class="topicfooter">
-    &#x00BB; <!-- #cwb_if# isset(${num_comments}) --><a href="${url_showcomments}">(${num_comments} comments)</a><!-- #cwb_endif# -->
-    <a href="${url_addcomment}">(make a comment)</a>
+    &#x00BB; <!-- #cwb_if# isset(${num_comments}) --><a href="${url2_showcomments}">(${num_comments} comments)</a><!-- #cwb_endif# -->
+    <a href="${url2_addcomment}">(make a comment)</a>
 </div>
 <br />
 <!-- :cwb_end: topicfooter -->
 <!-- :cwb_start: topicfooter_addcomment --><br /><br />
 <div class="topicfooter">
-    &#x00BB; <a href="${url_addcomment}">(make a comment)</a>
+    &#x00BB; <a href="${url2_addcomment}">(make a comment)</a>
 </div><!-- :cwb_end: topicfooter_addcomment -->
 <!-- :cwb_start: start_comments -->
 <a name="comments"></a>
