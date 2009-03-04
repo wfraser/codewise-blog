@@ -119,7 +119,7 @@ function error_image($text)
 */
 function genivtext()
 {
-    // i or l, they're too similar, and no uppercase O or D as they are too similar
+    // exclude i,I,l,L and O,D; they're too similar
     $letters = array("A","a","B","b","C","c","d","E","e","F","f","G","g","H",
         "h","J","j","K","k","M","m","N","n","P","p","Q","q","R","r","S","s","T",
         "t","U","u","V","v","W","w","X","x","Y","y","Z","z");
