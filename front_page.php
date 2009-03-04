@@ -34,6 +34,13 @@
         <link rel="stylesheet" href="stylesheet.php" />
     </head>
     <body>
+<?php if (isset($_GET['delsession'])) : delete_session(); ?>
+        <h1>You have been logged out</h1>
+        <h5>have a nice day</h5>
+        <a href="<?php echo INDEX_URL; ?>">back to the front page</a>
+    </body>
+</html>
+<?php exit; endif; ?>
 
         <table style="border:none;width:100%;">
             <tr>
@@ -103,12 +110,19 @@ foreach($data as $blogname => $blog)
                         </tr>
                         <tr>
                             <td class="sidebar">
+<?php if ($_SESSION['controlpanel'] == 1 && $_SESSION['blogid'] == 1) : ?>
+                                <b>Logged in as Admin</b><br />
+                                <a href="?controlpanel">go to the Admin CP</a>
+                                <br />
+                                <a href="?delsession">Log out</a>
+<?php else: ?>
                                 <b>Admin login:</b><br />
 
                                 <form action="<?php echo INDEX_URL; ?>?login" method="post">
                                 <small>password:</small> <input type="password" name="password" style="font-size:smaller" size="10" /><br />
                                 <input type="submit" value="enter" style="font-size:smaller" />
                                 </form>
+<?php endif; ?>
                             </td>
                         </tr>
                     </table>
