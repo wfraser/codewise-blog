@@ -65,6 +65,7 @@ function delete_session()
     unset($_SESSION['tripcode']);
     unset($_SESSION['beenhere']);
     unset($_SESSION['controlpanel']);
+    unset($_SESSION['blogid']);
 
     $GLOBALS['NOTIFY'] = "Your information has been cleared.<br />";
     return main_page(1);
