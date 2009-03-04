@@ -39,6 +39,7 @@ function cplogin()
     if($_SESSION['controlpanel'] == 1 || md5($_POST['password']) == $root_hash)
     {
         $_SESSION['controlpanel'] = 1;
+        $_SESSION['blogid'] = BLOGID;
         define('LOGGED_IN', TRUE);
         define('ADMIN', TRUE);
         return "You are now logged in as Admin. Beware that changes you make are potentially dangerous!<br />"
