@@ -3,6 +3,9 @@
 require("settings.php");
 require("l1_mysql.php");
 
+echo "script disabled";
+exit;
+
 ?>
 <html>
 <head>
@@ -25,7 +28,7 @@ if(!isset($_GET['skinid']))
 
 $skinid = str_pad($_GET['skinid'], 32, "0", STR_PAD_LEFT);
 
-$description = file(FSPATH . "/" . $_GET['skin_dir'] . "/DESCRIPTION");
+$description = file(FSPATH . "/" . $_GET['skin_dir'] . "/description.txt");
 $name = rtrim($description[0]);
 $description = implode("", $description);
 
