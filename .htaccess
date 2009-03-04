@@ -1,5 +1,5 @@
 Options +Indexes +FollowSymLinks
 RewriteEngine on
-RewriteCond %{REQUEST_URI} !((CHANGELOG|COPYING|TERMS|favicon\.ico|rdf\.php(/.*)?|stylesheet\.php|skin_(im|ex)porter(_xml)?\.php|install\.php|skin_blueEye/blueEye\.css|cwb\.png|imageverify\.php|cwb/showsource\.php|img\.php)$|doc|cwb)
+RewriteCond %{REQUEST_URI} !((CHANGELOG|COPYING|TERMS|favicon\.ico|rdf\.php(/.*)?|stylesheet\.php|skin_(im|ex)porter(_xml)?\.php|install\.php|skin_blueEye/blueEye\.css|cwb\.png|imageverify\.php|remote\.php|cwb/showsource\.php|img\.php)$|doc|cwb)
 RewriteRule ^(.*)$ /cwbmulti.php/$1
 php_flag magic_quotes_gpc off
