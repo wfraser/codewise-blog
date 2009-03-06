@@ -3,8 +3,8 @@
 require("settings.php");
 require("l1_mysql.php");
 
-echo "script disabled";
-exit;
+ini_set("session.name", "codewiseblog");
+session_start();
 
 ?>
 <html>
@@ -13,6 +13,11 @@ exit;
 </head>
 <body>
 <?php
+
+if ($_SESSION['controlpanel'] != 1 || $_SESSION['blogid'] != 1) {
+    echo "You need to be logged in to the Admin Control Panel to use this script. Go back to the front page and log in.</body></html>";
+    exit;
+}
 
 if(!isset($_GET['skin_dir']))
     die("Set ?skin_dir=something to import the skin files in that directory into the database.</body></html>");
