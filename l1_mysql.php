@@ -1,13 +1,13 @@
 <?php
 
 /*
-** L1 MySQL Driver version 2.0.0
+** L1 MySQL Driver version 2.0.1
 ** L1 SQL version 2.0
 **
 ** http://projects.codewise.org/l1_sql/
 **
 ** by William R. Fraser <wrf@codewise.org>
-** Copyright (c) 2004-2008 Codewise.org
+** Copyright (c) 2004-2009 Codewise.org
 */
 
 /*
@@ -454,14 +454,18 @@ class L1_MySQL
         switch($severity)
         {
 case E_USER_ERROR:
-            if($this->error_callback !== null)
+            if($this->error_callback === FALSE)
+                ; // do nothing
+            elseif($this->error_callback !== null)
                 call_user_func($this->error_callback,$out);
             else
                 print($out);
             exit;
 
 case E_USER_WARNING:
-            if($this->warning_callback !== null)
+            if($this->warning_callback === FALSE)
+                ; // do nothing
+            elseif($this->warning_callback !== null)
                 call_user_func($this->warning_callback,$out);
             else
                 print($out);
@@ -494,8 +498,9 @@ case E_USER_WARNING:
                 }
                 if($severity == E_USER_ERROR)
                 {
-                    if($this->error_callback !== null)
-                    {
+                    if($this->warning_callback === FALSE) {
+                        // do nothing
+                    } elseif($this->error_callback !== null) {
                         call_user_func($this->error_callback,$out."<b>FATAL</b>\n");
                         exit;
                     } else {
@@ -503,8 +508,9 @@ case E_USER_WARNING:
                         exit;
                     }
                 } else {
-                    if($this->warning_callback !== null)
-                    {
+                    if($this->warning_callback === FALSE) {
+                        // do nothing
+                    } elseif($this->warning_callback !== null) {
                         call_user_func($this->warning_callback,$out);
                     } else {
                         print($out);
