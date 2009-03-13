@@ -142,7 +142,21 @@ function genivid()
     $ivtext = genivtext();
     $ivid = md5(strtolower($ivtext));
 
-    $db->insert("imageverify", array("id" => $ivid, "text" => $ivtext, "timestamp" => time()));
+    // disable errors
+    $halt = $db->halt_on_error;
+    $saved = $db->warning_callback;
+    $db->halt_on_error = FALSE;
+    $db->warning_callback = FALSE;
+
+    $id = FALSE;
+    $tries = 0;
+    while ($id == FALSE && $tries++ < 10) {
+        $id = $db->insert("imageverify", array("id" => $ivid, "text" => $ivtext, "timestamp" => time()));
+    }
+
+    // re-enable errors
+    $db->halt_on_error = $halt;
+    $db->warning_callback = $saved;
 
     // delete records more than 1 day old.
     $db->issue_query("DELETE FROM imageverify WHERE timestamp < " . (time() - 60*60*24*1));
