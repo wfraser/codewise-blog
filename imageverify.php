@@ -144,8 +144,8 @@ function genivid()
 
     $db->insert("imageverify", array("id" => $ivid, "text" => $ivtext, "timestamp" => time()));
 
-    // delete records more than 2 days old.
-    $db->issue_query("DELETE FROM imageverify WHERE timestamp < " . (time() - 60*60*24*2));
+    // delete records more than 1 day old.
+    $db->issue_query("DELETE FROM imageverify WHERE timestamp < " . (time() - 60*60*24*1));
 
     return $ivid;
 }
