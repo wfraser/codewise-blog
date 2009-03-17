@@ -45,11 +45,9 @@ if(basename($_SERVER['SCRIPT_NAME']) == "imageverify.php")
         $q = $db->issue_query("SELECT text FROM imageverify WHERE id = ".($prepared_id = $db->prepare_value($_GET['id'])));
 
         if($db->num_rows[$q] == 0)
-            error_image("Bogus IVID");
+            error_image("Bogus IVID: {$_GET['id']}");
 
         $text = $db->fetch_var($q);
-
-        $db->issue_query("DELETE FROM imageverify WHERE id = $prepared_id");
     } else {
         /* if no IVID was given, generate some random letters and display them
          * anyways. It's good for debugging. */
@@ -140,28 +138,17 @@ function genivid()
     global $db;
 
     $ivtext = genivtext();
-    $ivid = md5(strtolower($ivtext));
+    $timestamp = time();
 
-    // disable errors
-    $halt = $db->halt_on_error;
-    $saved = $db->warning_callback;
-    $db->halt_on_error = FALSE;
-    $db->warning_callback = FALSE;
+    $db->insert("imageverify", array("text" => $ivtext, "timestamp" => $timestamp));
 
-    $id = FALSE;
-    $tries = 0;
-    while ($id == FALSE && $tries++ < 10) {
-        $id = $db->insert("imageverify", array("id" => $ivid, "text" => $ivtext, "timestamp" => time()));
-    }
-
-    // re-enable errors
-    $db->halt_on_error = $halt;
-    $db->warning_callback = $saved;
+    $q = $db->issue_query("SELECT id FROM imageverify WHERE text = '$ivtext' AND timestamp = $timestamp");
+    $id = $db->fetch_var($q);
 
     // delete records more than 1 day old.
     $db->issue_query("DELETE FROM imageverify WHERE timestamp < " . (time() - 60*60*24*1));
 
-    return $ivid;
+    return $id;
 }
 
 ?>

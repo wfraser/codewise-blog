@@ -159,9 +159,15 @@ function process_reply_form($tid)
         return show_reply_form($data['tid'], $data, $_POST['text'], $text_filter_msg);
     }
 
-    if(IMAGEVERIFY && md5(strtolower($_POST['imageverify'])) != $_POST['ivid'])
+    if(IMAGEVERIFY)
     {
-        return show_reply_form($data['tid'], $data, $_POST['text'], "You didn't correctly type the letters in the image.<br />Try again.");
+        $q = $db->issue_query("SELECT text FROM imageverify WHERE id = ".$db->prepare_value($_POST['ivid']));
+        $imagetext = $db->fetch_var($q);
+        $db->issue_query("DELETE FROM imageverify WHERE id = ".$db->prepare_value($_POST['ivid']));
+
+        if (strtolower($_POST['imageverify']) != strtolower($imagetext)) {
+            return show_reply_form($data['tid'], $data, $_POST['text'], "You didn't correctly type the letters in the image.<br />Try again.");
+        }
     }
 
     if(empty($text))
