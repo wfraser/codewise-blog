@@ -159,7 +159,8 @@ function voodoo($skin, $args = array(), $skin_section = "", $expand = TRUE)
             $true = $match["true"];
             $false = $match["false"];
 
-            $result = eval("return " . voodoo($condition, $args, $skin_section, FALSE) . ";");
+            $result = safe_eval("return " . voodoo($condition, $args, $skin_section, FALSE) . ";",
+                array("args" => $args, "BLOGINFO" => $BLOGINFO));
 
             if($result)
             {
