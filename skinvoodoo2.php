@@ -221,6 +221,8 @@ function voodoo($skin, $section, $subsection, $args)
 function voodoo_token_run($tokens, $args, $section, $subsection, $position,
         $end_on)
 {
+    global $BLOGINFO;
+
     $output = "";
 
     for ($i = $position; $i < count($tokens); $i++) {
@@ -233,8 +235,7 @@ function voodoo_token_run($tokens, $args, $section, $subsection, $position,
             $output .= voodoo_varsub($tokens[$i][1], $args, FALSE);
             break;
         case VTOKEN_IF:
-            $condition = voodoo_varsub($tokens[$i][1], $args, TRUE);
-            if (safe_eval("return $condition;", array("args" => $args))) {
+            if (voodoo_varsub($tokens[$i][1], $args, TRUE)) {
                 list ($sub, $i) = voodoo_token_run($tokens, $args, $section,
                         $subsection, $i + 1, VTOKEN_ELSE);
                 $output .= $sub;
@@ -326,7 +327,6 @@ function voodoo_token_run($tokens, $args, $section, $subsection, $position,
             $count_var = $tokens[$i][3];
 
             $var = voodoo_varsub($var, $args, TRUE);
-            $var = safe_eval("return $var;", array("args" => $args));
             if (!is_array($var))
                 $var = preg_split("//", $var, -1, PREG_SPLIT_NO_EMPTY);
             $j = $i; // stops deadlock if array is empty
@@ -563,6 +563,7 @@ function voodoo_tag_tokenize($code, $section, $subsection)
                         ." inside voodoo tag in <b>$section::$subsection</b>",
                         E_USER_WARNING);
                 */
+                //return array();
             }
             break;
         }
@@ -647,11 +648,11 @@ function voodoo_simple_skip_word($code)
 /*
 ** Finds all valid voodoo variables in the $skin arg and replaces them.
 ** $args is the hash of local args
-** If $symbolic is set to TRUE, the return value is in terms of $args, suitable
-** for eval() by the caller (assuming the caller has a valid $args variable).
+** If $variable_mode is set to true, the function returns a single value,
+**   otherwise $skin is treated as text and variable substitutions are done.
 ** If $symbolic is set to FALSE, the substitutions will happen here.
 */
-function voodoo_varsub($skin, $args, $symbolic) {
+function voodoo_varsub($skin, $args, $variable_mode) {
     global $voodoo_function_table, $BLOGINFO;
 
     // recursive pattern for all valid var expressions
@@ -671,6 +672,7 @@ function voodoo_varsub($skin, $args, $symbolic) {
         $trusted = FALSE;
 
         if ($type == "$" && in_array($name, array_keys($args))) {
+            $trusted = TRUE;
             $new = "\$args['$name']";
         } else if (in_array($name, array_keys($voodoo_function_table))) {
             $trusted = TRUE;
@@ -687,7 +689,7 @@ function voodoo_varsub($skin, $args, $symbolic) {
                     $new .= "[".voodoo_varsub($imatch[1], $args, TRUE)."]";
             }
 
-            if (!$symbolic) {
+            if (!$variable_mode) {
                 //$new = "'".preg_replace("/(?<!\\\\)'/", "\\'", eval("return $new;"))."'";
                 if ($trusted)
                     $new = eval("return $new;");
@@ -696,14 +698,18 @@ function voodoo_varsub($skin, $args, $symbolic) {
             }
 
             $skin = str_replace($old, $new, $skin);
-        } else if ($symbolic) {
+        } else if ($variable_mode) {
             $skin = str_replace($old, "FALSE", $skin);
         } else {
-            // if var is invalid and we're not in symbolic mode, don't replace
+            // if var is invalid and we're not in variable mode, don't replace
         }
     }
 
-    return $skin;
+    if ($variable_mode)
+        return safe_eval("return $skin;",
+                array("args" => $args, "BLOGINFO" => $BLOGINFO));
+    else
+        return $skin;
 }
 
 // vim: sts=4 expandtab
