@@ -77,7 +77,7 @@ if(basename($_SERVER['SCRIPT_NAME']) == "imageverify.php")
         // random colors, hopefully visible ;)
         $color = imagecolorallocate($image, mt_rand(0, 192), mt_rand(0, 192), mt_rand(0, 192));
 
-        // rotate between +/- .50
+        // slant letter between +/- .50
         imagepsslantfont($font, (mt_rand(-50, 50) * .01));
 
         $pos = imagepstext($image, $letter, $font, 40, $color, $white, $x, 40);
