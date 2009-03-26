@@ -694,7 +694,8 @@ function voodoo_varsub($skin, $args, $variable_mode) {
                 if ($trusted)
                     $new = eval("return $new;");
                 else
-                    $new = @safe_eval("return $new;", array("args" => $args));
+                    $new = @safe_eval("return $new;",
+                            array("args" => $args, "BLOGINFO" => $BLOGINFO));
             }
 
             $skin = str_replace($old, $new, $skin);
