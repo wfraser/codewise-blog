@@ -62,19 +62,20 @@ unset($HTTP_POST_VARS, $HTTP_GET_VARS, $HTTP_COOKIE_VARS, $HTTP_SERVER_VARS, $HT
 $SKIN_CACHE = array();
 
 // functions
-require("skinvoodoo.php");
-require("main_functions.php");
-require("misc.php");
-require("postcalendar.php");
-require("sidebar.php");
-require("topic.php");
-require("shoutbox.php");
-require("stats.php");
-require("reply.php");
-require("subscribe.php");
-require("controlpanel.php");
-require("imageverify.php");
-require("antispam.php");
+require_once "skinvoodoo.php";
+require_once "main_functions.php";
+require_once "misc.php";
+require_once "postcalendar.php";
+require_once "sidebar.php";
+require_once "topic.php";
+require_once "shoutbox.php";
+require_once "stats.php";
+require_once "reply.php";
+require_once "subscribe.php";
+require_once "controlpanel.php";
+require_once "imageverify.php";
+require_once "antispam.php";
+require_once "safe_eval.php";
 
 // new URL scheme hax
 require("parseurl.php");
