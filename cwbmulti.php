@@ -62,7 +62,7 @@ unset($HTTP_POST_VARS, $HTTP_GET_VARS, $HTTP_COOKIE_VARS, $HTTP_SERVER_VARS, $HT
 $SKIN_CACHE = array();
 
 // functions
-require_once "skinvoodoo.php";
+require_once "skinvoodoo2.php";
 require_once "main_functions.php";
 require_once "misc.php";
 require_once "postcalendar.php";
