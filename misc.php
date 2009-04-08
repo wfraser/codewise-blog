@@ -210,7 +210,7 @@ function tripcode($input)
     if($input === null || $input === "" || $input === false)
         return(null);
 
-    $md5 = md5($input);
+    $md5 = md5($input.TRIPCODE_SALT);
 
     $values = array();
     $chars = preg_split('//', $md5, -1, PREG_SPLIT_NO_EMPTY);
