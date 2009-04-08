@@ -5,7 +5,7 @@
 ** for CodewiseBlog Multi-User
 **
 ** by William R. Fraser <wrf@codewise.org>
-** Copyright (c) 2005-2008 Codewise.org
+** Copyright (c) 2005-2009 Codewise.org
 */
 
 /*
@@ -56,7 +56,7 @@
 
         <br />
 
-        <table width="100%">
+        <table width="100%" class="maintable">
             <tr>
                 <td width="1px" style="vertical-align:top">
 
@@ -128,7 +128,7 @@ foreach($data as $blogname => $blog)
                     </table>
 
                 </td>
-                <td class="blogbody">
+                <td class="blogbody" style="padding-right: 1em">
 
 <?php
 
@@ -136,25 +136,19 @@ foreach($data as $blogname => $blog)
     {
 
 ?>
-<table style="border:none; width:100%">
-<tr>
-<td>
-    <table style="padding: 0px; border: 1px solid #487393; width: 100%;">
-        <tr>
-            <td style="padding-left: 3px; width: 1px">
-                <a href="?register">
-                    <img src="cwb/keys.png" style="border:none" alt="Keys" />
-                </a>
-            </td>
-            <td style="padding: 5px">
-                <a href="?register">
-                    <span style="text-decoration:underline">Register for a blog on this site.</span>
-                </a>
-            </td>
-        </tr>
-    </table>
-</td>
-</tr>
+<table style="padding: 0px; border: 1px solid #487393; background: white; width: 100%;">
+    <tr>
+        <td style="padding-left: 3px; width: 1px">
+            <a href="?register">
+                <img src="cwb/keys.png" style="border:none" alt="Keys" />
+            </a>
+        </td>
+        <td style="padding: 5px">
+            <a href="?register">
+                <span style="text-decoration:underline">Register for a blog on this site.</span>
+            </a>
+        </td>
+    </tr>
 </table>
 <br />
 <?php
@@ -209,10 +203,8 @@ foreach($data as $blogname => $blog)
         $topic['url'] = $url . "/article/" . string_to_url_goodness($topic['title']);
 ?>
 
-<table style="border:none; width:100%">
-<tr>
-<td>
-    <table style="padding: 0px; border: 1px solid #ddd; width: 100%">
+<div class="topicheader">
+    <table style="border: none; width: 100%">
         <tr>
             <td style="padding-left: 3px; width: 1px">
                 <img src="<?php echo INDEX_URL; ?>img.php?blogid=<?php echo $topic['blogid']; ?>" alt="<?php echo $blog['name']; ?>" />
@@ -226,20 +218,14 @@ foreach($data as $blogname => $blog)
             </td>
         </tr>
     </table>
-</td>
-</tr>
-<tr>
-<td>
-    <div class="topicbody" style="border-bottom: none">
-        <?php echo $text; ?>
-    </div>
+</div>
+<div class="topicbody" style="border-bottom: none">
+    <?php echo $text; ?>
+</div>
 <?php /* this is a cheap (but effective!) way of closing any tags left open by text_clip() */ ?>
     <div class="topicbody" style="border-top: none">
         <a href="<?php echo "$url?tid={$topic['tid']}"; ?>"><b>read the whole post</b></a>
     </div>
-</td>
-</tr>
-</table>
 <br />
 <?php
 
