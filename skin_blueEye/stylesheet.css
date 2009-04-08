@@ -1,15 +1,13 @@
 /*
-** Codewise.org 'blueEye' Colors
-** modified for use in CodewiseBlog
+** Codewise.org 'blueEye' Colors for CodewiseBlog
 ** by Bill R. Fraser <bill.fraser@gmail.com>
-** Copyright (c) 2004-2006 Codewise.org
+** Copyright (c) 2004-2009 Codewise.org
 */
 
 body {
-    font-family: Trebuchet, sans-serif;
+    font-family: Verdana, Arial, sans-serif;
     font-size: 10pt;
     background: white;
-/*  color: #AAA; */
     color: #333;
 }
 
@@ -54,6 +52,7 @@ table.sidebar {
 }
 
 td.sidebar {
+    background: white;
     border: 1px solid #CCC;
     padding: .25em;
     white-space: nowrap; /* CSS 2.1.... it will surely be ignored by IE */
@@ -72,6 +71,10 @@ td.sidebar {
 /*
 ** These are for CodewiseBlog
 */
+
+table.maintable {
+    background: #EEE;
+}
 
 td.profleft {
     text-align: right;
@@ -205,4 +208,8 @@ span.floatingpopup_closebox {
 
 div.floatingpopup_text {
     padding: .5em;
+}
+
+.nodisplay {
+    display: none;
 }
