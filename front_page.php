@@ -258,7 +258,7 @@ foreach($data as $blogname => $blog)
                     <?php echo skinvoodoo("main", "versionfooter"); ?>
                 </td>
                 <td style="width:50%;font-size:small;text-align:right;padding-right:1em;vertical-align:top">
-                    <?php echo voodoo("%{copyright}", array(), "front_page"); ?>
+                    <?php echo voodoo_varsub("%{copyright}", "front_page", FALSE); ?>
                 </td>
                 <td>
                     <table align="center">
