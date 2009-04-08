@@ -5,7 +5,7 @@
 ** for CodewiseBlog Multi-User
 **
 ** by William R. Fraser <wrf@codewise.org>
-** Copyright (c) 2004-2008 Codewise.org
+** Copyright (c) 2004-2009 Codewise.org
 */
 
 /*
@@ -267,7 +267,7 @@ function mail_db_error($error)
 <html>
     <head>
         <title>Database Error</title>
-        <link rel="stylesheet" href="skin_blueEye/blueEye.css" />
+        <link rel="stylesheet" href="skin_blueEye/stylesheet.css" />
     </head>
     <body>
 <?php
@@ -289,13 +289,15 @@ function mail_db_error($error)
 
 function ordinal($n)
 {
-    if(substr($n, -1, 1) == "1")
+    if(substr($n, -2, 1) == "1")    // teens always end in 'th'
+        return "${n}th";
+    if(substr($n, -1, 1) == "1")    // ...1st
         return "{$n}st";
-    elseif(substr($n, -1, 1) == "2")
+    elseif(substr($n, -1, 1) == "2")    // ...2nd
         return "{$n}nd";
-    elseif(substr($n, -1, 1) == "3")
+    elseif(substr($n, -1, 1) == "3")    // ...3rd
         return "{$n}rd";
-    else
+    else                            // ...th
         return "{$n}th";
 }
 
