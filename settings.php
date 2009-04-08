@@ -61,19 +61,19 @@ define('TRIPCODE_SALT', 'playwithfire');
 define('EMAIL', TRUE);
 
 // Who do we email when something goes wrong accessing the database?
-define('SQL_ADMIN_EMAIL', 'bill.fraser@gmail.com');
+define('SQL_ADMIN_EMAIL', 'admin@example.com');
 
 // SQL server access settings
 define('SQL_HOST', 'localhost');
 define('SQL_USER', 'codewiseblog');
-define('SQL_PASS', '#!joltColaINaCan');
+define('SQL_PASS', 'password');
 define('SQL_DB', 'codewiseblog');
 
 // The name of the site. Used in lots of places.
-define('SITE_TITLE', 'Codewise Blogs');
+define('SITE_TITLE', 'Example Blog Site');
 
 // Sub-title of the site.
-define('SITE_MOTTO', 'A better place to write.');
+define('SITE_MOTTO', 'A Really Nice Bunch of Folks');
 
 // Make users type CAPTCHAs when replying to blog posts? (Reccomended)
 define('IMAGEVERIFY', TRUE);
