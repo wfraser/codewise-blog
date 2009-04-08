@@ -77,7 +77,7 @@ function display_post($post, $highlight = FALSE, $topic_urltitle = "")
     $link = $post['link'];
     $text = $post['text'];
 
-    $text = preg_replace("/@([0-9]+):/", "<span class=\"postref\"><a href=\"?tid=$tid&amp;pid=$1#pid$1\">@$1:</a></span>", $text);
+    $text = preg_replace("/@([0-9]+):/", "<span class=\"postref\"><a href=\"?pid=$1#pid$1\">@$1:</a></span>", $text);
 
     if(!empty($link))
         $name = "<a href=\"$link\" target=\"_blank\">$name</a>";
