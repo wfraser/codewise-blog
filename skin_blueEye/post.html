@@ -1,7 +1,6 @@
 <!-- #cwb_if# ${special_anchor} --><a name="${special_anchor}"></a><!-- #cwb_endif# -->
 <a name="pid${pid}"></a>
-<!-- #cwb_if# ${highlight} --><div style="border: 1px solid #487393"><!-- #cwb_endif# -->
-<div class="postheader">
+<div class="postheader" <!-- #cwb_if# ${highlight} -->style="border-color: #487393;"<!-- #cwb_endif# -->>
     <span class="postername">
         <b>${name}</b> <!-- #cwb_if# ${tripcode} != null --><i>${tripcode}</i><!-- #cwb_endif# -->
     </span>${date}
@@ -11,8 +10,7 @@
     <a href="${url_delreply}">(delete)</a>
 <!-- #cwb_endif# -->
 </div>
-<div class="postbody">
+<div class="postbody" <!-- #cwb_if# ${highlight} -->style="border-color: #487393;"<!-- #cwb_endif# -->>
 ${text}
 </div>
-<!-- #cwb_if# ${highlight} --></div><!-- #cwb_endif# -->
 <br />
