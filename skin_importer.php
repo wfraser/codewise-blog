@@ -37,7 +37,7 @@ $description = file(FSPATH . "/" . $_GET['skin_dir'] . "/description.txt");
 $name = rtrim($description[0]);
 $description = implode("", $description);
 
-$db = new L1_MySQL(SQL_HOST, "root", "czv101754", SQL_DB);
+$db = new L1_MySQL(SQL_HOST, SQL_USER, SQL_PASS, SQL_DB);
 
 $db->update("skins", array("name" => $name, "description" => $description), array("skinid" => $skinid));
 
@@ -64,7 +64,7 @@ while($file = readdir($dir))
     if(preg_match("/\\.css$/", $file))
     {
         $section = "css";
-    } elseif($file == "DESCRIPTION") {
+    } elseif($file == "description.txt") {
         continue;
     } else {
         $section = preg_replace("/\\.html$/", "", $file);
