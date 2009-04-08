@@ -34,7 +34,7 @@ a:active {
 }
 
 table {
-    border: 1px solid #DDD;
+    border: 1px solid #CCC;
     padding: .25em;
 }
 
@@ -54,7 +54,7 @@ table.sidebar {
 }
 
 td.sidebar {
-    border: 1px solid #ccc;
+    border: 1px solid #CCC;
     padding: .25em;
     white-space: nowrap; /* CSS 2.1.... it will surely be ignored by IE */
 }
@@ -90,10 +90,9 @@ td.blogbody {
     text-align: justify;
 }
 
-div.topicheader {
-    /* border: 1px solid black;
-    background: #DDD; */
-    border: 1px solid #DDD;
+div.topicheader, div.postheader {
+    background: white;
+    border: 1px solid #CCC;
     padding: .25em;
     vertical-align: middle;
 }
@@ -104,8 +103,9 @@ span.topictitle {
 /*     text-decoration: underline; */
 }
 
-div.topicbody {
-    border: 1px dashed #DDD;
+div.topicbody, div.postbody {
+    background: white;
+    border: 1px dashed #CCC;
     border-top: none;
     padding-left: 1em;
     padding-right: 1em;
@@ -116,18 +116,6 @@ div.topicbody {
 div.topicfooter {
     font-size: smaller;
     padding-top: .25em;
-}
-
-div.postheader {
-    border: 1px solid #DDD;
-    padding: .25em;
-    vertical-align: middle;
-}
-
-div.postbody {
-    padding-left: 1em;
-    padding-top: .75em;
-    padding-bottom: .75em;
 }
 
 span.postername {
@@ -173,7 +161,7 @@ span.emphasis {
 }
 
 div.topicpreview {
-    border: 1px solid #DDD;
+    border: 1px solid #CCC;
     padding: .50em;
 }
 
