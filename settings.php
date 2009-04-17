@@ -89,6 +89,7 @@ define('DEFAULT_SKINID', '00000000000000000000000000000003');
 
 // If the file 'TERMS' exists in the CodewiseBlog main folder, a link to it is
 // displayed in the footer of each page.
+// Existence of the TERMS file is also what enables new account registration.
 if(file_exists(FSPATH."/TERMS")) {
     if (SUBDOMAIN_MODE && DEFAULT_SUBDOMAIN != "")
         $terms = ", subject to <a href=\"http://".DEFAULT_SUBDOMAIN.".".BASE_DOMAIN.INSTALLED_PATH."TERMS\">terms</a>";
