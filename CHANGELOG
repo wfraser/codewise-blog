@@ -111,7 +111,9 @@ Dev - July 25 to September 12, 2005
   - better antispam method
   - bugfixes in: installer, rdf.php, register, skinvoodoo
 
-PRE-1.3.0-DEV / DEV-2.0.0 - April 2006 to March 2009 and beyond
-  - 2+ years of changes, fixes, updates, etc. Too many to list.
-  - no releases, next release will be v2.0.0
-  - upgraded to SkinVoodoo2 with Safe Eval
+PRE-1.3.0-DEV / DEV-2.0.0 - April 2006 to April 2009
+  - 3 years of changes, fixes, updates, etc. Too many to list.
+
+2.1.0 - April 20, 2009
+  - switched to GitHub for hosting
+  - using SkinVoodoo2 with Safe Eval
