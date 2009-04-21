@@ -75,13 +75,13 @@ require_once "subscribe.php";
 require_once "controlpanel.php";
 require_once "imageverify.php";
 require_once "antispam.php";
-require_once "safe_eval.php";
+require_once "parseurl.php";
 
-// new URL scheme hax
-require("parseurl.php");
-
-require("l1_mysql.php");
+require_once "l1_mysql.php";
 $db = new L1_MySQL(SQL_HOST, SQL_USER, SQL_PASS);
+
+// all functions are now defined, so init safe_eval
+require_once "safe_eval.php";
 
 // custom error handler to mail the admin as well as print any errors
 $db->error_callback = $db->warning_callback = "mail_db_error";
