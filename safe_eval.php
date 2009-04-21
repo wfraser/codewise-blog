@@ -6,30 +6,42 @@
  * Copyright (c) 2009 Codewise.org
  */
 
-//if (!function_exists("parsekit_compile_string")) {
-//    message("no_parsekit");
-//    exit;
-//}
-
 /*
- * THE RULES:
- * - no variable assignment allowed
- * - no access to the database
- * - no access to the server environment & filesystem
+ * !!! WARNING !!!
+ *   This file initializes its function blacklist at include-time, so be sure
+ * to only include this file ONLY AFTER all other functions have been declared.
  */
 
 $safe_eval_cache = array();
 
 list($safe_eval_blacklist_funcs, $safe_eval_whitelist_vars) = safe_eval_init();
 
+/*
+** Builds the list of allowed and disallowed things in eval expressions.
+**
+** Returns an array with the following contents:
+**  0 => blacklisted functions
+**           This is a list of all defined functions, minus the ones in the
+**           whitelist.
+**  1 => whitelisted vars
+**           This is a list of superglobal variables to allow. All others
+**           should be blocked.
+*/
 function safe_eval_init()
 {
+    // which superglobals do we want to allow access to?
     $allowed_vars = array("_GET", "_POST", "_SERVER", "_REQUEST", "_FILES", 
         "_COOKIE");
+
+    // language constructs to disallow
+    // these need to be explicitly specified since they're not included in the
+    // get_defined_functions() list
     $blacklist = array("++", "--", "=", "+=", "-=", "*=", "/=", ".=", "%=",
         "&=", "|=", "^-", "<<=", ">>=", "include", "require", "if", "else",
         "while", "for", "switch", "exit", "break", "print", "echo");
-    $whitelist = array("vdump", "count", "isset", "substr", "str_replace", "htmlentities", "html_entity_decode");
+
+    // which functions do we want to allow?
+    $whitelist = array("count", "isset", "substr", "str_replace", "htmlentities", "html_entity_decode");
 
     $funcs = get_defined_functions();
     $funcs = array_merge($funcs['internal'], $funcs['user']);
@@ -40,39 +52,48 @@ function safe_eval_init()
 
     $blacklist = array_merge($blacklist, $funcs);
 
-    return array($blacklist, $whitelist);
+    return array($blacklist, $allowed_vars);
 }
 
+/*
+** Perform a safe eval() call
+**
+** $code is the code to eval
+** $environment is an array ('name' => $value) of variables to allow $code
+**     to access
+*/
 function safe_eval($code, $environment = array())
 {
     global $safe_eval_cache, $safe_eval_blacklist_funcs, $safe_eval_whitelist_vars;
 
+    // munge the code for easy checking
     $stripped_code = safe_eval_strip_code($code);
 
     foreach ($safe_eval_blacklist_funcs as $bad) {
         if (($where = strpos($stripped_code, " $bad ")) !== false) {
-            echo "code has blacklisted construct $bad at character $where\n";
+            echo "code has blacklisted function/construct $bad at character $where\n";
             echo "<pre>".htmlspecialchars($code)."</pre>";
-            //message("safe_eval_failed", array("bad" => $bad,
-            //        "code" => $code));
             exit;
         }
     }
 
     $allowed_vars = array_merge($safe_eval_whitelist_vars, array_keys($environment));
 
-    foreach ($GLOBALS as $bad => $value) {
-        if (in_array($bad, $allowed_vars))
+    //foreach (array_keys($GLOBALS) as $global) {
+    //    if (strpos($global, "_") !== 0) // only care about superglobals
+    //        continue;
+    foreach (array("_ENV", "_POST", "_GET", "_COOKIE", "_SERVER", "_FILES",
+            "_REQUEST", "_SESSION") as $global) {
+        if (in_array($globals, $allowed_vars))
             continue;
         if (($where = strpos($stripped_code, " \$bad ")) !== false) {
             echo "code has blacklisted variable $bad at character $where";
             echo "<pre>".htmlspecialchars($code)."</pre>";
-            //message("safe_eval_failed", array("bad" => "$bad",
-            //    "code" => $code));
             exit;
         }
     }
 
+    // if the code passed, save it so we don't have to re-munge it next time
     $safe_eval_cache[$code] = true;
 
     // import the environment
