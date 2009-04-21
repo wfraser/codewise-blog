@@ -368,4 +368,12 @@ function array_psearch($array, $preg)
     return FALSE;
 }
 
+function vdump($var)
+{
+    echo "<pre>";
+    ob_start();
+    var_dump($var);
+    echo htmlspecialchars(ob_get_clean());
+}
+
 ?>
