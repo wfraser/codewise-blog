@@ -1,0 +1,259 @@
+/*
+** BoHeGeHa Dark Blue
+** by Tom Yugar <tyugar@gmail.com>,
+**    Leon Lewis Jr. <eighiteskhild@gmail.com>,
+**    Bill R. Fraser <bill.fraser@gmail.com>.
+** Copyright (c) 2003-2006 The Authors and Codewise.org
+*/
+
+body {
+    font-family: Verdana, Tahoma, Arial, Trebuchet MS, Sans-Serif, Georgia, Times New Roman, Serif;
+    font-size: 10pt;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    background: #0C1318;
+    color: white;
+}
+
+a:link {
+    color: #BFD6E3;
+    text-decoration: none;
+}
+
+a:visited {
+    color: #BFD6E3;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+a:active {
+    color: #BFD6E3;
+    text-decoration: none;
+}
+
+table {
+    
+    border: 1px solid #3C5058;
+    padding: .25em;
+}
+
+.title {
+    color: #333;
+    font-size: 1.5em;
+}
+
+table.sidebar {
+    border: 1px solid black;
+    border-spacing: 1em;
+    padding: 0;
+    background: #18242D;
+}
+
+td.sidebar {
+    border: 1px solid #3C5058;
+    padding: .25em;
+    color: white;
+    background: #1E2C38;
+    white-space: nowrap; /* CSS 2.1.... it will surely be ignored by IE */
+}
+
+.main-table{
+    border:  0px solid #18242D;
+    color: #18242D;
+}
+    
+.main-title {
+    font-size: 26pt;
+    text-decoration: underline;
+    font-weight: bold;
+    font-variant: small-caps;
+    /* color: #E9F7FF; */
+    color: #668296;
+    white-space: nowrap;
+}
+
+.sub-title {
+    font-size: 1em;
+    text-decoration: none;
+    font-weight: bold;
+    font-variant: small-caps;
+    color: #668;
+    white-space: nowrap;
+}
+
+td.profleft {
+    text-align: right;
+    vertical-align: top;
+}
+
+td.profright {
+    text-align: left;
+    white-space: normal;
+}
+
+td.odd {
+     border: 1px solid #3C5058;
+}
+
+td.blogbody {
+    color: white;
+    vertical-align: top;
+    padding-top: 1em;
+    text-align: justify;
+    padding-left: 1em;
+    padding-right: 1em;
+    background: #18242D;
+    border: 1px solid black;
+}
+
+div.topicheader, div.postheader {
+    background-color: transparent;
+  /*background-image: url("data:image/gif;base64,R0lGODlhAQAyANUAACNATxouPSM/Th01RSE8TBsxQRgrOyE7SiI8TBktPSA8SiA5SRovPxouPhowQCI/TiI+Th42RR00QyA6SR84SBwzQhwyQiI+TRwyQRgsPBgrPB84Rx43Rh42Rhw0QyI+TBksPBsvPyA5SCI9TSA7SgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAAAAAAALAAAAAABADIAAAYqQINBkwElAoEGI+QoFDCWikcyGEQ6nA1FtJiQDgoCATH6XCAPAUANaLuDADs="); */
+    background-image: url("data:image/gif;base64,R0lGODdhAQAyAKUAABAZHhEaHxEbIBIcIRMdIhMdJBQeJRUfJhUgJxYhKBciKRcjKhgkKxkkLBklLRomLhsnLxsoMBwpMR0qMh0qMx4rNB8sNR8tNiAuNyEvOCEwOSIwOyMxPCMyPSQzPiU0PyU1QCY2QSc3Qic3Qyg4RCk5RSk6Rio7Rys8SCs9SSw9Si0+Sy0/TC5ATS9BTi9CTzBDUDFEUhAZHhAZHhAZHhAZHhAZHhAZHhAZHhAZHhAZHhAZHhAZHhAZHhAZHhAZHiwAAAAAAQAyAAAGLsAY7OVqsVaqFOpkKpFGohDo4+lwNpoM5mKpUCaSCOThaDAWigTiYCgQBoIAIAgAOw==");
+    background-repeat: repeat;
+    background-position: center center;
+    border: 1px solid black;
+    padding: .25em;
+    vertical-align: middle;
+}
+
+span.topictitle {
+    color: #AAA;
+    font-weight: bold;
+}
+
+div.topicbody {
+    border: 1px solid #3C5058;
+    background: #1E2C38;
+    padding-left: 1em;
+    padding-right: 1em;
+    padding-top: .75em;
+    padding-bottom: .75em;
+}
+
+div.topicfooter {
+    font-size: smaller;
+    padding-top: .25em;
+}
+
+/*
+div.postheader {
+    border: 1px solid #DDD;
+    padding: .25em;
+    vertical-align: middle;
+}
+*/
+
+div.postbody {
+    padding-left: 1em;
+    padding-top: .75em;
+    padding-bottom: .75em;
+}
+
+span.postername {
+    color: #BFD6E3;
+}
+
+div.notify {
+    border: 1px solid black;
+    color: white;
+    background: #487393;
+    font-weight: bold;
+    padding: 5px;
+}
+
+div.notify a:link {
+    color: black;
+}
+
+div.notify a:visited {
+    color: black;
+}
+
+div.error {
+    border: 1px solid black;
+    color: black;
+    background: red;
+    font-weight: bold;
+    padding: 5px;
+}
+
+div.latestmonth {
+    font-size: smaller;
+}
+
+table.latestmonth {
+    border: none;
+}
+
+table.latestmonth tr td {
+    text-align: left;
+    padding: 0px;
+}
+
+span.postref {
+    color: #487393;
+    text-decoration: underline;
+}
+
+span.emphasis {
+    color: #487393;
+}
+
+div.topicpreview {
+    border: 1px solid #DDD;
+    padding: .50em;
+}
+
+textarea {
+    font-family: Verdana, Tahoma, Arial, Trebuchet MS, Sans-Serif, Georgia, Courier, Times New Roman, Serif;
+    font-size: 10pt;
+}
+
+input, textarea, select {
+    color: #fff;
+    background: #1E2C38;
+}
+
+div.floatingpopup {
+    left: 30%;
+    width: 25em;
+    text-align: justify;
+    background: #18242D;
+    border: 1px solid black;
+    position: absolute;
+}
+
+span.floatingpopup_title {
+    left: 5px;
+    position: absolute;
+    text-decoration: underline;
+    font-weight: bold;
+    color: white;
+}
+
+div.floatingpopup_titlebar {
+    background-repeat: repeat;
+    background-position: center center;
+    background-image: url("data:image/gif;base64,R0lGODdhAQAyAKUAABAZHhEaHxEbIBIcIRMdIhMdJBQeJRUfJhUgJxYhKBciKRcjKhgkKxkkLBklLRomLhsnLxsoMBwpMR0qMh0qMx4rNB8sNR8tNiAuNyEvOCEwOSIwOyMxPCMyPSQzPiU0PyU1QCY2QSc3Qic3Qyg4RCk5RSk6Rio7Rys8SCs9SSw9Si0+Sy0/TC5ATS9BTi9CTzBDUDFEUhAZHhAZHhAZHhAZHhAZHhAZHhAZHhAZHhAZHhAZHhAZHhAZHhAZHhAZHiwAAAAAAQAyAAAGLsAY7OVqsVaqFOpkKpFGohDo4+lwNpoM5mKpUCaSCOThaDAWigTiYCgQBoIAIAgAOw==");
+    border-bottom: 1px solid black;
+    text-align: right;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+
+span.floatingpopup_closebox {
+    background: #1E2C38;
+    border: 1px solid black;
+    padding: 2px;
+    margin-right: 2px;
+}
+
+div.floatingpopup_text {
+    padding: .5em;
+}

@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>%{titletag}</title>
+<link rel="stylesheet" type="text/css" title="stylesheet" href="%{css_url}" />
+<link rel="alternate" type="application/rss+xml" title="%{title}" href="%{rdf_url}" />
+<script type="text/javascript" language="JavaScript" src="?util_js"></script>
+</head>
+<body>
+
+<table style="border:none;width:100%" class="titletable">
+    <tr>
+        <td style="text-align:center">
+            <a href="%{index_url}"><span class="main-title">%{title}</span></a><br />
+            <i>by&nbsp;<!-- #cwb_if# %{realname} -->%{realname}&nbsp;/&nbsp;<!-- #cwb_endif# --><!-- #cwb_if# %{homepage} --><a href="%{homepage}">%{name}</a><!-- #cwb_else# -->%{name}<!-- #cwb_endif# --></i>
+        </td>
+        <td style="width:100%;text-align:right;font-size:small">
+%{fortune}
+        </td>
+    </tr>
+</table>
+
+<br />
+
+ <table width="100%" class="maintable">
+    <tr>
+    <td width="1px" style="vertical-align:top">
+
+        <table class="sidebar" width="100%">
+            <tr>
+            <td class="sidebar">
+                <div style="text-align:center">
+                <span id="showbio"><a href="javascript:showbio()"><b>%{name}</b></a><br /></span>
+                <span id="hidebio" style="display:none"><a href="javascript:hidebio()"><b>%{name}</b></a><br /></span>
+<!-- #cwb_if# %{photo} -->
+                <img src="%{photo}" alt="%{name}::photo" style="padding:.75em" />
+<!-- #cwb_else# -->
+                <b>%{realname}</b>
+<!-- #cwb_endif# -->
+                <table style="border:none; font-size:smaller; display:none;" id="bio">
+<!-- #cwb_if# %{realname} --><tr><td class="profleft">name:</td><td class="profright">%{realname}</td></tr><!-- #cwb_endif# -->
+<!-- #cwb_if# %{location} --><tr><td class="profleft" >location:</td><td class="profright">%{location}</td></tr><!-- #cwb_endif# -->
+<!-- #cwb_if# %{age} != "" --><tr><td class="profleft" >age:</td><td class="profright">%{age}</td></tr><!-- #cwb_endif# -->
+<!-- #cwb_if# %{interests} --><tr><td class="profleft" >specialties:</td><td class="profright">%{interests}</td></tr><!-- #cwb_endif# -->
+                </table>
+                </div>
+            </td>
+            </tr>
+<!-- #cwb_if# %{links} --><tr><td class="sidebar"><b>Links:</b><br />%{links}</td></tr><!-- #cwb_endif# -->
+%{postcalendar}
+%{welcomeback}
+%{subscribeform}
+%{loginform}
+        </table>
+    </td>
+
+    <td class="blogbody">
+<!-- #cwb_if# %{notify} -->
+        <div style="border: 1px solid black; color: black; background: red; font-weight: bold; padding: 5px">%{notify}</div><br />
+<!-- #cwb_endif# -->
+<!-- #CWB_BODY# -->
+    </td>
+
+    <td style="vertical-align:top;width:20em;">
+        <table class="sidebar" width="100%">
+            <tr>
+            <td class="sidebar" style="white-space:normal">
+%{shoutbox}
+            </td>
+            </tr>
+
+            <tr>
+            <td class="sidebar" style="white-space:normal; text-align:center; font-size:smaller">
+%{statistics}
+            </td>
+            </tr>
+        </table>
+    </td>
+
+</tr>
+</table>
+<br />
+<table style="border:none;width:100%">
+    <tr>
+    <td style="width:50%;font-size:small;vertical-align:top">
+        %{querycount} database queries. Page generated in %{runtime} milliseconds.<br />
+        <!-- *cwb_call* versionfooter -->
+    </td>
+    <td style="width:50%;font-size:small;text-align:right;padding-right:1em;vertical-align:top">
+        %{copyright}
+    </td>
+    <td>
+        <a href="%{multiuser_root}"><img src="%{multiuser_root}cwb.png" alt="CWB" style="border:none" /></a>
+    </td>
+    </tr>
+</table>
+</body>
+</html>
+<!-- :cwb_start: versionfooter -->Powered by: CodewiseBlog %{cwb_type} <a href="%{multiuser_root}CHANGELOG" style="color:#aaa;text-decoration:underline">v%{cwb_version}</a><!-- :cwb_end: versionfooter -->

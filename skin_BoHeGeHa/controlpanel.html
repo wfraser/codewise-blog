@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>%{titletag}</title>
+<link rel="stylesheet" href="%{multiuser_root}stylesheet.php?id=00000000000000000000000000000000" type="text/css" title="stylesheet" />
+<script type="text/javascript" language="JavaScript" src="?util_js"></script>
+</head>
+<body>
+
+<table style="border:none;width:100%;" class="titletable">
+    <tr>
+        <td style="text-align:center">
+            <a href="%{index_url}"><span class="main-title">%{title}</span></a><br />
+            <i>by&nbsp;%{realname}&nbsp;/&nbsp;<!-- #cwb_if# %{homepage} --><a href="%{homepage}">%{name}</a><!-- #cwb_else# -->%{name}<!-- #cwb_endif# --></i>
+        </td>
+        <td style="width:100%;text-align:right;font-size:small">
+%{fortune}
+        </td>
+    </tr>
+</table>
+
+<br />
+
+<!-- :cwb_start: div --><span style="font-size:larger">|</span><!-- :cwb_end: div -->
+
+<table width="100%">
+    <tr>
+    <td style="text-align:center">
+<!-- #cwb_if# ${root} -->
+
+<!-- #cwb_if# ${current} == "home" --><a href="${cpurl}"><b>CP Home</b></a><!-- #cwb_else# --><a href="${cpurl}">CP Home</a><!-- #cwb_endif# -->
+<!-- *cwb_call* div -->
+<!-- #cwb_if# ${current} == "settings" --><a href="${url_settings}"><b>Settings</b></a><!-- #cwb_else# --><a href="${url_settings}">Settings</a><!-- #cwb_endif# -->
+<!-- *cwb_call* div -->
+<!-- #cwb_if# ${current} == "skin" --><a href="${url_skin}"><b>Master Skin</b></a><!-- #cwb_else# --><a href="${url_skin}">Master Skin</a><!-- #cwb_endif# -->
+<!-- *cwb_call* div -->
+<!-- #cwb_if# ${current} == "adduser" --><a href="${url_adduser}"><b>Add User</b></a><!-- #cwb_else# --><a href="${url_adduser}">Add User</a><!-- #cwb_endif# -->
+
+<!-- #cwb_else# -->
+
+<!-- #cwb_if# ${current} == "home" --><a href="${cpurl}"><b>CP Home</b></a><!-- #cwb_else# --><a href="${cpurl}">CP Home</a><!-- #cwb_endif# -->
+<!-- *cwb_call* div -->
+<!-- #cwb_if# ${current} == "write" --><a href="${url_write}"><b>Write</b></a><!-- #cwb_else# --><a href="${url_write}">Write</a><!-- #cwb_endif# -->
+<!-- *cwb_call* div -->
+<!-- #cwb_if# ${current} == "edit" --><a href="${url_edit}"><b>Edit</b></a><!-- #cwb_else# --><a href="${url_edit}">Edit</a><!-- #cwb_endif# -->
+<!-- *cwb_call* div -->
+<!-- #cwb_if# ${current} == "userinfo" --><a href="${url_userinfo}"><b>User Info</b></a><!-- #cwb_else# --><a href="${url_userinfo}">User Info</a><!-- #cwb_endif# -->
+<!-- *cwb_call* div -->
+<!-- #cwb_if# ${current} == "skin" --><a href="${url_skin}"><b>Skin Editor</b></a><!-- #cwb_else# --><a href="${url_skin}">Skin Editor</a><!-- #cwb_endif# -->
+
+<!-- #cwb_endif# -->
+    </td>
+    </tr>
+
+    <tr>
+    <td class="blogbody">
+
+<!-- #cwb_if# ${root} -->
+        <div class="notify">
+            You are logged in as Admin. Beware that changes you make are potentially dangerous!
+        </div><br />
+<!-- #cwb_endif# -->
+
+<!-- #cwb_if# %{notify} -->
+        <div class="notify">
+            %{notify}
+        </div><br />
+<!-- #cwb_endif# -->
+
+        <table style="border:none" align="center"><tr><td>
+        <!-- #CWB_CP_BODY# -->
+        </td></tr></table>
+
+    </td>
+    </tr>
+</table>
+<br />
+<table style="border:none;width:100%">
+    <tr>
+    <td style="width:50%;font-size:small;vertical-align:top">
+        %{querycount} database queries. Page generated in %{runtime} milliseconds.<br />
+        <!-- *cwb_call* versionfooter -->
+    </td>
+    <td style="width:50%;font-size:small;text-align:right;padding-right:1em;vertical-align:top">
+        %{copyright}
+    </td>
+    <td>
+        <a href="%{multiuser_root}"><img src="%{multiuser_root}cwb.png" alt="CWB" style="border:none" /></a>
+    </td>
+    </tr>
+</table>
+</body>
+</html>
+<!-- :cwb_start: versionfooter -->Powered by: CodewiseBlog %{cwb_type} <a href="CHANGELOG" style="color:#aaa;text-decoration:underline">v%{cwb_version}</a><!-- :cwb_end: versionfooter -->
+
+<!-- :cwb_start: welcome -->
+<div align="center">Welcome to the %{site_title} control panel.</div>
+<!-- :cwb_end: welcome -->

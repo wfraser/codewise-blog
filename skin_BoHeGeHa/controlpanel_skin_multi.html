@@ -1,0 +1,160 @@
+<!-- :cwb_start: sectionlist_entry -->
+<tr><td><input type="submit" name="section_sel" value="${section}" /></td></tr>
+<!-- :cwb_end: sectionlist_entry -->
+<!-- :cwb_start: sectionlist_current -->
+<tr><td><input type="submit" name="section_sel" value="${section}" disabled="disabled" /></td></tr>
+<!-- :cwb_end: sectionlist_current -->
+
+<form action="${posturl}" method="post">
+<input type="hidden" name="skinid" value="${skinid}" />
+Skin ID: <b>${skinid}</b>
+<style type="text/css">
+table.skintable {
+    border:none;
+}
+
+table.skintable td {
+    padding: 10px;
+}
+
+table.skintable td td {
+    padding: 0px;
+}
+</style>
+<table class="skintable">
+<tr>
+<td style="vertical-align:top">
+    <table>
+    ${sectionlist}
+    </table>
+    <br />
+</td>
+<td style="vertical-align:top">
+    ${content}
+</td>
+<!-- #cwb_if# ${section_name} -->
+<td style="height:100%">
+    <table style="height:100%">
+        <tr><td>
+            Variable Reference:
+        </td></tr>
+        <tr><td style="height:100%">
+            ${varlist}
+        </td></tr>
+    </table>
+</td>
+<!-- #cwb_endif# -->
+</tr>
+</table>
+</form>
+
+<!-- :cwb_start: section_edit -->
+<script type="text/javascript" src="${autoresize}"></script>
+<input type="hidden" name="section" value="${section_name}" />
+<!-- #cwb_if# (${section_name} != "description") -->
+<!-- #cwb_if# ${using_master} -->
+<b>Using master skin</b>
+</b>
+<!-- #cwb_else# -->
+<input type="submit" name="revert" value="Revert to Master" />
+<!-- #cwb_endif# -->
+<!-- #cwb_endif# -->
+<br /><br />
+<textarea name="section_content" rows="${rows}" cols="${cols}" id="canvas" style="font-family:monospace">${section_content}</textarea>
+<br /><br />
+<table style="border:none" width="100%">
+    <tr>
+        <td>
+            <input type="submit" name="save_skin" value="Save Changes" />
+        </td>
+        <td align="right">
+            <input type="submit" name="resize" value="resize text area" />
+            <input type="text" size="3" name="cols" id="cols" value="${cols}" />
+            x
+            <input type="text" size="3" name="rows" id="rows" value="${rows}" />
+            <input type="button" value="auto resize" onclick="autoResize()" />
+        </td>
+    </tr>
+</table>
+<!-- :cwb_end: section_edit -->
+<!-- :cwb_start: skin_select -->
+<script type="text/javascript" language="JavaScript">
+    function chooseSkinId()
+    {
+        var sel = document.getElementById("skinid_option");
+        var inp = document.getElementById("skinid_input");
+        var fin = document.getElementById("skinid_final");
+
+        if (inp.value != "")
+            fin.value = inp.value;
+        else
+            fin.value = sel.value
+    }
+</script>
+<form action="${posturl}" method="post" onsubmit="chooseSkinId()">
+<input type="hidden" name="skinid" id="skinid_final" value="" />
+<table>
+    <tr>
+        <td>Select your saved skin:</td>
+        <td><select name="skinid_option" id="skinid_option" onchange="document.getElementById('skinid_input').value = ''">
+${saved_skinids}
+        </select></td>
+    </tr>
+    <tr>
+        <td>Or, enter a Skin ID by hand:</td>
+        <td><input name="skinid_input" id="skinid_input" size="50" onchange="document.getElementById('skinid_option').options.selectedIndex = 0" /></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>
+            <input type="submit" value="Edit Skin" />
+            &nbsp;&nbsp;&nbsp;
+            <input type="submit" name="copy" value="Copy and Edit" />
+            &nbsp;&nbsp;&nbsp;
+            <input type="submit" name="use" value="Use Skin" />
+            &nbsp;&nbsp;&nbsp;
+            <input type="submit" name="delete" value="Delete Skin" />
+            &nbsp;&nbsp;&nbsp;
+            <input type="submit" name="export" value="Export" />
+        </td>
+    </tr>
+</table>
+</form>
+<br />
+<form action="${posturl}" method="post" enctype="multipart/form-data">
+<input type="hidden" name="MAX_FILE_SIZE" value="${max_file_size}" />
+<table align="center">
+    <tr>
+        <td>Upload and import an exported skin:</td>
+        <td><input type="file" name="xmlfile" size="50" /></td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td><input type="submit" name="import" value="Import Skin" /></td>
+    </tr>
+</table>
+</form>
+<!-- :cwb_end: skin_select -->
+<!-- :cwb_start: saved_skinids_entry -->
+<option value="${skinid}">    ${name}</option>
+<!-- :cwb_end: saved_skinids_entry -->
+<!-- :cwb_start: saved_skinids_current -->
+<option style="font-weight:bold" selected="selected" value="${skinid}">    ${name}</option>
+<!-- :cwb_end: saved_skinids_current -->
+<!-- :cwb_start: saved_skinids_separator -->
+<option disabled="disabled">${text}</option>
+<!-- :cwb_end: saved_skinids_separator -->
+<!-- :cwb_start: skin_name -->
+<b>Skin Name:</b> <input type="text" name="skin_name" size="63" value="${name}" />
+<!-- :cwb_end: skin_name -->
+<!-- :cwb_start: skin_owner -->
+<br /><b>Skin Owner:</b> <input type="text" name="skin_owner" size="10" value="${owner}" />
+<!-- :cwb_end: skin_owner -->
+<!-- :cwb_start: import_successful -->
+<form action="${posturl}" method="post">
+<input type="hidden" name="skinid" value="${newskinid}" />
+<b>Skin import successful.</b><br />
+New skin id: ${newskinid}<br />
+<input type="submit" value="Edit Skin" />&nbsp;<input type="submit" name="use" value="Use Skin" />
+</form>
+<!-- :cwb_end: import_successful -->

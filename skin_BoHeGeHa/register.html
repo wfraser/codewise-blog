@@ -1,0 +1,241 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title>%{site_title} :: Register New User</title>
+<link rel="stylesheet" type="text/css" title="stylesheet" href="%{css_url}" />
+<style type="text/css">
+    table.fields tr {
+/*         border-bottom: 1px solid #777; */
+    }
+
+    hr.field-sep {
+        border: none;
+        background: #eee;
+        height: 1px;
+        margin: 1px;
+    }
+</style>
+</head>
+<body>
+
+<table style="border:none;width:100%" class="titletable">
+    <tr>
+        <td style="text-align:center">
+            <a href="%{index_url}"><span class="main-title">%{site_title}</span></a><br />
+            <i>%{site_motto}</i>
+        </td>
+    </tr>
+</table>
+
+<br />
+
+<table width="75%" align="center">
+    <tr>
+
+    <td class="blogbody">
+<!-- #cwb_if# %{notify} -->
+        <div style="border: 1px solid black; color: black; background: red; font-weight: bold; padding: 5px">%{notify}</div><br />
+<!-- #cwb_endif# -->
+
+<!-- #CWB_BODY# -->
+
+    </td>
+
+</tr>
+</table>
+<br />
+<table style="border:none;width:100%">
+    <tr>
+    <td style="width:50%;font-size:small;vertical-align:top">
+        %{querycount} database queries. Page generated in %{runtime} milliseconds.<br />
+        <!-- *cwb_call* versionfooter -->
+    </td>
+    <td style="width:50%;font-size:small;text-align:right;padding-right:1em;vertical-align:top">
+        %{copyright}
+    </td>
+    <td>
+        <a href="%{multiuser_root}"><img src="cwb.png" alt="CWB" style="border:none" width="108" height="58" /></a>
+    </td>
+    </tr>
+</table>
+</body>
+</html>
+<!-- :cwb_start: versionfooter -->Powered by: CodewiseBlog %{cwb_type} <a href="CHANGELOG" style="color:#aaa;text-decoration:underline">v%{cwb_version}</a><!-- :cwb_end: versionfooter -->
+<!-- :cwb_start: success -->
+<b>Your account has been created. You will recieve an email shortly containing instructions on activating your account.</b>
+<!-- :cwb_end: success -->
+<!-- :cwb_start: confirm_failure -->
+<b>Activation failed.</b> Check the activation code.
+<!-- :cwb_end: confirm_failure -->
+<!-- :cwb_start: change_password_form -->
+<form action="${posturl}" method="post">
+<input type="hidden" name="username" value="${username}" />
+<input type="hidden" name="code" value="${code}" />
+<table class="settingstable" style="border:none">
+<tr>
+    <td>
+        Enter your desired password to complete activation:
+    </td>
+    <td>
+        <input type="password" name="password1" value="" />
+    </td>
+    <td>
+        <input type="password" name="password2" value="" />
+    </td>
+    <td>
+        <input type="submit" value="Change Password" />
+    </td>
+</tr>
+<tr>
+    <td></td>
+    <td colspan="2">
+        Type the new password and repeat it, just for good measure.
+    </td>
+</tr>
+</table>
+</form>
+<!-- :cwb_end: change_password_form -->
+<!-- :cwb_start: password_changed -->
+<b>Password changed successfully. <a href="${user_url}">Welcome to your new blog!</a></b>
+<!-- :cwb_end: password_changed -->
+<!-- :cwb_start: form -->
+        <form action="${posturl}" method="post">
+            <div style="font-size: large; font-weight: bold; text-decoration: underline;">Create new user account</div>
+            <br />
+            <b>First, read the <a href="${terms}" target="_blank">Terms and Conditions</a></b>
+            <br /><br />
+            <b>Required fields:</b>
+            <table class="fields">
+                <tr>
+                    <td>Username:</td>
+                    <td><input type="text" name="name" size="32" value="${name}" /></td>
+                </tr><tr>
+                    <td colspan="2">
+                        Subject to availability.
+                        his will be used to construct the address for your blog and cannot be changed later on, so CHOOSE CAREFULLY! ;)
+                        (size limited to 32 characters)
+                    </td>
+                </tr><tr>
+                    <td colspan="2"><hr class="field-sep" /></td>
+                </tr>
+
+                <tr>
+                    <td>Blog Title:</td>
+                    <td><input type="text" name="title" size="64" value="${title}" /></td>
+                </tr><tr>
+                    <td colspan="2">
+                        This is your blog's primary title.
+                        It will be displayed prominently at the top of your blog and will be used to identify it across the site.
+                        Keep it short and sweet (it's limited to 64 characters).
+                    </td>
+                </tr><tr>
+                    <td colspan="2"><hr class="field-sep" /></td>
+                </tr>
+
+                <tr>
+                    <td>Email Address:</td>
+                    <td><input type="text" name="email" size="63" value="${email}" /></td>
+                </tr><tr>
+                    <td colspan="2">
+                        You must enter a valid email address.
+                        This will be used to email you your initial password and notify you of comments on your blog.
+                    </td>
+                </tr>
+            </table>
+            <br />
+            <b>Optional Fields:</b>
+            <table class="fields">
+                <tr>
+                    <td>Real Name:</td>
+                    <td><input type="text" name="realname" size="63" value="${realname}" /></td>
+                </tr><tr>
+                    <td colspan="2">
+                        If given, this will be used in place of your username in the blog listings on the front page.
+                    </td>
+                </tr><tr>
+                    <td colspan="2"><hr class="field-sep" /></td>
+                </tr>
+
+                <tr>
+                    <td>Birthday:</td>
+                    <td><input type="text" name="birthday" size="10" value="${birthday}" /></td>
+                </tr><tr>
+                    <td colspan="2">
+                        Format: mm/dd/yyyy
+                        If given, this will be used to compute your age, which is displayed in your user profile.
+                    </td>
+                </tr><tr>
+                    <td colspan="2"><hr class="field-sep" /></td>
+                </tr>
+
+                <tr>
+                    <td>Location:</td>
+                    <td><input type="text" name="location" size="64" value="${location}" /></td>
+                </tr><tr>
+                    <td colspan="2">
+                        Some text describing where you live.
+                        This is displayed in your profile.
+                        (size limited to 255 characters)
+                    </td>
+                </tr><tr>
+                    <td colspan="2"><hr class="field-sep" /></td>
+                </tr>
+
+                <tr>
+                    <td>Photo/Avatar URL:</td>
+                    <td><input type="text" name="photo" size="64" value="${photo}" /></td>
+                </tr><tr>
+                    <td colspan="2">
+                        An image of yourself or other avatar.
+                        This is shown on your blog and on the front page alongside your entries.
+                        This must be a full URL to the image, which must be hosted on the web somewhere.
+                        (<a href="http://www.photobucket.com/" target="_blank">PhotoBucket</a>, <a href="http://www.imageshack.us/" target="_blank">ImageShack</a>,
+                        among others, offer services to host images for free)
+                    </td>
+                </tr><tr>
+                    <td colspan="2"><hr class="field-sep" /></td>
+                </tr>
+
+                <tr>
+                    <td>Homepage:</td>
+                    <td><input type="text" name="homepage" size="64" value="${homepage}" /></td>
+                </tr><tr>
+                    <td colspan="2">
+                        If you have a homepage somewhere other than this site, enter it here and your username in your blog will link to this location.
+                    </td>
+                </tr><tr>
+                    <td colspan="2"><hr class="field-sep" /></td>
+                </tr>
+
+                <tr>
+                    <td>Interests:</td>
+                    <td><textarea name="interests" rows="7" cols="80">${interests}</textarea></td>
+                </tr><tr>
+                    <td colspan="2">
+                        Some text describing yourself and your interests, etc.
+                        This is displayed in your profile.
+                        HTML formatting allowed. No size limit.
+                    </td>
+                </tr><tr>
+                    <td colspan="2"><hr class="field-sep" /></td>
+                </tr>
+
+                <tr>
+                    <td>Links:</td>
+                    <td><textarea name="links" rows="7" cols="80">${links}</textarea></td>
+                </tr><tr>
+                    <td colspan="2">
+                        Some links to other sites.
+                        This is displayed in your profile.
+                        HTML formatting allowed. No size limit.
+                    </td>
+                </tr>
+            </table>
+
+            <br />
+
+            <b>By submitting this page, you agree that you have read (and agree to abide by) the Terms and Conditions set out earlier.</b>
+            <br /><br />
+            <input type="submit" value="Create my blog!" />
+        </form>
+<!-- :cwb_end: form -->
