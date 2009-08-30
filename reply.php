@@ -162,8 +162,12 @@ function process_reply_form($tid)
     if(IMAGEVERIFY)
     {
         $q = $db->issue_query("SELECT text FROM imageverify WHERE id = ".$db->prepare_value($_POST['ivid']));
-        $imagetext = $db->fetch_var($q);
-        $db->issue_query("DELETE FROM imageverify WHERE id = ".$db->prepare_value($_POST['ivid']));
+        if ($db->num_rows[$q] > 0) {
+            $imagetext = $db->fetch_var($q);
+            $db->issue_query("DELETE FROM imageverify WHERE id = ".$db->prepare_value($_POST['ivid']));
+        } else {
+            return show_reply_form($data['tid'], $data, $_POST['text'], "Invalid imageverify parameters.");
+        }
 
         if (strtolower($_POST['imageverify']) != strtolower($imagetext)) {
             return show_reply_form($data['tid'], $data, $_POST['text'], "You didn't correctly type the letters in the image.<br />Try again.");
