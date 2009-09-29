@@ -34,7 +34,7 @@ function antispam_shoutbox($database_row, $client_ip)
     ** If the spam honeypot field is filled in, throw out the post
     */
 
-    if ($_POST['subject'] != "")
+    if ($_POST['subject'] != "" || !isset($_POST['subject']))
     {
         return skinvoodoo("error", "error", array("message" => "No spam allowed. kthxbail."));
     }
