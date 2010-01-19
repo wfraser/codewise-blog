@@ -28,6 +28,10 @@
 ** Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+if (!function_exists("mysql_connect")) {
+    die("MySQL PHP extension not installed!");
+}
+
 if(!defined("L1SQL_ASSOC")) define("L1SQL_ASSOC",1);
 if(!defined("L1SQL_NUM"))   define("L1SQL_NUM",  2);
 if(!defined("L1SQL_BOTH"))  define("L1SQL_BOTH", 3);
