@@ -121,7 +121,6 @@ class L1_MySQL
             {
                 $a_sql[ $this->prepare_value($field,FALSE) ] = ($value === null ? "null" : $quote.utf8_encode(mysql_real_escape_string($value,$this->session)).$quote);
             }
-	    vdump($a_sql);
             return($a_sql);
         } else {
             $sql = ($data === null ? "null" : $quote.utf8_encode(mysql_real_escape_string($data,$this->session)).$quote);
