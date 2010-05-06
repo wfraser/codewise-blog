@@ -73,6 +73,8 @@ function delete_session()
 
 function textprocess($text, $doautobr = TRUE)
 {
+    $text = utf8_decode($text);
+
     preg_match_all("/<php>(.*)<\\/php>/Us", $text, $matches, PREG_SET_ORDER);
     foreach($matches as $match)
     {
@@ -84,7 +86,7 @@ function textprocess($text, $doautobr = TRUE)
 
     preg_match_all("/[^\\sa-zA-Z0-9,.\\/<>?;:'\"[\\]{}\\-=_+\\\\|`~!@#$%^&*()]/", $text, $badchars);
     foreach ($badchars[0] as $badchar) {
-        $text = str_replace($text, $badchar, htmlentities($badchar));
+	$text = str_replace($badchar, htmlentities($badchar), $text);
     }
 
     /*
@@ -374,6 +376,7 @@ function vdump($var)
     ob_start();
     var_dump($var);
     echo htmlspecialchars(ob_get_clean());
+    echo "</pre>";
 }
 
 ?>

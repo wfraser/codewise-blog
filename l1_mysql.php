@@ -119,11 +119,12 @@ class L1_MySQL
             $a_sql = array();
             foreach($data as $field => $value)
             {
-                $a_sql[ $this->prepare_value($field,FALSE) ] = ($value === null ? "null" : $quote.mysql_real_escape_string($value,$this->session).$quote);
+                $a_sql[ $this->prepare_value($field,FALSE) ] = ($value === null ? "null" : $quote.utf8_encode(mysql_real_escape_string($value,$this->session)).$quote);
             }
+	    vdump($a_sql);
             return($a_sql);
         } else {
-            $sql = ($data === null ? "null" : $quote.mysql_real_escape_string($data,$this->session).$quote);
+            $sql = ($data === null ? "null" : $quote.utf8_encode(mysql_real_escape_string($data,$this->session)).$quote);
             return($sql);
         }
     }
@@ -139,6 +140,11 @@ class L1_MySQL
     */
     function insert($table,$a_values,$return = false)
     {
+        if(!is_array($a_values))
+        {
+            $this->error("Argument to L1_MySQL::insert() must be an array.");
+        }
+    
         if(!$this->set && !stristr($table,"."))
         {
             if(!$this->trycode("database"))
@@ -146,6 +152,7 @@ class L1_MySQL
         }
 
         $a_sql = $this->prepare_value($a_values);
+	
         $fields = implode(",",array_keys($a_sql));
         $values = implode(",",array_values($a_sql));
 
