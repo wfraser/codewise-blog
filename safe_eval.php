@@ -118,6 +118,8 @@ function safe_eval($code, $environment = array())
 function safe_eval_strip_code($code)
 {
     $stripped_code = "";
+    $code = preg_replace("#/\\*.*\\*/#Us", "", $code);
+    $code = preg_replace("#//.*#", "", $code);
     $state = array("not in str");
     for ($i = 0; $i < strlen($code); $i++) {
         switch ($state[count($state) - 1]) {
@@ -184,6 +186,7 @@ function safe_eval_strip_code($code)
             case "%":
             case ".":
             case ";":
+            case ",":
             case "\n":
             case "\t":
                 $stripped_code .= " ";
