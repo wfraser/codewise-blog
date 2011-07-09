@@ -52,7 +52,7 @@ function path_parse_url()
     switch ($parts[0]) {
 case "article":
         $title = str_replace("_", "%", $db->prepare_value($parts[1], false));
-        $q = $db->issue_query("SELECT tid FROM topics WHERE title LIKE \"$title\"");
+        $q = $db->issue_query("SELECT tid FROM topics WHERE title LIKE \"$title\" AND blogid = ".BLOGID);
         if ($db->num_rows[$q] == 1) {
             $tid = $db->fetch_var($q);
             if ($parts[2] == "reply") {
