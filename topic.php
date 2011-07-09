@@ -113,17 +113,31 @@ function display_post($post, $highlight = FALSE, $topic_urltitle = "")
 
 function output_topic_text($text)
 {
+    $text = str_replace("\r", "", $text);
+
     $text = preg_replace("/&(?![a-zA-Z]+;)/", "&amp;", $text);
 
-    $parts = preg_split("/(<noautobr>(.*)<\/noautobr>)/Us", $text, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+    $tags = "pre|ol|ul";
+    $text = preg_replace("#\n\n<($tags)#", "\n<$1", $text);
+    $text = preg_replace("#</($tags)>\n\n#", "</$1>", $text);
+    $text = str_replace("</noautobr>\n\n", "</noautobr>\n", $text);
+
+    $parts = preg_split("/(<(noautobr|pre)>(.*)<\/\\2>)/Us", $text, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
 
     $text = "";
     for($i = 0; $i < count($parts); $i++)
     {
-        if(strpos($parts[$i], "<noautobr>") === 0)
-            $text .= textprocess($parts[++$i], FALSE);
-        else
+        if (strpos($parts[$i], "<noautobr>") === 0) {
+            $i += 2;
+            $text .= textprocess($parts[$i], FALSE);
+        }
+        else if(strpos($parts[$i], "<pre>") === 0) {
+            $text .= textprocess($parts[$i], FALSE);
+            $i += 2;
+        }
+        else {
             $text .= textprocess($parts[$i]);
+        }
     }
 
     return $text;
