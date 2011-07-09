@@ -154,6 +154,8 @@ if(empty($_POST))
 
     $preview = skinvoodoo("controlpanel_write", "preview_topic", array("text" => output_topic_text($topic['text'])));
 
+    $topic['text'] = str_replace("</textarea>", "&lt;/textarea>", $topic['text']);
+
     $body = skinvoodoo(
         "controlpanel_edit", "editform",
         array(
