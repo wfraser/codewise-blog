@@ -205,7 +205,7 @@ if($BLOGINFO['birthday'])
 }
 
 $BLOGINFO['index_url'] = INDEX_URL;
-$BLOGINFO['ucp_url'] = INDEX_URL . "?controlpanel";
+$BLOGINFO['ucp_link'] = INDEX_URL . "?controlpanel";
 if(!SUBDOMAIN_MODE) $BLOGINFO['rdf_url'] = HTTP.DEFAULT_SUBDOMAIN.BASE_DOMAIN.INSTALLED_PATH
 						."rdf.php/".BLOGNAME;
 else                $BLOGINFO['rdf_url'] = HTTP.DEFAULT_SUBDOMAIN.BASE_DOMAIN.INSTALLED_PATH
